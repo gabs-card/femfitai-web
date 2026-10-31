@@ -1,5 +1,5 @@
 
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { LoginResponseDTO } from '../models/LoginResponseDTO';
 })
 export class Authservice {
 
-    private http = inject(HttpClient);
+    constructor(private http: HttpClient) {}
 
     token = signal<string | null>(localStorage.getItem('token'));
 
@@ -42,6 +42,8 @@ export class Authservice {
                         'idUsuario',
                         String(respuesta.idUsuario)
                     );
+                } else {
+                    localStorage.removeItem('idUsuario');
                 }
 
                 this.token.set(respuesta.accessToken);

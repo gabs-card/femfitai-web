@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 360px;
+}
+
+input,
+button {
+  padding: 10px;
+  font: inherit;
+}
+
+button {
+  margin-top: 8px;
+  cursor: pointer;
+}

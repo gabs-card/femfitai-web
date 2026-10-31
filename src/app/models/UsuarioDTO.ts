@@ -4,5 +4,6 @@ export class UsuarioDTO {
     apellidos: string = '';
     correo: string = '';
     rol: string = '';
-    estado: boolean = false;
+    estado: boolean | null = null;
+    fechaRegistro: string | null = null;
 }

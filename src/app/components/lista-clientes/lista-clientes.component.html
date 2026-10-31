@@ -1,0 +1,33 @@
+<h1>FemFitAI</h1>
+<h2>Usuarios registrados</h2>
+
+<p [hidden]="!usuariosService.cargando()" role="status">Cargando usuarios...</p>
+<p [hidden]="!usuariosService.error()" role="alert">{{ usuariosService.error() }}</p>
+<p [hidden]="usuariosService.cargando() || !!usuariosService.error() || usuariosService.usuarios().length > 0">
+  No hay usuarios registrados.
+</p>
+
+<table [hidden]="usuariosService.usuarios().length === 0">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nombres</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Rol</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Fecha de registro</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let usuario of usuariosService.usuarios()">
+      <td>{{ usuario.idUsuario }}</td>
+      <td>{{ usuario.nombres }}</td>
+      <td>{{ usuario.apellidos }}</td>
+      <td>{{ usuario.correo }}</td>
+      <td>{{ usuario.rol }}</td>
+      <td>{{ usuario.estado === null ? 'Sin especificar' : usuario.estado ? 'Activo' : 'Inactivo' }}</td>
+      <td>{{ usuario.fechaRegistro || 'Sin especificar' }}</td>
+    </tr>
+  </tbody>
+</table>
