@@ -1,1 +1,29 @@
-<p>menucomponent works!</p>
+<header class="menu">
+
+    <div class="menu-logo">
+        <a routerLink="/">FemFitAI</a>
+    </div>
+
+    <nav class="menu-navegacion">
+
+        <a routerLink="/"
+           routerLinkActive="activo"
+           [routerLinkActiveOptions]="{ exact: true }">
+            Inicio
+        </a>
+
+        <a routerLink="/ciclos/listar"
+           routerLinkActive="activo">
+            Listar ciclos
+        </a>
+
+        <a routerLink="/ciclos/insertar"
+           routerLinkActive="activo">
+            Registrar ciclo
+        </a>
+
+    </nav>
+  <button type="button" class="btn-cerrar" (click)="cerrarSesion()">
+    Cerrar sesión
+</button>
+</header>

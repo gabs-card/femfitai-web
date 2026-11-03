@@ -1,9 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Authservice } from '../../services/authservice';
 
 @Component({
-  imports: [],
+  imports: [RouterLink, RouterLinkActive],
   selector: 'app-menucomponent',
   styleUrl: './menucomponent.css',
   templateUrl: './menucomponent.html',
 })
-export class Menucomponent {}
+export class Menucomponent {
+
+  private auth = inject(Authservice);
+
+  cerrarSesion(): void {
+    this.auth.logout();
+  }
+}

@@ -1,13 +1,90 @@
-<h2>Acceso al listado de FemFitAI</h2>
-<form (submit)="$event.preventDefault(); iniciarSesion(correo.value, password.value); password.value = ''">
-  <label for="correo">Correo</label>
-  <input #correo id="correo" name="correo" type="email" autocomplete="username" required [disabled]="cargando()">
 
-  <label for="password">Contraseña</label>
-  <input #password id="password" name="password" type="password" autocomplete="current-password" required [disabled]="cargando()">
+@if (mostrarRegistro()) {
 
-  <button type="submit" [disabled]="cargando() || usuariosService.cargando()">
-    {{ cargando() ? 'Ingresando...' : 'Iniciar sesión' }}
-  </button>
-</form>
-<p role="status">{{ mensaje() }}</p>
+    <app-usuarioscomponent
+        (volverLogin)="volverLogin()">
+    </app-usuarioscomponent>
+
+} @else {
+
+    <main class="auth-page">
+
+        <section class="auth-card">
+
+            <div class="auth-brand">
+                FemFitAI
+            </div>
+
+            <h2>Bienvenida a FemFitAI</h2>
+
+            <p class="auth-description">
+                Inicia sesión para continuar con tu entrenamiento.
+            </p>
+
+            <form
+                class="auth-form"
+                (submit)="$event.preventDefault(); iniciarSesion(correo.value, password.value); password.value = ''">
+
+                <div class="form-group">
+                    <label for="correo">Correo electrónico</label>
+
+                    <input
+                        #correo
+                        id="correo"
+                        name="correo"
+                        type="email"
+                        placeholder="ejemplo@correo.com"
+                        autocomplete="username"
+                        required
+                        [disabled]="cargando()">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+
+                    <input
+                        #password
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Ingresa tu contraseña"
+                        autocomplete="current-password"
+                        required
+                        [disabled]="cargando()">
+                </div>
+
+                <button
+                    class="btn-login"
+                    type="submit"
+                    [disabled]="cargando() || usuariosService.cargando()">
+
+                    {{ cargando() ? 'Ingresando...' : 'Iniciar sesión' }}
+
+                </button>
+
+            </form>
+
+            @if (mensaje()) {
+                <p class="auth-mensaje" role="status">
+                    {{ mensaje() }}
+                </p>
+            }
+
+            <div class="auth-footer">
+                <span>¿No tienes una cuenta?</span>
+
+                <button
+                    type="button"
+                    class="btn-registro"
+                    (click)="abrirRegistro()">
+
+                    Crear cuenta
+
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+}

@@ -1,0 +1,21 @@
+.pagina-ciclos {
+    max-width: 1200px;
+    margin: 35px auto;
+    padding: 0 30px;
+}
+
+.encabezado-ciclos {
+    margin-bottom: 25px;
+}
+
+.encabezado-ciclos h2 {
+    color: #292938;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.encabezado-ciclos p {
+    color: #777789;
+    font-size: 15px;
+}

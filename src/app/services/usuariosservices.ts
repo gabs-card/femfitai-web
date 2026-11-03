@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { UsuarioDTO } from '../models/UsuarioDTO';
 import { Authservice } from './authservice';
-
+import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {
   usuarios = signal<UsuarioDTO[]>([]);
@@ -43,5 +43,19 @@ export class UsuariosService {
         this.cargando.set(false);
       },
     });
+
   }
+
+        registrar(datos: {
+        nombres: string;
+        apellidos: string;
+        correo: string;
+        passwordHash: string;
+      }): Observable<UsuarioDTO> {
+
+        return this.http.post<UsuarioDTO>(
+          `${environment.apiUrl}/usuarios`,
+          datos
+        );
+}
 }

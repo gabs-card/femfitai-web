@@ -1,3 +1,12 @@
-<app-logincomponent></app-logincomponent>
-<app-lista-clientes></app-lista-clientes>
-<router-outlet />
+
+@if (auth.logueado()) {
+
+    <app-menucomponent></app-menucomponent>
+
+    <router-outlet></router-outlet>
+
+} @else {
+
+    <app-logincomponent></app-logincomponent>
+
+}

@@ -1,0 +1,32 @@
+
+
+<div class="container">
+    <div>
+        <h2>Registro de ciclos</h2>
+    </div>
+
+    <div>
+        <form [formGroup]="form" (ngSubmit)="registrarCiclo()">
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Fecha de inicio</mat-label>
+                <input matInput
+                    [matDatepicker]="picker1"
+                    formControlName="fechaInicio">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker1">
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+            <br>
+
+            <button matButton type="submit">Registrar</button>
+
+        </form>
+
+        @if (mensaje) {
+            <p>{{mensaje}}</p>
+        }
+    </div>
+</div>

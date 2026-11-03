@@ -2,9 +2,9 @@ import { Component, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Authservice } from '../../services/authservice';
 import { UsuariosService } from '../../services/usuariosservices';
-
+import { Usuarioscomponent } from '../usuarioscomponent/usuarioscomponent';
 @Component({
-  imports: [],
+  imports: [Usuarioscomponent],
   selector: 'app-logincomponent',
   styleUrl: './logincomponent.css',
   templateUrl: './logincomponent.html',
@@ -34,12 +34,11 @@ export class Logincomponent {
     this.authService.login({ correo: correo.trim(), password }).subscribe({
       next: (respuesta) => {
         this.cargando.set(false);
-        if (respuesta.rol !== 'PROGRAMADOR') {
-          this.mensaje.set('Tu cuenta no tiene el rol PROGRAMADOR requerido para consultar usuarios.');
-          return;
-        }
         this.mensaje.set('Sesión iniciada.');
-        this.usuariosService.listar();
+
+      if (respuesta.rol === 'PROGRAMADOR') {
+          this.usuariosService.listar();
+      }
       },
       error: (respuesta: HttpErrorResponse) => {
         this.cargando.set(false);
@@ -53,4 +52,16 @@ export class Logincomponent {
       },
     });
   }
+
+        mostrarRegistro = signal(false);
+
+      abrirRegistro(): void {
+        this.mostrarRegistro.set(true);
+        this.mensaje.set('');
+      }
+
+      volverLogin(): void {
+        this.mostrarRegistro.set(false);
+        this.mensaje.set('');
+}
 }

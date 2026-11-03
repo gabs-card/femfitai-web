@@ -1,0 +1,33 @@
+
+.container-registro {
+    max-width: 500px;
+    margin: 45px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+}
+
+.container-registro h2 {
+    color: #ed1670;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.container-registro p {
+    color: #666;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+.container-registro form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.container-registro button {
+    margin-top: 10px;
+}
