@@ -1,6 +1,8 @@
-
 import { Routes } from '@angular/router';
-import { ListaClientesComponent } from './components/lista-clientes/lista-clientes.component';
+import { Homecomponent } from './components/homecomponent/homecomponent';
+import { Clistusuarioscomponent } from './components/usuarioscomponent/clistusuarioscomponent/clistusuarioscomponent';
+import { Ceditusuarioscomponent } from './components/usuarioscomponent/ceditusuarioscomponent/ceditusuarioscomponent';
+import { programadorGuard } from './guards/programadorguard';
 import { Cicloscomponent } from './components/cicloscomponent/cicloscomponent';
 import { Clistcicloscomponent } from './components/cicloscomponent/clistcicloscomponent/clistcicloscomponent';
 import { Cinsertcicloscomponent } from './components/cicloscomponent/cinsertcicloscomponent/cinsertcicloscomponent';
@@ -8,8 +10,8 @@ import { Cinsertcicloscomponent } from './components/cicloscomponent/cinsertcicl
 export const routes: Routes = [
   {
     path: '',
-    component: ListaClientesComponent,
-    pathMatch: 'full'
+    component: Homecomponent,
+    pathMatch: 'full',
   },
   {
     path: 'ciclos',
@@ -18,16 +20,35 @@ export const routes: Routes = [
       {
         path: '',
         redirectTo: 'listar',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'listar',
-        component: Clistcicloscomponent
+        component: Clistcicloscomponent,
       },
       {
         path: 'insertar',
-        component: Cinsertcicloscomponent
-      }
-    ]
-  }
+        component: Cinsertcicloscomponent,
+      },
+    ],
+  },
+  {
+    path: 'usuarios',
+    canActivate: [programadorGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full',
+      },
+      { 
+        path: 'listar',
+        component: Clistusuarioscomponent
+      },
+      { 
+        path: 'editar/:id',
+        component: Ceditusuarioscomponent
+      },
+    ],
+  },
 ];

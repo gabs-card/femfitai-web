@@ -1,0 +1,6 @@
+.contenedor-edicion { max-width: 500px; margin: 35px auto; padding: 30px; background: white;
+  border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,.10); }
+.contenedor-edicion h2 { color: #ed1670; font-size: 26px; margin-bottom: 16px; }
+form { display: flex; flex-direction: column; gap: 8px; }
+.campo { width: 100%; }
+.acciones { display: flex; gap: 8px; margin-top: 10px; }

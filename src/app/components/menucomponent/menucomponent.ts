@@ -10,7 +10,7 @@ import { Authservice } from '../../services/authservice';
 })
 export class Menucomponent {
 
-  private auth = inject(Authservice);
+  auth = inject(Authservice);
 
   cerrarSesion(): void {
     this.auth.logout();

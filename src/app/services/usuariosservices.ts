@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { UsuarioDTO } from '../models/UsuarioDTO';
+import { UsuarioDTO, UsuarioEditDTO } from '../models/UsuarioDTO';
 import { Authservice } from './authservice';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
@@ -10,7 +10,10 @@ export class UsuariosService {
   cargando = signal(false);
   error = signal('');
 
-  constructor(private http: HttpClient, private authService: Authservice) {}
+  constructor(
+    private http: HttpClient,
+    private authService: Authservice,
+  ) {}
 
   listar(): void {
     this.usuarios.set([]);
@@ -23,39 +26,51 @@ export class UsuariosService {
     }
 
     this.cargando.set(true);
-    this.http.get<UsuarioDTO[]>(`${environment.apiUrl}/usuarios`, {
-      headers: { Authorization: `Bearer ${token}` },
-    }).subscribe({
-      next: (usuarios) => {
-        this.usuarios.set(usuarios);
-        this.cargando.set(false);
-      },
-      error: (respuesta: HttpErrorResponse) => {
-        if (respuesta.status === 401) {
-          this.error.set('Tu sesión no es válida o ha vencido. Inicia sesión nuevamente.');
-        } else if (respuesta.status === 403) {
-          this.error.set('No tienes permiso para consultar el listado de usuarios.');
-        } else if (respuesta.status === 0) {
-          this.error.set('No se pudo conectar con FemFitAI. Revisa que el servidor esté disponible.');
-        } else {
-          this.error.set('No se pudo cargar el listado de usuarios.');
-        }
-        this.cargando.set(false);
-      },
-    });
-
+    this.http
+      .get<UsuarioDTO[]>(`${environment.apiUrl}/usuarios`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .subscribe({
+        next: (usuarios) => {
+          this.usuarios.set(usuarios);
+          this.cargando.set(false);
+        },
+        error: (respuesta: HttpErrorResponse) => {
+          if (respuesta.status === 401) {
+            this.error.set('Tu sesión no es válida o ha vencido. Inicia sesión nuevamente.');
+          } else if (respuesta.status === 403) {
+            this.error.set('No tienes permiso para consultar el listado de usuarios.');
+          } else if (respuesta.status === 0) {
+            this.error.set(
+              'No se pudo conectar con FemFitAI. Revisa que el servidor esté disponible.',
+            );
+          } else {
+            this.error.set('No se pudo cargar el listado de usuarios.');
+          }
+          this.cargando.set(false);
+        },
+      });
   }
 
-        registrar(datos: {
-        nombres: string;
-        apellidos: string;
-        correo: string;
-        passwordHash: string;
-      }): Observable<UsuarioDTO> {
+  registrar(datos: {
+    nombres: string;
+    apellidos: string;
+    correo: string;
+    passwordHash: string;
+  }): Observable<UsuarioDTO> {
+    return this.http.post<UsuarioDTO>(`${environment.apiUrl}/usuarios`, datos);
+  }
+  private api = `${environment.apiUrl}/usuarios`;
 
-        return this.http.post<UsuarioDTO>(
-          `${environment.apiUrl}/usuarios`,
-          datos
-        );
-}
+  buscarPorId(id: number): Observable<UsuarioDTO> {
+    return this.http.get<UsuarioDTO>(`${this.api}/${id}`);
+  }
+
+  actualizar(id: number, datos: UsuarioEditDTO): Observable<UsuarioDTO> {
+    return this.http.put<UsuarioDTO>(`${this.api}/${id}`, datos);
+  }
+
+  eliminar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.api}/${id}`);
+  }
 }
