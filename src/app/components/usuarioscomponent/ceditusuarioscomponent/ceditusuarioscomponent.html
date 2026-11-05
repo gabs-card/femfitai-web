@@ -1,0 +1,50 @@
+<div class="contenedor-edicion">
+  <h2>Editar usuario</h2>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <mat-form-field class="campo">
+      <mat-label>Nombres</mat-label>
+      <input matInput formControlName="nombres">
+      <mat-error>Los nombres son obligatorios</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo">
+      <mat-label>Apellidos</mat-label>
+      <input matInput formControlName="apellidos">
+      <mat-error>Los apellidos son obligatorios</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput type="email" formControlName="correo">
+      <mat-error>Ingresa un correo válido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="campo">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="rol">
+        @for (r of roles; track r) {
+          <mat-option [value]="r">{{ r }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="estado">Cuenta activa</mat-checkbox>
+
+    <mat-form-field class="campo">
+      <mat-label>Contraseña (obligatoria)</mat-label>
+      <input matInput type="password" formControlName="passwordHash" autocomplete="new-password">
+      <mat-hint>Esta contraseña quedará como la contraseña de la cuenta.</mat-hint>
+      <mat-error>Mínimo 8 caracteres</mat-error>
+    </mat-form-field>
+
+    <div class="acciones">
+      <button matButton="filled" type="submit">Guardar cambios</button>
+      <button matButton type="button" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+
+  @if (mensaje) {
+    <p role="alert">{{ mensaje }}</p>
+  }
+</div>

@@ -21,7 +21,12 @@
            routerLinkActive="activo">
             Registrar ciclo
         </a>
-
+        @if (auth.esProgramador()) {
+            <a routerLink="/usuarios/listar"
+               routerLinkActive="activo">
+                Usuarios
+            </a>
+        }
     </nav>
   <button type="button" class="btn-cerrar" (click)="cerrarSesion()">
     Cerrar sesión
