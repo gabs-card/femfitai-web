@@ -8,7 +8,7 @@ import { Clistcicloscomponent } from './components/cicloscomponent/clistciclosco
 import { Cinsertcicloscomponent } from './components/cicloscomponent/cinsertcicloscomponent/cinsertcicloscomponent';
 import { Ejercicioscomponent } from './components/ejercicioscomponent/ejercicioscomponent';
 import { Clistejercicioscomponent } from './components/ejercicioscomponent/clistejercicioscomponent/clistejercicioscomponent';
-
+import { Ceditcicloscomponent } from './components/cicloscomponent/ceditcicloscomponent/ceditcicloscomponent';
 export const routes: Routes = [
   {
     path: '',
@@ -27,6 +27,10 @@ export const routes: Routes = [
       {
         path: 'listar',
         component: Clistcicloscomponent,
+      },
+      {
+        path: 'editar/:id',
+        component: Ceditcicloscomponent,
       },
       {
         path: 'insertar',
