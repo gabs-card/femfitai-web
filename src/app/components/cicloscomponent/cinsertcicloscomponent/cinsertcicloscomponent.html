@@ -12,13 +12,14 @@
                 <mat-label>Fecha de inicio</mat-label>
                 <input matInput
                     [matDatepicker]="picker1"
+                    [max]="hoy"
                     formControlName="fechaInicio">
                 <mat-hint>DD/MM/YYYY</mat-hint>
                 <mat-datepicker-toggle matIconSuffix [for]="picker1">
                 </mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
-
+            <p>El fin estimado (28 días después) lo calcula el sistema.</p>
             <br>
 
             <button matButton type="submit">Registrar</button>
