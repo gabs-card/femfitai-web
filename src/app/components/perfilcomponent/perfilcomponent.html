@@ -1,0 +1,34 @@
+<h2>Mi perfil</h2>
+
+@if (cargando) {
+  <p>Cargando perfil...</p>
+}
+@if (mensaje) {
+  <p>{{ mensaje }}</p>
+}
+@if (sinPerfil) {
+  <p>Aún no completaste tu perfil de entrenamiento.</p>
+}
+
+@if (perfil) {
+  <section>
+    <h3>Entrenamiento</h3>
+    <dl>
+      <dt>Nivel</dt>
+      <dd>{{ perfil.nivelEntrenamiento }}</dd>
+      <dt>Objetivo principal</dt>
+      <dd>{{ perfil.objetivoPrincipal }}</dd>
+      <dt>Fecha de nacimiento</dt>
+      <dd>{{ perfil.fechaNacimiento | date: 'dd/MM/yyyy' }}</dd>
+    </dl>
+  </section>
+  <section>
+    <h3>Disponibilidad</h3>
+    <dl>
+      <dt>Días por semana</dt>
+      <dd>{{ perfil.diasDisponibles }}</dd>
+      <dt>Minutos por sesión</dt>
+      <dd>{{ perfil.tiempoDisponible }}</dd>
+    </dl>
+  </section>
+}
