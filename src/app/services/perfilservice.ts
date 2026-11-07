@@ -14,4 +14,8 @@ export class Perfilservice {
   getPerfil(): Observable<PerfilDTO> {
     return this.http.get<PerfilDTO>(this.apiURL);
   }
+
+    insertPerfil(dto: PerfilDTO): Observable<PerfilDTO> {
+    return this.http.post<PerfilDTO>(this.apiURL, dto);
+  }
 }

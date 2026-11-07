@@ -8,6 +8,55 @@
 }
 @if (sinPerfil) {
   <p>Aún no completaste tu perfil de entrenamiento.</p>
+  <form [formGroup]="form" (ngSubmit)="registrarPerfil()">
+    <mat-form-field>
+      <mat-label>Nivel</mat-label>
+      <mat-select formControlName="nivel">
+        @for (n of niveles; track n) {
+          <mat-option [value]="n">{{ n }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>Selecciona tu nivel</mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Objetivo principal</mat-label>
+      <mat-select formControlName="objetivo">
+        @for (o of objetivos; track o) {
+          <mat-option [value]="o">{{ o }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>Selecciona tu objetivo</mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Fecha de nacimiento</mat-label>
+      <input matInput [matDatepicker]="pickerNac" [max]="hoy" formControlName="fechaNacimiento" />
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="pickerNac"></mat-datepicker-toggle>
+      <mat-datepicker #pickerNac></mat-datepicker>
+      <mat-error>Selecciona tu fecha de nacimiento</mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Días disponibles por semana</mat-label>
+      <mat-select formControlName="dias">
+        @for (d of dias; track d) {
+          <mat-option [value]="d">{{ d }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>Selecciona entre 1 y 7 días</mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Minutos por sesión</mat-label>
+      <input matInput type="number" formControlName="tiempo" />
+      <mat-hint>Entre 10 y 180</mat-hint>
+      <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
+    </mat-form-field>
+    <br />
+    <button matButton type="submit" [disabled]="guardando">Registrar perfil</button>
+  </form>
 }
 
 @if (perfil) {
