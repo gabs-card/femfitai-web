@@ -1,7 +1,7 @@
 <div class="contenedor-edicion">
   <h2>Editar usuario</h2>
 
-  <form [formGroup]="form" (ngSubmit)="guardar()">
+  <form [formGroup]="form" #f="ngForm" (ngSubmit)="guardar(f)">
     <mat-form-field class="campo">
       <mat-label>Nombres</mat-label>
       <input matInput formControlName="nombres">

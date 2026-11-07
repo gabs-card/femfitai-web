@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroupDirective,  ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -63,7 +63,7 @@ export class Ceditusuarioscomponent implements OnInit {
     });
   }
 
-  guardar(): void {
+  guardar(f: FormGroupDirective): void {
     if (this.form.invalid) {
       this.mensaje = 'Completa correctamente los campos. La contraseña es obligatoria (mínimo 8 caracteres).';
       return;
@@ -77,7 +77,11 @@ export class Ceditusuarioscomponent implements OnInit {
       estado: v.estado,
       passwordHash: v.passwordHash,
     }).subscribe({
-      next: () => this.router.navigate(['/usuarios/listar']),
+            next: () => {
+        this.mensaje = 'Usuario actualizado correctamente.';
+        f.resetForm({ ...v, passwordHash: '' });
+        this.cdr.detectChanges();
+      },
       error: (e: HttpErrorResponse) => {
         this.mensaje =
           e.status === 409 ? 'El correo ya está registrado por otro usuario.'
