@@ -42,19 +42,7 @@
     color: #ffffff;
 }
 
-@media (max-width: 650px) {
-    .menu {
-        flex-direction: column;
-        gap: 15px;
-        padding: 18px;
-    }
-
-    .menu-navegacion {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .btn-cerrar {
+.btn-cerrar {
     border: 1px solid #ed1670;
     background-color: white;
     color: #ed1670;
@@ -67,4 +55,16 @@
 .btn-cerrar:hover {
     background-color: #fff0f6;
 }
+
+@media (max-width: 650px) {
+    .menu {
+        flex-direction: column;
+        gap: 15px;
+        padding: 18px;
+    }
+
+    .menu-navegacion {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
