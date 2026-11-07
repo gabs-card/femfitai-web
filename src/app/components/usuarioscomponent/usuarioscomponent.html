@@ -2,7 +2,7 @@
   <h2>Crear cuenta</h2>
   <p>Completa tus datos para registrarte en FemFitAI.</p>
 
-  <form [formGroup]="form" (ngSubmit)="registrarUsuario()">
+  <form [formGroup]="form" #f="ngForm" (ngSubmit)="registrarUsuario(f)">
     <mat-form-field class="example-full-width">
       <mat-label>Nombres</mat-label>
       <input matInput formControlName="nombres" autocomplete="given-name" />

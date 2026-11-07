@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
-  imports: [],
   selector: 'app-ejercicioscomponent',
-  styleUrl: './ejercicioscomponent.css',
+  imports: [RouterOutlet],
   templateUrl: './ejercicioscomponent.html',
+  styleUrl: './ejercicioscomponent.css',
 })
 export class Ejercicioscomponent {}

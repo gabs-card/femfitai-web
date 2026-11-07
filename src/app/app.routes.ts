@@ -6,6 +6,8 @@ import { programadorGuard } from './guards/programadorguard';
 import { Cicloscomponent } from './components/cicloscomponent/cicloscomponent';
 import { Clistcicloscomponent } from './components/cicloscomponent/clistcicloscomponent/clistcicloscomponent';
 import { Cinsertcicloscomponent } from './components/cicloscomponent/cinsertcicloscomponent/cinsertcicloscomponent';
+import { Ejercicioscomponent } from './components/ejercicioscomponent/ejercicioscomponent';
+import { Clistejercicioscomponent } from './components/ejercicioscomponent/clistejercicioscomponent/clistejercicioscomponent';
 
 export const routes: Routes = [
   {
@@ -29,6 +31,21 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Cinsertcicloscomponent,
+      },
+    ],
+  },
+  {
+    path: 'ejercicios',
+    component: Ejercicioscomponent,
+    children: [
+      { 
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full'
+      },
+      {
+        path: 'listar',
+        component: Clistejercicioscomponent
       },
     ],
   },
