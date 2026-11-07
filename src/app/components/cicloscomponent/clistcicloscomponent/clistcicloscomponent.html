@@ -1,1 +1,34 @@
-<p>clistcicloscomponent works!</p>
+@if (cargando) {
+  <p>Cargando ciclos...</p>
+}
+@if (mensaje) {
+  <p>{{ mensaje }}</p>
+}
+
+@if (dataSource.length > 0) {
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="C1">
+      <th mat-header-cell *matHeaderCellDef>Inicio</th>
+      <td mat-cell *matCellDef="let element">{{ element.fechaInicio | date: 'dd/MM/yyyy' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="C2">
+      <th mat-header-cell *matHeaderCellDef>Fin estimado</th>
+      <td mat-cell *matCellDef="let element">{{ element.fechaFinEstimada | date: 'dd/MM/yyyy' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="C3">
+      <th mat-header-cell *matHeaderCellDef>Fin real</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.fechaReal ? (element.fechaReal | date: 'dd/MM/yyyy') : '—' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="C4">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let element">{{ element.fechaReal ? 'Cerrado' : 'Activo' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+} @else if (!cargando && !mensaje) {
+  <p>No tienes ciclos registrados.</p>
+}
