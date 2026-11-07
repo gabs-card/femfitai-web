@@ -44,4 +44,24 @@ export class Clistcicloscomponent implements OnInit {
       },
     });
   }
+
+    eliminarCiclo(c: CicloDTO) {
+    const inicio = c.fechaInicio.split('-').reverse().join('/');
+    if (!confirm(`¿Eliminar el ciclo que inició el ${inicio}?`)) return;
+    this.cs.deleteCiclo(c.idCiclo).subscribe({
+      next: () => {
+        this.obtenerCiclos();
+        this.mensaje = 'Ciclo eliminado correctamente.';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(
+          err,
+          'No se pudo eliminar el ciclo.',
+          'No se puede eliminar: el ciclo tiene registros relacionados.',
+        );
+        this.cdr.detectChanges();
+      },
+    });
+  }
 }

@@ -28,6 +28,8 @@ export class Ciclosservice {
     return this.http.put<CicloDTO>(`${this.apiURL}/${id}`, dto);
   }
 
-  
+    deleteCiclo(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
 
 }

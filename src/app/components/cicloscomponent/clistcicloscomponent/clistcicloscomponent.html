@@ -32,6 +32,9 @@
         <a matIconButton [routerLink]="['/ciclos/editar', element.idCiclo]" aria-label="Editar">
           <mat-icon>edit</mat-icon>
         </a>
+          <button matIconButton type="button" (click)="eliminarCiclo(element)" aria-label="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </ng-container>
 
