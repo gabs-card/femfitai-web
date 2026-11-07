@@ -1,1 +1,67 @@
-<p>clistejercicioscomponent works!</p>
+<div class="ff-pagina">
+  <div class="ff-top">
+    <div>
+      <h2>Ejercicios</h2>
+      <p class="ff-sub">Catálogo de ejercicios disponibles.</p>
+    </div>
+  </div>
+
+  <div class="ff-card">
+    <form [formGroup]="filtros" class="ff-filtros">
+      <mat-form-field class="ff-crece">
+        <mat-label>Buscar</mat-label>
+        <input matInput formControlName="query" placeholder="Nombre del ejercicio" />
+      </mat-form-field>
+      <mat-form-field class="ff-ancho-150">
+        <mat-label>Tipo</mat-label>
+        <mat-select formControlName="tipo">
+          <mat-option value="">Todos</mat-option>
+          @for (t of tipos; track t) {
+            <mat-option [value]="t">{{ t }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    @if (cargando) {
+      <p class="ff-aviso">Cargando ejercicios...</p>
+    }
+    @if (mensaje) {
+      <p class="ff-aviso">{{ mensaje }}</p>
+    }
+
+    @if (dataSource.length > 0) {
+      <table mat-table [dataSource]="dataSource" class="ff-tabla">
+        <ng-container matColumnDef="C1">
+          <th mat-header-cell *matHeaderCellDef>Ejercicio</th>
+          <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+        </ng-container>
+        <ng-container matColumnDef="C2">
+          <th mat-header-cell *matHeaderCellDef>Grupo muscular</th>
+          <td mat-cell *matCellDef="let element">{{ element.grupoMuscular }}</td>
+        </ng-container>
+        <ng-container matColumnDef="C3">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let element">{{ element.tipo }}</td>
+        </ng-container>
+        <ng-container matColumnDef="C4">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let element">{{ descripcionCorta(element.descripcion) }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <div class="ff-paginacion">
+        <span>Página {{ pagina + 1 }} de {{ totalPaginas }}</span>
+        <div>
+          <button matButton type="button" [disabled]="pagina === 0" (click)="cambiarPagina(-1)">Anterior</button>
+          <button matButton type="button" [disabled]="pagina + 1 >= totalPaginas" (click)="cambiarPagina(1)">Siguiente</button>
+        </div>
+      </div>
+    } @else if (!cargando && !mensaje) {
+      <p class="ff-aviso">No hay ejercicios registrados.</p>
+    }
+  </div>
+</div>
