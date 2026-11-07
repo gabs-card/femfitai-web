@@ -1,0 +1,25 @@
+<h2>Editar ciclo</h2>
+<form [formGroup]="form" (ngSubmit)="guardarCiclo()">
+  <mat-form-field>
+    <mat-label>Fecha de inicio</mat-label>
+    <input matInput [matDatepicker]="pickerInicio" [max]="hoy" formControlName="fechaInicio" />
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+    <mat-datepicker #pickerInicio></mat-datepicker>
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>Fecha de fin real (opcional)</mat-label>
+    <input matInput [matDatepicker]="pickerReal" [max]="hoy" formControlName="fechaReal" />
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="pickerReal"></mat-datepicker-toggle>
+    <mat-datepicker #pickerReal></mat-datepicker>
+  </mat-form-field>
+  <br />
+  <p>El fin estimado (28 días después del inicio) lo calcula el sistema.</p>
+  <button matButton type="submit" [disabled]="guardando">Guardar cambios</button>
+  <a matButton routerLink="/ciclos/listar">Volver a la lista</a>
+</form>
+@if (mensaje) {
+  <p>{{ mensaje }}</p>
+}

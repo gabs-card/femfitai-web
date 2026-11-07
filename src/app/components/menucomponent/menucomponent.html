@@ -25,6 +25,10 @@
            routerLinkActive="activo">
             Ejercicios
         </a>
+        <a routerLink="/perfil"
+           routerLinkActive="activo">
+            Mi perfil
+        </a>
         @if (auth.esProgramador()) {
             <a routerLink="/usuarios/listar"
                routerLinkActive="activo">

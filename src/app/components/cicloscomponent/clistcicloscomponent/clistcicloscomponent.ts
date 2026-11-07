@@ -4,15 +4,18 @@ import { MatTableModule } from '@angular/material/table';
 import { CicloDTO } from '../../../models/CicloDTO';
 import { Ciclosservice } from '../../../services/ciclosservice';
 import { mensajeDeError } from '../../../utils/errores';
+import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-clistcicloscomponent',
-  imports: [MatTableModule, DatePipe],
+  imports: [MatTableModule, DatePipe,RouterLink, MatIconModule, MatButtonModule],
   templateUrl: './clistcicloscomponent.html',
   styleUrl: './clistcicloscomponent.css',
 })
 export class Clistcicloscomponent implements OnInit {
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4'];
+  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5'];
   dataSource: CicloDTO[] = [];
   cargando = false;
   mensaje = '';
@@ -37,6 +40,26 @@ export class Clistcicloscomponent implements OnInit {
         this.dataSource = [];
         this.mensaje = mensajeDeError(err, 'No se pudo cargar la lista de ciclos.');
         this.cargando = false;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+    eliminarCiclo(c: CicloDTO) {
+    const inicio = c.fechaInicio.split('-').reverse().join('/');
+    if (!confirm(`¿Eliminar el ciclo que inició el ${inicio}?`)) return;
+    this.cs.deleteCiclo(c.idCiclo).subscribe({
+      next: () => {
+        this.obtenerCiclos();
+        this.mensaje = 'Ciclo eliminado correctamente.';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(
+          err,
+          'No se pudo eliminar el ciclo.',
+          'No se puede eliminar: el ciclo tiene registros relacionados.',
+        );
         this.cdr.detectChanges();
       },
     });
