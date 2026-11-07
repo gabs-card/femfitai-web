@@ -11,6 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { NIVELES, OBJETIVOS } from '../../models/catalogos';
 import { Authservice } from '../../services/authservice';
 import { aISO } from '../../utils/fechas';
+import { PerfilUpdateDTO } from '../../models/PerfilUpdateDTO';
+import { DisponibilidadDTO } from '../../models/DisponibilidadDTO';
+
 @Component({
   selector: 'app-perfilcomponent',
   imports: [DatePipe, ReactiveFormsModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatButtonModule],  templateUrl: './perfilcomponent.html',
@@ -27,6 +30,10 @@ export class Perfilcomponent implements OnInit {
   hoy = new Date();
   guardando = false;
   form: any;
+  editandoEntrenamiento = false;
+  editandoDisponibilidad = false;
+  formEntrenamiento: any;
+  formDisponibilidad: any;
 
   private ps = inject(Perfilservice);
   private cdr = inject(ChangeDetectorRef);
@@ -39,6 +46,14 @@ export class Perfilcomponent implements OnInit {
       nivel: ['', Validators.required],
       objetivo: ['', Validators.required],
       fechaNacimiento: [null, Validators.required],
+      dias: [null, Validators.required],
+      tiempo: [null, [Validators.required, Validators.min(10), Validators.max(180), Validators.pattern(/^\d+$/)]],
+    });
+    this.formEntrenamiento = this.fb.group({
+      nivel: ['', Validators.required],
+      objetivo: ['', Validators.required],
+    });
+    this.formDisponibilidad = this.fb.group({
       dias: [null, Validators.required],
       tiempo: [null, [Validators.required, Validators.min(10), Validators.max(180), Validators.pattern(/^\d+$/)]],
     });
@@ -104,6 +119,65 @@ export class Perfilcomponent implements OnInit {
         } else {
           this.mensaje = mensajeDeError(err, 'No se pudo registrar el perfil.');
         }
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+    editarEntrenamiento() {
+    const p = this.perfil!;
+    // si el valor guardado no está en el catálogo, se agrega para no perderlo
+    if (!this.niveles.includes(p.nivelEntrenamiento)) this.niveles = [...this.niveles, p.nivelEntrenamiento];
+    if (!this.objetivos.includes(p.objetivoPrincipal)) this.objetivos = [...this.objetivos, p.objetivoPrincipal];
+    this.formEntrenamiento.patchValue({ nivel: p.nivelEntrenamiento, objetivo: p.objetivoPrincipal });
+    this.mensaje = '';
+    this.editandoEntrenamiento = true;
+  }
+
+  guardarEntrenamiento() {
+    if (this.formEntrenamiento.invalid) {
+      this.mensaje = 'Selecciona nivel y objetivo.';
+      return;
+    }
+    const v = this.formEntrenamiento.value;
+    const dto: PerfilUpdateDTO = { nivelEntrenamiento: v.nivel, objetivoPrincipal: v.objetivo };
+    this.ps.updatePerfil(dto).subscribe({
+      next: (data) => {
+        this.perfil = data;
+        this.editandoEntrenamiento = false;
+        this.mensaje = 'Entrenamiento actualizado correctamente.';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(err, 'No se pudo actualizar el entrenamiento.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  editarDisponibilidad() {
+    const p = this.perfil!;
+    this.formDisponibilidad.patchValue({ dias: p.diasDisponibles, tiempo: p.tiempoDisponible });
+    this.mensaje = '';
+    this.editandoDisponibilidad = true;
+  }
+
+  guardarDisponibilidad() {
+    if (this.formDisponibilidad.invalid) {
+      this.mensaje = 'Indica entre 1 y 7 días y entre 10 y 180 minutos.';
+      return;
+    }
+    const v = this.formDisponibilidad.value;
+    const dto: DisponibilidadDTO = { diasDisponibles: v.dias, tiempoDisponible: v.tiempo };
+    this.ps.updateDisponibilidad(dto).subscribe({
+      next: (data) => {
+        this.perfil = data;
+        this.editandoDisponibilidad = false;
+        this.mensaje = 'Disponibilidad actualizada correctamente.';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(err, 'No se pudo actualizar la disponibilidad.');
         this.cdr.detectChanges();
       },
     });

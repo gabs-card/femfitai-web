@@ -62,22 +62,77 @@
 @if (perfil) {
   <section>
     <h3>Entrenamiento</h3>
-    <dl>
-      <dt>Nivel</dt>
-      <dd>{{ perfil.nivelEntrenamiento }}</dd>
-      <dt>Objetivo principal</dt>
-      <dd>{{ perfil.objetivoPrincipal }}</dd>
-      <dt>Fecha de nacimiento</dt>
-      <dd>{{ perfil.fechaNacimiento | date: 'dd/MM/yyyy' }}</dd>
-    </dl>
+    @if (editandoEntrenamiento) {
+      <form [formGroup]="formEntrenamiento" (ngSubmit)="guardarEntrenamiento()">
+        <mat-form-field>
+          <mat-label>Nivel</mat-label>
+          <mat-select formControlName="nivel">
+            @for (n of niveles; track n) {
+              <mat-option [value]="n">{{ n }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Selecciona tu nivel</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <mat-label>Objetivo principal</mat-label>
+          <mat-select formControlName="objetivo">
+            @for (o of objetivos; track o) {
+              <mat-option [value]="o">{{ o }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Selecciona tu objetivo</mat-error>
+        </mat-form-field>
+        <br />
+        <button matButton type="submit">Guardar</button>
+        <button matButton type="button" (click)="editandoEntrenamiento = false">Cancelar</button>
+      </form>
+    } @else {
+      <dl>
+        <dt>Nivel</dt>
+        <dd>{{ perfil.nivelEntrenamiento }}</dd>
+        <dt>Objetivo principal</dt>
+        <dd>{{ perfil.objetivoPrincipal }}</dd>
+        <dt>Fecha de nacimiento</dt>
+        <dd>{{ perfil.fechaNacimiento | date: 'dd/MM/yyyy' }}</dd>
+      </dl>
+      <p>La fecha de nacimiento no se puede modificar.</p>
+      <button matButton type="button" (click)="editarEntrenamiento()">Editar entrenamiento</button>
+    }
   </section>
+
   <section>
     <h3>Disponibilidad</h3>
-    <dl>
-      <dt>Días por semana</dt>
-      <dd>{{ perfil.diasDisponibles }}</dd>
-      <dt>Minutos por sesión</dt>
-      <dd>{{ perfil.tiempoDisponible }}</dd>
-    </dl>
+    @if (editandoDisponibilidad) {
+      <form [formGroup]="formDisponibilidad" (ngSubmit)="guardarDisponibilidad()">
+        <mat-form-field>
+          <mat-label>Días disponibles por semana</mat-label>
+          <mat-select formControlName="dias">
+            @for (d of dias; track d) {
+              <mat-option [value]="d">{{ d }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>Selecciona entre 1 y 7 días</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+          <mat-label>Minutos por sesión</mat-label>
+          <input matInput type="number" formControlName="tiempo" />
+          <mat-hint>Entre 10 y 180</mat-hint>
+          <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
+        </mat-form-field>
+        <br />
+        <button matButton type="submit">Guardar</button>
+        <button matButton type="button" (click)="editandoDisponibilidad = false">Cancelar</button>
+      </form>
+    } @else {
+      <dl>
+        <dt>Días por semana</dt>
+        <dd>{{ perfil.diasDisponibles }}</dd>
+        <dt>Minutos por sesión</dt>
+        <dd>{{ perfil.tiempoDisponible }}</dd>
+      </dl>
+      <button matButton type="button" (click)="editarDisponibilidad()">Editar disponibilidad</button>
+    }
   </section>
 }
