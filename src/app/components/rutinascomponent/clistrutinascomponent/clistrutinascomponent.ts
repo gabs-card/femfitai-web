@@ -51,4 +51,22 @@ export class Clistrutinascomponent implements OnInit {
       },
     });
   }
+  cambiarEstado(r: RutinaDTO) {
+    const activar = !r.estado;
+    const pregunta = activar
+      ? `¿Reactivar la rutina "${r.nombre}"?`
+      : `¿Desactivar la rutina "${r.nombre}"? Podrás reactivarla después.`;
+    if (!confirm(pregunta)) return;
+    this.rs.updateRutina(r.idRutina, { ...r, estado: activar }).subscribe({
+      next: () => {
+        this.obtenerRutinas();
+        this.mensaje = activar ? 'Rutina reactivada correctamente.' : 'Rutina desactivada correctamente.';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(err, 'No se pudo cambiar el estado de la rutina.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
 }

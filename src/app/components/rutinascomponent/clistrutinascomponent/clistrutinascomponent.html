@@ -35,6 +35,15 @@
         <a matIconButton [routerLink]="['/rutinas/editar', element.idRutina]" aria-label="Editar">
           <mat-icon>edit</mat-icon>
         </a>
+        @if (element.estado) {
+          <button matIconButton type="button" (click)="cambiarEstado(element)" aria-label="Desactivar">
+            <mat-icon>toggle_on</mat-icon>
+          </button>
+        } @else {
+          <button matIconButton type="button" (click)="cambiarEstado(element)" aria-label="Reactivar">
+            <mat-icon>toggle_off</mat-icon>
+          </button>
+        }
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
