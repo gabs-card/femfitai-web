@@ -1,12 +1,21 @@
 <div class="contenedor-usuarios">
-  <h2>Usuarios</h2>
+  <h2>{{ verInactivos() ? 'Usuarios inactivos' : 'Usuarios' }}</h2>
+  <button matButton type="button" (click)="alternarVista()">
+    {{ verInactivos() ? 'Ver usuarios activos' : 'Ver usuarios inactivos' }}
+  </button>
 
-  @if (us.cargando()) { <p role="status">Cargando usuarios...</p> }
-  @if (us.error()) { <p role="alert">{{ us.error() }}</p> }
-  @if (mensaje()) { <p role="status">{{ mensaje() }}</p> }
+  @if (us.cargando()) {
+    <p>Cargando usuarios...</p>
+  }
+  @if (us.error()) {
+    <p class="aviso" role="alert">{{ us.error() }}</p>
+  }
+  @if (mensaje()) {
+    <p class="aviso" [class.aviso-ok]="mensaje().endsWith('correctamente.')" role="alert">{{ mensaje() }}</p>
+  }
 
-  @if (us.usuarios().length > 0) {
-    <table mat-table [dataSource]="us.usuarios()">
+  @if (usuariosVisibles().length > 0) {
+    <table mat-table [dataSource]="usuariosVisibles()">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let u">{{ u.idUsuario }}</td>
@@ -27,12 +36,6 @@
         <th mat-header-cell *matHeaderCellDef>Rol</th>
         <td mat-cell *matCellDef="let u">{{ u.rol }}</td>
       </ng-container>
-      <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef>Estado</th>
-        <td mat-cell *matCellDef="let u">
-          {{ u.estado === null ? 'Sin especificar' : u.estado ? 'Activo' : 'Inactivo' }}
-        </td>
-      </ng-container>
       <ng-container matColumnDef="fecha">
         <th mat-header-cell *matHeaderCellDef>Registro</th>
         <td mat-cell *matCellDef="let u">
@@ -42,12 +45,18 @@
       <ng-container matColumnDef="acciones">
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let u">
-          <a matIconButton [routerLink]="['/usuarios/editar', u.idUsuario]" aria-label="Editar">
-            <mat-icon>edit</mat-icon>
-          </a>
-          <button matIconButton (click)="eliminar(u)" aria-label="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (!verInactivos()) {
+            <a matIconButton [routerLink]="['/usuarios/editar', u.idUsuario]" aria-label="Editar">
+              <mat-icon>edit</mat-icon>
+            </a>
+            <button matIconButton type="button" (click)="desactivar(u)" aria-label="Desactivar">
+              <mat-icon>person_off</mat-icon>
+            </button>
+          } @else {
+            <button matIconButton type="button" (click)="reactivar(u)" aria-label="Reactivar">
+              <mat-icon>restore</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 
@@ -55,6 +64,6 @@
       <tr mat-row *matRowDef="let row; columns: columnas"></tr>
     </table>
   } @else if (!us.cargando() && !us.error()) {
-    <p>No hay usuarios registrados.</p>
+    <p>{{ verInactivos() ? 'No hay usuarios inactivos.' : 'No hay usuarios activos.' }}</p>
   }
 </div>

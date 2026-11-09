@@ -70,7 +70,16 @@ export class UsuariosService {
     return this.http.put<UsuarioDTO>(`${this.api}/${id}`, datos);
   }
 
-  eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.api}/${id}`);
+  desactivar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.api}/${id}`); // baja lógica en el backend
+  }
+
+  reactivar(u: UsuarioDTO): Observable<UsuarioDTO> {
+    return this.actualizar(u.idUsuario, {
+      nombres: u.nombres,
+      apellidos: u.apellidos,
+      correo: u.correo,
+      estado: true,
+    });
   }
 }
