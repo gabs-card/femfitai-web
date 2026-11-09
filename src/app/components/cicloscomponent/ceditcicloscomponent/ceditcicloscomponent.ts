@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Ciclosservice } from '../../../services/ciclosservice';
 import { CicloUpdateDTO } from '../../../models/CicloUpdateDTO';
 import { aISO, deISO } from '../../../utils/fechas';
-import { mensajeDeError } from '../../../utils/errores';
+import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 
 @Component({
   selector: 'app-ceditcicloscomponent',
@@ -22,6 +22,8 @@ export class Ceditcicloscomponent implements OnInit {
   hoy = new Date();
   mensaje: string = '';
   guardando = false;
+  cargado = false;
+  errorCarga = '';
 
   private cs = inject(Ciclosservice);
   private cdr = inject(ChangeDetectorRef);
@@ -36,15 +38,17 @@ export class Ceditcicloscomponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.cs.getCiclo(this.id).subscribe({
       next: (c) => {
+        
         this.idUsuario = c.idUsuario;
         this.form.patchValue({
           fechaInicio: deISO(c.fechaInicio),
           fechaReal: c.fechaReal ? deISO(c.fechaReal) : null,
         });
+        this.cargado = true;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.mensaje = mensajeDeError(err, 'No se pudo cargar el ciclo.');
+        this.errorCarga = mensajeDeCarga(err);
         this.cdr.detectChanges();
       },
     });

@@ -1,5 +1,7 @@
 <h2>Editar registro de progreso</h2>
-@if (cargado) {
+@if (errorCarga) {
+  <p class="aviso" role="alert">{{ errorCarga }}</p>
+} @else if (cargado) {
   <form [formGroup]="formulario" (ngSubmit)="guardarProgreso()">
     <mat-form-field>
       <mat-label>Fecha</mat-label>

@@ -8,7 +8,7 @@ import { Rutinasservice } from '../../../services/rutinasservice';
 import { Authservice } from '../../../services/authservice';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { NIVELES, OBJETIVOS } from '../../../models/catalogos';
-import { mensajeDeError } from '../../../utils/errores';
+import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 
 @Component({
   selector: 'app-ceditrutinascomponent',
@@ -24,7 +24,7 @@ export class Ceditrutinascomponent implements OnInit {
   id = 0;
   mensaje: string = '';
   guardando = false;
-
+  errorCarga = '';
   private rs = inject(Rutinasservice);
   private auth = inject(Authservice);
   private cdr = inject(ChangeDetectorRef);
@@ -41,7 +41,7 @@ export class Ceditrutinascomponent implements OnInit {
     this.rs.getRutina(this.id).subscribe({
       next: (r) => {
         if (r.idUsuario !== this.auth.idUsuario()) {
-          this.mensaje = 'Esta rutina pertenece a otra cuenta.';
+          this.errorCarga = 'Esta rutina pertenece a otra cuenta.';
           this.cdr.detectChanges();
           return;
         }
@@ -53,7 +53,7 @@ export class Ceditrutinascomponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.mensaje = mensajeDeError(err, 'No se pudo cargar la rutina.');
+        this.errorCarga = mensajeDeCarga(err);
         this.cdr.detectChanges();
       },
     });

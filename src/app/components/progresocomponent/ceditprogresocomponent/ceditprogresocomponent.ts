@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Progresoservice } from '../../../services/progresoservice';
 import { ProgresoDTO } from '../../../models/ProgresoDTO';
 import { aISO, deISO } from '../../../utils/fechas';
-import { mensajeDeError } from '../../../utils/errores';
+import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 
 @Component({
   selector: 'app-ceditprogresocomponent',
@@ -23,6 +23,7 @@ export class Ceditprogresocomponent implements OnInit {
   cargado = false;
   mensaje: string = '';
   guardando = false;
+  errorCarga = '';
 
   private ps = inject(Progresoservice);
   private cdr = inject(ChangeDetectorRef);
@@ -51,7 +52,7 @@ export class Ceditprogresocomponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.mensaje = mensajeDeError(err, 'No se pudo cargar el registro.');
+        this.errorCarga = mensajeDeCarga(err);;
         this.cdr.detectChanges();
       },
     });

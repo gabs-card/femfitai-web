@@ -1,5 +1,7 @@
 <h2>Editar rutina</h2>
-@if (rutina) {
+@if (errorCarga) {
+  <p class="aviso" role="alert">{{ errorCarga }}</p>
+} @else if (rutina) {
   <form [formGroup]="formulario" (ngSubmit)="guardarRutina()">
     <mat-form-field>
       <mat-label>Nombre</mat-label>

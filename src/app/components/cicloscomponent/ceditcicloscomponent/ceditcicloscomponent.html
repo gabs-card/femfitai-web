@@ -1,4 +1,9 @@
 <h2>Editar ciclo</h2>
+@if (errorCarga) {
+  <p class="aviso" role="alert">{{ errorCarga }}</p>
+  <a matButton="filled" routerLink="/ciclos/listar">Volver a la lista</a>
+} @else if (cargado)
+{
 <form [formGroup]="form" (ngSubmit)="guardarCiclo()">
   <mat-form-field>
     <mat-label>Fecha de inicio</mat-label>
@@ -20,6 +25,7 @@
   <button matButton type="submit" [disabled]="guardando">Guardar cambios</button>
   <a matButton routerLink="/ciclos/listar">Volver a la lista</a>
 </form>
+}
 @if (mensaje) {
   <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
