@@ -5,10 +5,12 @@ import { RutinaDTO } from '../../../models/RutinaDTO';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Authservice } from '../../../services/authservice';
 import { mensajeDeError } from '../../../utils/errores';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-clistrutinascomponent',
-  imports: [MatTableModule, DatePipe],
+  imports: [MatTableModule, DatePipe, RouterLink, MatButtonModule],
   templateUrl: './clistrutinascomponent.html',
   styleUrl: './clistrutinascomponent.css',
 })

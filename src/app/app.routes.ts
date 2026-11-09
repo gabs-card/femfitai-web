@@ -12,6 +12,7 @@ import { Ceditcicloscomponent } from './components/cicloscomponent/ceditciclosco
 import { Perfilcomponent } from './components/perfilcomponent/perfilcomponent';
 import { Rutinascomponent } from './components/rutinascomponent/rutinascomponent';
 import { Clistrutinascomponent } from './components/rutinascomponent/clistrutinascomponent/clistrutinascomponent';
+import { Cinsertrutinascomponent } from './components/rutinascomponent/cinsertrutinascomponent/cinsertrutinascomponent';
 export const routes: Routes = [
   {
     path: '',
@@ -72,6 +73,10 @@ export const routes: Routes = [
       { 
         path: 'listar',
         component: Clistrutinascomponent
+      },
+      { 
+        path: 'insertar',
+        component: Cinsertrutinascomponent
       },
     ],
   },

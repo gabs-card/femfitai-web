@@ -1,0 +1,34 @@
+<h2>Nueva rutina</h2>
+<form [formGroup]="formulario" #f="ngForm" (ngSubmit)="registrarRutina(f)">
+  <mat-form-field>
+    <mat-label>Nombre</mat-label>
+    <input matInput formControlName="nombre" placeholder="Ej. Full body" />
+    <mat-error>El nombre es obligatorio (máximo 100 caracteres)</mat-error>
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>Objetivo</mat-label>
+    <mat-select formControlName="objetivo">
+      @for (o of objetivos; track o) {
+        <mat-option [value]="o">{{ o }}</mat-option>
+      }
+    </mat-select>
+    <mat-error>Selecciona un objetivo</mat-error>
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>Nivel</mat-label>
+    <mat-select formControlName="nivel">
+      @for (n of niveles; track n) {
+        <mat-option [value]="n">{{ n }}</mat-option>
+      }
+    </mat-select>
+    <mat-error>Selecciona un nivel</mat-error>
+  </mat-form-field>
+  <br />
+  <button matButton="filled" type="submit" [disabled]="guardando">Registrar rutina</button>
+  <a matButton routerLink="/rutinas/listar">Volver a la lista</a>
+</form>
+@if (mensaje) {
+  <p>{{ mensaje }}</p>
+}
