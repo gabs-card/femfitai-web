@@ -52,4 +52,20 @@ export class Clistprogresocomponent implements OnInit {
     this.pagina += salto;
     this.obtenerProgreso();
   }
+  eliminarProgreso(p: ProgresoDTO) {
+    const fecha = (p.fecha ?? '').split('-').reverse().join('/');
+    if (!confirm(`¿Eliminar el registro del ${fecha}?`)) return;
+    this.ps.deleteProgreso(p.idProgreso).subscribe({
+      next: () => {
+        if (this.dataSource.length === 1 && this.pagina > 0) this.pagina--;
+        this.obtenerProgreso();
+        this.mensaje = 'Registro eliminado correctamente.';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(err, 'No se pudo eliminar el registro.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
 }

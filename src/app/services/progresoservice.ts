@@ -26,4 +26,7 @@ export class Progresoservice {
   updateProgreso(id: number, dto: ProgresoDTO): Observable<ProgresoDTO> {
     return this.http.put<ProgresoDTO>(`${this.apiURL}/${id}`, dto);
   }
+  deleteProgreso(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
 }

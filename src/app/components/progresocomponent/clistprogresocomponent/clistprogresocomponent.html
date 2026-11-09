@@ -31,6 +31,9 @@
         <a matIconButton [routerLink]="['/progreso/editar', element.idProgreso]" aria-label="Editar">
           <mat-icon>edit</mat-icon>
         </a>
+        <button matIconButton type="button" (click)="eliminarProgreso(element)" aria-label="Eliminar">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
