@@ -1,0 +1,54 @@
+<h2>Rutinas</h2>
+<a matButton="filled" routerLink="/rutinas/insertar">Nueva rutina</a>
+@if (cargando) {
+  <p>Cargando rutinas...</p>
+}
+@if (mensaje) {
+  <p>{{ mensaje }}</p>
+}
+
+@if (dataSource.length > 0) {
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="C1">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+    </ng-container>
+    <ng-container matColumnDef="C2">
+      <th mat-header-cell *matHeaderCellDef>Objetivo</th>
+      <td mat-cell *matCellDef="let element">{{ element.objetivo || '—' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="C3">
+      <th mat-header-cell *matHeaderCellDef>Nivel</th>
+      <td mat-cell *matCellDef="let element">{{ element.nivel || '—' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="C4">
+      <th mat-header-cell *matHeaderCellDef>Creada</th>
+      <td mat-cell *matCellDef="let element">{{ element.fechaCreacion | date: 'dd/MM/yyyy' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="C5">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let element">{{ element.estado ? 'Activa' : 'Inactiva' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="C6">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <a matIconButton [routerLink]="['/rutinas/editar', element.idRutina]" aria-label="Editar">
+          <mat-icon>edit</mat-icon>
+        </a>
+        @if (element.estado) {
+          <button matIconButton type="button" (click)="cambiarEstado(element)" aria-label="Desactivar">
+            <mat-icon>toggle_on</mat-icon>
+          </button>
+        } @else {
+          <button matIconButton type="button" (click)="cambiarEstado(element)" aria-label="Reactivar">
+            <mat-icon>toggle_off</mat-icon>
+          </button>
+        }
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+} @else if (!cargando && !mensaje) {
+  <p>Aún no tienes rutinas registradas.</p>
+}

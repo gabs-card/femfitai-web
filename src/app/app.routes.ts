@@ -10,6 +10,10 @@ import { Ejercicioscomponent } from './components/ejercicioscomponent/ejercicios
 import { Clistejercicioscomponent } from './components/ejercicioscomponent/clistejercicioscomponent/clistejercicioscomponent';
 import { Ceditcicloscomponent } from './components/cicloscomponent/ceditcicloscomponent/ceditcicloscomponent';
 import { Perfilcomponent } from './components/perfilcomponent/perfilcomponent';
+import { Rutinascomponent } from './components/rutinascomponent/rutinascomponent';
+import { Clistrutinascomponent } from './components/rutinascomponent/clistrutinascomponent/clistrutinascomponent';
+import { Cinsertrutinascomponent } from './components/rutinascomponent/cinsertrutinascomponent/cinsertrutinascomponent';
+import { Ceditrutinascomponent } from './components/rutinascomponent/ceditrutinascomponent/ceditrutinascomponent';
 export const routes: Routes = [
   {
     path: '',
@@ -57,6 +61,29 @@ export const routes: Routes = [
   {
     path: 'perfil',
     component: Perfilcomponent,
+  },
+    {
+    path: 'rutinas',
+    component: Rutinascomponent,
+    children: [
+      { 
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full' 
+      },
+      { 
+        path: 'listar',
+        component: Clistrutinascomponent
+      },
+      { 
+        path: 'insertar',
+        component: Cinsertrutinascomponent
+      },
+      { 
+        path: 'editar/:id',
+        component: Ceditrutinascomponent
+      },
+    ],
   },
   {
     path: 'usuarios',

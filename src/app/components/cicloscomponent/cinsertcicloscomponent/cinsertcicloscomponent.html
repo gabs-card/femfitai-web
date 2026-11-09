@@ -6,7 +6,7 @@
     </div>
 
     <div>
-        <form [formGroup]="form" (ngSubmit)="registrarCiclo()">
+        <form [formGroup]="form" #f="ngForm" (ngSubmit)="registrarCiclo(f)">
 
             <mat-form-field class="example-full-width">
                 <mat-label>Fecha de inicio</mat-label>
