@@ -21,5 +21,5 @@
   <a matButton routerLink="/ciclos/listar">Volver a la lista</a>
 </form>
 @if (mensaje) {
-  <p>{{ mensaje }}</p>
+  <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }

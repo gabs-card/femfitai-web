@@ -4,7 +4,7 @@
   <p>Cargando perfil...</p>
 }
 @if (mensaje) {
-  <p>{{ mensaje }}</p>
+  <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
 @if (sinPerfil) {
   <p>Aún no completaste tu perfil de entrenamiento.</p>
