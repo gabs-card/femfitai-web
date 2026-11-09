@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Progresoservice } from '../../../services/progresoservice';
 import { ProgresoDTO } from '../../../models/ProgresoDTO';
 import { aISO, deISO } from '../../../utils/fechas';
-import { mensajeDeError } from '../../../utils/errores';
+import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 
 @Component({
   selector: 'app-ceditprogresocomponent',
@@ -23,12 +23,13 @@ export class Ceditprogresocomponent implements OnInit {
   cargado = false;
   mensaje: string = '';
   guardando = false;
+  errorCarga = '';
 
   private ps = inject(Progresoservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-
+  private router = inject(Router);
   ngOnInit(): void {
     const decimales = /^\d+(\.\d{1,2})?$/;
     this.formulario = this.fb.group({
@@ -51,7 +52,7 @@ export class Ceditprogresocomponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.mensaje = mensajeDeError(err, 'No se pudo cargar el registro.');
+        this.errorCarga = mensajeDeCarga(err);;
         this.cdr.detectChanges();
       },
     });
@@ -73,11 +74,9 @@ export class Ceditprogresocomponent implements OnInit {
     };
     this.guardando = true;
     this.ps.updateProgreso(this.id, progreso).subscribe({
-      next: () => {
-        this.mensaje = 'Registro actualizado correctamente.';
-        this.guardando = false;
-        this.cdr.detectChanges();
-      },
+      next: () =>
+        this.router.navigate(['/progreso/listar'],
+        { state: { mensaje: 'Registro actualizado correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudieron guardar los cambios.');
         this.guardando = false;

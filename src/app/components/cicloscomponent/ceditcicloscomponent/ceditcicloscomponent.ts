@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Ciclosservice } from '../../../services/ciclosservice';
 import { CicloUpdateDTO } from '../../../models/CicloUpdateDTO';
 import { aISO, deISO } from '../../../utils/fechas';
-import { mensajeDeError } from '../../../utils/errores';
+import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 
 @Component({
   selector: 'app-ceditcicloscomponent',
@@ -22,12 +22,14 @@ export class Ceditcicloscomponent implements OnInit {
   hoy = new Date();
   mensaje: string = '';
   guardando = false;
+  cargado = false;
+  errorCarga = '';
 
   private cs = inject(Ciclosservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-
+  private router = inject(Router);
   ngOnInit(): void {
     this.form = this.fb.group({
       fechaInicio: [null, Validators.required],
@@ -36,15 +38,17 @@ export class Ceditcicloscomponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.cs.getCiclo(this.id).subscribe({
       next: (c) => {
+        
         this.idUsuario = c.idUsuario;
         this.form.patchValue({
           fechaInicio: deISO(c.fechaInicio),
           fechaReal: c.fechaReal ? deISO(c.fechaReal) : null,
         });
+        this.cargado = true;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.mensaje = mensajeDeError(err, 'No se pudo cargar el ciclo.');
+        this.errorCarga = mensajeDeCarga(err);
         this.cdr.detectChanges();
       },
     });
@@ -67,11 +71,9 @@ export class Ceditcicloscomponent implements OnInit {
     };
     this.guardando = true;
     this.cs.updateCiclo(this.id, dto).subscribe({
-      next: () => {
-        this.mensaje = 'Ciclo actualizado correctamente.';
-        this.guardando = false;
-        this.cdr.detectChanges();
-      },
+      next: () => 
+        this.router.navigate(['/ciclos/listar'],
+        { state: { mensaje: 'Ciclo actualizado correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudieron guardar los cambios.', 'Ya tienes otro ciclo activo.');
         this.guardando = false;

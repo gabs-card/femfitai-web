@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { FormBuilder, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,7 @@ export class Cinsertprogresocomponent {
   private auth = inject(Authservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
-
+  private router = inject(Router);
   constructor() {
     const decimales = /^\d+(\.\d{1,2})?$/;
     this.formulario = this.fb.group({
@@ -37,7 +37,7 @@ export class Cinsertprogresocomponent {
     });
   }
 
-  registrarProgreso(f: FormGroupDirective) {
+  registrarProgreso() {
     if (this.formulario.invalid) {
       this.mensaje = 'Completa correctamente los campos.';
       return;
@@ -58,12 +58,9 @@ export class Cinsertprogresocomponent {
     };
     this.guardando = true;
     this.ps.insertProgreso(progreso).subscribe({
-      next: () => {
-        this.mensaje = 'Progreso registrado correctamente.';
-        this.guardando = false;
-        f.resetForm({ fecha: new Date() });
-        this.cdr.detectChanges();
-      },
+      next: () => 
+        this.router.navigate(['/progreso/listar'], 
+        { state: { mensaje: 'Progreso registrado correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudo registrar el progreso.');
         this.guardando = false;

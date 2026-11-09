@@ -2,7 +2,7 @@
   <p>Cargando ciclos...</p>
 }
 @if (mensaje) {
-  <p>{{ mensaje }}</p>
+  <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
 
 @if (dataSource.length > 0) {

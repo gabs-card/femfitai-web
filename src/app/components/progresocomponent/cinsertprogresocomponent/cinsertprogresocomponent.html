@@ -1,5 +1,5 @@
 <h2>Registrar progreso</h2>
-<form [formGroup]="formulario" #f="ngForm" (ngSubmit)="registrarProgreso(f)">
+<form [formGroup]="formulario" (ngSubmit)="registrarProgreso()">
   <mat-form-field>
     <mat-label>Fecha</mat-label>
     <input matInput [matDatepicker]="pickerFecha" [max]="hoy" formControlName="fecha" />
@@ -33,5 +33,5 @@
   <a matButton routerLink="/progreso/listar">Volver al historial</a>
 </form>
 @if (mensaje) {
-  <p>{{ mensaje }}</p>
+  <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }

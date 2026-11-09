@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -8,7 +8,7 @@ import { Rutinasservice } from '../../../services/rutinasservice';
 import { Authservice } from '../../../services/authservice';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { NIVELES, OBJETIVOS } from '../../../models/catalogos';
-import { mensajeDeError } from '../../../utils/errores';
+import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 
 @Component({
   selector: 'app-ceditrutinascomponent',
@@ -24,13 +24,13 @@ export class Ceditrutinascomponent implements OnInit {
   id = 0;
   mensaje: string = '';
   guardando = false;
-
+  errorCarga = '';
   private rs = inject(Rutinasservice);
   private auth = inject(Authservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-
+  private router = inject(Router);
   ngOnInit(): void {
     this.formulario = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(100)]],
@@ -41,7 +41,7 @@ export class Ceditrutinascomponent implements OnInit {
     this.rs.getRutina(this.id).subscribe({
       next: (r) => {
         if (r.idUsuario !== this.auth.idUsuario()) {
-          this.mensaje = 'Esta rutina pertenece a otra cuenta.';
+          this.errorCarga = 'Esta rutina pertenece a otra cuenta.';
           this.cdr.detectChanges();
           return;
         }
@@ -53,7 +53,7 @@ export class Ceditrutinascomponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        this.mensaje = mensajeDeError(err, 'No se pudo cargar la rutina.');
+        this.errorCarga = mensajeDeCarga(err);
         this.cdr.detectChanges();
       },
     });
@@ -70,12 +70,9 @@ export class Ceditrutinascomponent implements OnInit {
     const dto: RutinaDTO = { ...this.rutina, nombre: v.nombre.trim(), objetivo: v.objetivo, nivel: v.nivel };
     this.guardando = true;
     this.rs.updateRutina(this.id, dto).subscribe({
-      next: (data) => {
-        this.rutina = data;
-        this.mensaje = 'Rutina actualizada correctamente.';
-        this.guardando = false;
-        this.cdr.detectChanges();
-      },
+      next: () =>
+        this.router.navigate(['/rutinas/listar'],
+        { state: { mensaje: 'Rutina actualizada correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudieron guardar los cambios.');
         this.guardando = false;

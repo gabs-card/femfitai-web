@@ -15,3 +15,8 @@ export function mensajeDeError(
     default: return porDefecto;
   }
 }
+export function mensajeDeCarga(err: HttpErrorResponse): string {
+  if (err.status === 403) return 'No tienes acceso a este registro.';
+  if (err.status === 404) return 'El registro no existe.';
+  return mensajeDeError(err, 'No se pudo cargar el registro.');
+}

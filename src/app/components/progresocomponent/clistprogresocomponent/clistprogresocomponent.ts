@@ -27,6 +27,7 @@ export class Clistprogresocomponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerProgreso();
+    this.mensaje = history.state?.mensaje ?? '';
   }
 
   obtenerProgreso() {

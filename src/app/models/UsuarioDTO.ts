@@ -12,7 +12,6 @@ export interface UsuarioEditDTO {
   nombres: string;
   apellidos: string;
   correo: string;
-  rol: string;
-  estado: boolean;
-  passwordHash: string;
+  estado?: boolean;
+  passwordHash?: string;
 }

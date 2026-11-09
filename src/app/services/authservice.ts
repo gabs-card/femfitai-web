@@ -2,7 +2,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-
+import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { LoginDTO } from '../models/LoginDTO';
 import { LoginResponseDTO } from '../models/LoginResponseDTO';
@@ -12,7 +12,7 @@ import { LoginResponseDTO } from '../models/LoginResponseDTO';
 })
 export class Authservice {
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
 
     token = signal<string | null>(localStorage.getItem('token'));
 
@@ -63,6 +63,6 @@ export class Authservice {
         this.token.set(null);
         this.rol.set(null);
         this.idUsuario.set(null);
-
+        this.router.navigateByUrl('/');
     }
 }

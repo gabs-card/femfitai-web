@@ -1,9 +1,18 @@
-<h2>Bienvenida a FemFitAI</h2>
-<p>Elige a dónde quieres ir:</p>
-<nav>
-  <a routerLink="/ciclos">Mi ciclo</a>
-  <a routerLink="/rutinas">Rutinas</a>
-  <a routerLink="/progreso">Progreso</a>
-  <a routerLink="/ejercicios">Ejercicios</a>
-  <a routerLink="/perfil">Mi perfil</a>
-</nav>
+<main style="max-width:1200px;margin:35px auto;padding:0 30px">
+  <h2>Bienvenida a FemFitAI</h2>
+  @if (auth.esProgramador()) {
+    <p>Gestiona las cuentas de la plataforma:</p>
+    <nav style="display:flex;gap:16px;flex-wrap:wrap">
+      <a routerLink="/usuarios/listar">Usuarios</a>
+    </nav>
+  } @else {
+    <p>Elige a dónde quieres ir:</p>
+    <nav style="display:flex;gap:16px;flex-wrap:wrap">
+      <a routerLink="/ciclos">Mi ciclo</a>
+      <a routerLink="/rutinas">Rutinas</a>
+      <a routerLink="/progreso">Progreso</a>
+      <a routerLink="/ejercicios">Ejercicios</a>
+      <a routerLink="/perfil">Mi perfil</a>
+    </nav>
+  }
+</main>

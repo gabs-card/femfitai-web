@@ -2,7 +2,9 @@
 @if (mostrarRegistro()) {
 
     <app-usuarioscomponent
-        (volverLogin)="volverLogin()">
+        (volverLogin)="volverLogin()"
+        (cuentaCreada)="cuentaCreada()">
+
     </app-usuarioscomponent>
 
 } @else {
@@ -65,7 +67,7 @@
             </form>
 
             @if (mensaje()) {
-                <p class="auth-mensaje" role="status">
+                <p class="auth-mensaje aviso" [class.aviso-ok]="mensaje().endsWith('correctamente.')" role="alert">
                     {{ mensaje() }}
                 </p>
             }

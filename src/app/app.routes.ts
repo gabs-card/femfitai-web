@@ -18,7 +18,7 @@ import { Progresocomponent } from './components/progresocomponent/progresocompon
 import { Clistprogresocomponent } from './components/progresocomponent/clistprogresocomponent/clistprogresocomponent';
 import { Cinsertprogresocomponent } from './components/progresocomponent/cinsertprogresocomponent/cinsertprogresocomponent';
 import { Ceditprogresocomponent } from './components/progresocomponent/ceditprogresocomponent/ceditprogresocomponent';
-
+import { testerGuard } from './guards/testerguard';
 
 export const routes: Routes = [
   {
@@ -28,6 +28,7 @@ export const routes: Routes = [
   },
   {
     path: 'ciclos',
+    canActivate: [testerGuard],
     component: Cicloscomponent,
     children: [
       {
@@ -51,6 +52,7 @@ export const routes: Routes = [
   },
   {
     path: 'ejercicios',
+    canActivate: [testerGuard],
     component: Ejercicioscomponent,
     children: [
       { 
@@ -66,10 +68,12 @@ export const routes: Routes = [
   },
   {
     path: 'perfil',
+    canActivate: [testerGuard],
     component: Perfilcomponent,
   },
     {
     path: 'rutinas',
+    canActivate: [testerGuard],
     component: Rutinascomponent,
     children: [
       { 
@@ -93,6 +97,7 @@ export const routes: Routes = [
   },
     {
     path: 'progreso',
+    canActivate: [testerGuard],
     component: Progresocomponent,
     children: [
       { 

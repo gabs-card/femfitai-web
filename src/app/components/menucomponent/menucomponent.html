@@ -4,46 +4,43 @@
         <a routerLink="/">FemFitAI</a>
     </div>
 
-    <nav class="menu-navegacion">
-
-        <a routerLink="/"
+            <a routerLink="/"
            routerLinkActive="activo"
            [routerLinkActiveOptions]="{ exact: true }">
             Inicio
         </a>
 
-        <a routerLink="/ciclos/listar"
-           routerLinkActive="activo">
-            Listar ciclos
-        </a>
-
-        <a routerLink="/ciclos/insertar"
-           routerLinkActive="activo">
-            Registrar ciclo
-        </a>
-        <a routerLink="/ejercicios"
-           routerLinkActive="activo">
-            Ejercicios
-        </a>
-        <a routerLink="/rutinas"
-           routerLinkActive="activo">
-            Rutinas
-        </a>
-        <a routerLink="/progreso"
-           routerLinkActive="activo">
-            Progreso
-        </a>
-        <a routerLink="/perfil"
-           routerLinkActive="activo">
-            Mi perfil
-        </a>
         @if (auth.esProgramador()) {
             <a routerLink="/usuarios/listar"
                routerLinkActive="activo">
                 Usuarios
             </a>
+        } @else {
+            <a routerLink="/ciclos/listar"
+               routerLinkActive="activo">
+                Listar ciclos
+            </a>
+            <a routerLink="/ciclos/insertar"
+               routerLinkActive="activo">
+                Registrar ciclo
+            </a>
+            <a routerLink="/ejercicios"
+               routerLinkActive="activo">
+                Ejercicios
+            </a>
+            <a routerLink="/rutinas"
+               routerLinkActive="activo">
+                Rutinas
+            </a>
+            <a routerLink="/progreso"
+               routerLinkActive="activo">
+                Progreso
+            </a>
+            <a routerLink="/perfil"
+               routerLinkActive="activo">
+                Mi perfil
+            </a>
         }
-    </nav>
   <button type="button" class="btn-cerrar" (click)="cerrarSesion()">
     Cerrar sesión
 </button>
