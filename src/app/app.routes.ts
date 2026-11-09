@@ -14,6 +14,9 @@ import { Rutinascomponent } from './components/rutinascomponent/rutinascomponent
 import { Clistrutinascomponent } from './components/rutinascomponent/clistrutinascomponent/clistrutinascomponent';
 import { Cinsertrutinascomponent } from './components/rutinascomponent/cinsertrutinascomponent/cinsertrutinascomponent';
 import { Ceditrutinascomponent } from './components/rutinascomponent/ceditrutinascomponent/ceditrutinascomponent';
+import { Progresocomponent } from './components/progresocomponent/progresocomponent';
+import { Clistprogresocomponent } from './components/progresocomponent/clistprogresocomponent/clistprogresocomponent';
+
 export const routes: Routes = [
   {
     path: '',
@@ -82,6 +85,21 @@ export const routes: Routes = [
       { 
         path: 'editar/:id',
         component: Ceditrutinascomponent
+      },
+    ],
+  },
+    {
+    path: 'progreso',
+    component: Progresocomponent,
+    children: [
+      { 
+        path: '',
+        redirectTo: 'listar',
+        pathMatch: 'full'
+      },
+      { 
+        path: 'listar',
+        component: Clistprogresocomponent
       },
     ],
   },
