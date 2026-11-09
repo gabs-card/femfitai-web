@@ -7,15 +7,16 @@ import { Authservice } from '../../../services/authservice';
 import { mensajeDeError } from '../../../utils/errores';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-clistrutinascomponent',
-  imports: [MatTableModule, DatePipe, RouterLink, MatButtonModule],
+  imports: [MatTableModule, DatePipe, RouterLink, MatButtonModule, MatIconModule],
   templateUrl: './clistrutinascomponent.html',
   styleUrl: './clistrutinascomponent.css',
 })
 export class Clistrutinascomponent implements OnInit {
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5'];
+  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
   dataSource: RutinaDTO[] = [];
   cargando = false;
   mensaje = '';

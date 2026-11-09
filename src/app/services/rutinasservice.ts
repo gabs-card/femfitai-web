@@ -16,4 +16,11 @@ export class Rutinasservice {
   insertRutina(dto: RutinaDTO): Observable<RutinaDTO> {
     return this.http.post<RutinaDTO>(this.apiURL, dto);
   }
+  getRutina(id: number): Observable<RutinaDTO> {
+    return this.http.get<RutinaDTO>(`${this.apiURL}/${id}`);
+  }
+
+  updateRutina(id: number, dto: RutinaDTO): Observable<RutinaDTO> {
+    return this.http.put<RutinaDTO>(`${this.apiURL}/${id}`, dto);
+  }
 }

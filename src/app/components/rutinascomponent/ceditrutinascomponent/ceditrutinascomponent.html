@@ -1,0 +1,36 @@
+<h2>Editar rutina</h2>
+@if (rutina) {
+  <form [formGroup]="formulario" (ngSubmit)="guardarRutina()">
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+      <mat-error>El nombre es obligatorio (máximo 100 caracteres)</mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Objetivo</mat-label>
+      <mat-select formControlName="objetivo">
+        @for (o of objetivos; track o) {
+          <mat-option [value]="o">{{ o }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>Selecciona un objetivo</mat-error>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <mat-label>Nivel</mat-label>
+      <mat-select formControlName="nivel">
+        @for (n of niveles; track n) {
+          <mat-option [value]="n">{{ n }}</mat-option>
+        }
+      </mat-select>
+      <mat-error>Selecciona un nivel</mat-error>
+    </mat-form-field>
+    <br />
+    <button matButton="filled" type="submit" [disabled]="guardando">Guardar cambios</button>
+  </form>
+}
+<a matButton routerLink="/rutinas/listar">Volver a la lista</a>
+@if (mensaje) {
+  <p>{{ mensaje }}</p>
+}
