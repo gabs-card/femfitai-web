@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -30,7 +30,7 @@ export class Ceditrutinascomponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-
+  private router = inject(Router);
   ngOnInit(): void {
     this.formulario = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(100)]],
@@ -70,12 +70,9 @@ export class Ceditrutinascomponent implements OnInit {
     const dto: RutinaDTO = { ...this.rutina, nombre: v.nombre.trim(), objetivo: v.objetivo, nivel: v.nivel };
     this.guardando = true;
     this.rs.updateRutina(this.id, dto).subscribe({
-      next: (data) => {
-        this.rutina = data;
-        this.mensaje = 'Rutina actualizada correctamente.';
-        this.guardando = false;
-        this.cdr.detectChanges();
-      },
+      next: () =>
+        this.router.navigate(['/rutinas/listar'],
+        { state: { mensaje: 'Rutina actualizada correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudieron guardar los cambios.');
         this.guardando = false;

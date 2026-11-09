@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -29,7 +29,7 @@ export class Ceditcicloscomponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-
+  private router = inject(Router);
   ngOnInit(): void {
     this.form = this.fb.group({
       fechaInicio: [null, Validators.required],
@@ -71,11 +71,9 @@ export class Ceditcicloscomponent implements OnInit {
     };
     this.guardando = true;
     this.cs.updateCiclo(this.id, dto).subscribe({
-      next: () => {
-        this.mensaje = 'Ciclo actualizado correctamente.';
-        this.guardando = false;
-        this.cdr.detectChanges();
-      },
+      next: () => 
+        this.router.navigate(['/ciclos/listar'],
+        { state: { mensaje: 'Ciclo actualizado correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudieron guardar los cambios.', 'Ya tienes otro ciclo activo.');
         this.guardando = false;

@@ -1,5 +1,5 @@
 <h2>Registrar progreso</h2>
-<form [formGroup]="formulario" #f="ngForm" (ngSubmit)="registrarProgreso(f)">
+<form [formGroup]="formulario" (ngSubmit)="registrarProgreso()">
   <mat-form-field>
     <mat-label>Fecha</mat-label>
     <input matInput [matDatepicker]="pickerFecha" [max]="hoy" formControlName="fecha" />

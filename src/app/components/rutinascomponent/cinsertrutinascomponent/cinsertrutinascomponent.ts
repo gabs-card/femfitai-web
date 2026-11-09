@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { FormBuilder, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +27,7 @@ export class Cinsertrutinascomponent {
   private auth = inject(Authservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
-
+  private router = inject(Router);
   constructor() {
     this.formulario = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(100)]],
@@ -36,7 +36,7 @@ export class Cinsertrutinascomponent {
     });
   }
 
-  registrarRutina(f: FormGroupDirective) {
+  registrarRutina() {
     if (this.formulario.invalid) {
       this.mensaje = 'Completa correctamente los campos obligatorios.';
       return;
@@ -58,12 +58,9 @@ export class Cinsertrutinascomponent {
     };
     this.guardando = true;
     this.rs.insertRutina(rutina).subscribe({
-      next: () => {
-        this.mensaje = 'Rutina registrada correctamente.';
-        this.guardando = false;
-        f.resetForm();
-        this.cdr.detectChanges();
-      },
+      next: () => 
+        this.router.navigate(['/rutinas/listar'], 
+        { state: { mensaje: 'Rutina registrada correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudo registrar la rutina.');
         this.guardando = false;

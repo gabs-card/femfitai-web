@@ -1,5 +1,5 @@
 <h2>Nueva rutina</h2>
-<form [formGroup]="formulario" #f="ngForm" (ngSubmit)="registrarRutina(f)">
+<form [formGroup]="formulario" (ngSubmit)="registrarRutina()">
   <mat-form-field>
     <mat-label>Nombre</mat-label>
     <input matInput formControlName="nombre" placeholder="Ej. Full body" />

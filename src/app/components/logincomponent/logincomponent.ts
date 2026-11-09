@@ -64,4 +64,8 @@ export class Logincomponent {
         this.mostrarRegistro.set(false);
         this.mensaje.set('');
 }
+  cuentaCreada(): void {
+    this.mostrarRegistro.set(false);
+    this.mensaje.set('Cuenta creada correctamente.');
+  }
 }

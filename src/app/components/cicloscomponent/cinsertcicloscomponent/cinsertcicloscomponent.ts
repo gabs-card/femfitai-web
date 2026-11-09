@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { FormBuilder, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
@@ -24,6 +25,7 @@ export class Cinsertcicloscomponent {
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private auth = inject(Authservice);
+  private router = inject(Router);
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -31,7 +33,7 @@ export class Cinsertcicloscomponent {
     });
   }
 
-  registrarCiclo(f: FormGroupDirective) {
+  registrarCiclo() {
     if (this.form.invalid) {
       this.mensaje = 'Selecciona la fecha de inicio.';
       return;
@@ -49,11 +51,9 @@ export class Cinsertcicloscomponent {
       fechaReal: null,
     };
     this.cs.insertCiclos(ciclo).subscribe({
-      next: () => {
-        this.mensaje = 'Ciclo registrado correctamente.';
-        f.resetForm({ fechaInicio: new Date() });
-        this.cdr.detectChanges();
-      },
+      next: () => 
+        this.router.navigate(['/ciclos/listar'], 
+        { state: { mensaje: 'Ciclo registrado correctamente.' } }),
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudo registrar el ciclo.', 'Ya tienes un ciclo activo.');
         this.cdr.detectChanges();

@@ -2,7 +2,9 @@
 @if (mostrarRegistro()) {
 
     <app-usuarioscomponent
-        (volverLogin)="volverLogin()">
+        (volverLogin)="volverLogin()"
+        (cuentaCreada)="cuentaCreada()">
+
     </app-usuarioscomponent>
 
 } @else {

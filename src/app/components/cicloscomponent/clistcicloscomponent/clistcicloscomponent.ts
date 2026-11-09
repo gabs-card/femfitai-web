@@ -25,6 +25,7 @@ export class Clistcicloscomponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerCiclos();
+    this.mensaje = history.state?.mensaje ?? '';
   }
 
   obtenerCiclos() {

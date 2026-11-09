@@ -27,6 +27,7 @@ export class Clistrutinascomponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerRutinas();
+    this.mensaje = history.state?.mensaje ?? '';
   }
 
   obtenerRutinas() {

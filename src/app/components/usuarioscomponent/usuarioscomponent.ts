@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, EventEmitter, Output, inject } from '@ang
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
-import { FormBuilder, FormGroupDirective, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuariosService } from '../../services/usuariosservices';
 
 @Component({
@@ -20,6 +20,7 @@ import { UsuariosService } from '../../services/usuariosservices';
 export class Usuarioscomponent {
 
   @Output() volverLogin = new EventEmitter<void>();
+  @Output() cuentaCreada = new EventEmitter<void>();
 
   mensaje: string = '';
   form: any;
@@ -37,7 +38,7 @@ export class Usuarioscomponent {
     });
   }
 
-  registrarUsuario(f: FormGroupDirective) {
+  registrarUsuario() {
 
     if (this.form.invalid) {
       this.mensaje = 'Completa correctamente todos los campos';
@@ -52,11 +53,8 @@ export class Usuarioscomponent {
     };
 
     this.cs.registrar(datos).subscribe({
-      next: (respuesta) => {
-        this.mensaje = 'Cuenta creada correctamente. Ya puedes iniciar sesión.';
-        f.resetForm();
-        this.cdr.detectChanges();
-      },
+      next: () => 
+        this.cuentaCreada.emit(),
       error: (err) => {
         console.log('Ocurrió un error al registrar el usuario', err);
 
