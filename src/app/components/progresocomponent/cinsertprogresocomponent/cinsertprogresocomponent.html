@@ -1,0 +1,37 @@
+<h2>Registrar progreso</h2>
+<form [formGroup]="formulario" #f="ngForm" (ngSubmit)="registrarProgreso(f)">
+  <mat-form-field>
+    <mat-label>Fecha</mat-label>
+    <input matInput [matDatepicker]="pickerFecha" [max]="hoy" formControlName="fecha" />
+    <mat-hint>DD/MM/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="pickerFecha"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFecha></mat-datepicker>
+    <mat-error>Selecciona una fecha válida</mat-error>
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>Peso (kg)</mat-label>
+    <input matInput type="number" formControlName="peso" />
+    <mat-hint>Entre 20 y 400, máximo 2 decimales</mat-hint>
+    <mat-error>Ingresa un peso válido (20 a 400 kg, máximo 2 decimales)</mat-error>
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>Medida (cm, opcional)</mat-label>
+    <input matInput type="number" formControlName="medida" />
+    <mat-error>Ingresa una medida válida (10 a 300 cm, máximo 2 decimales)</mat-error>
+  </mat-form-field>
+  <br />
+  <mat-form-field>
+    <mat-label>Nota personal (opcional)</mat-label>
+    <textarea matInput formControlName="nota" rows="3"></textarea>
+    <mat-hint>Máximo 255 caracteres</mat-hint>
+    <mat-error>La nota supera los 255 caracteres</mat-error>
+  </mat-form-field>
+  <br />
+  <button matButton="filled" type="submit" [disabled]="guardando">Guardar registro</button>
+  <a matButton routerLink="/progreso/listar">Volver al historial</a>
+</form>
+@if (mensaje) {
+  <p>{{ mensaje }}</p>
+}

@@ -16,6 +16,7 @@ import { Cinsertrutinascomponent } from './components/rutinascomponent/cinsertru
 import { Ceditrutinascomponent } from './components/rutinascomponent/ceditrutinascomponent/ceditrutinascomponent';
 import { Progresocomponent } from './components/progresocomponent/progresocomponent';
 import { Clistprogresocomponent } from './components/progresocomponent/clistprogresocomponent/clistprogresocomponent';
+import { Cinsertprogresocomponent } from './components/progresocomponent/cinsertprogresocomponent/cinsertprogresocomponent';
 
 export const routes: Routes = [
   {
@@ -100,6 +101,10 @@ export const routes: Routes = [
       { 
         path: 'listar',
         component: Clistprogresocomponent
+      },
+      {
+        path: 'insertar',
+        component: Cinsertprogresocomponent
       },
     ],
   },

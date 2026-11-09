@@ -5,10 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { ProgresoDTO } from '../../../models/ProgresoDTO';
 import { Progresoservice } from '../../../services/progresoservice';
 import { mensajeDeError } from '../../../utils/errores';
+import { RouterLink } from '@angular/router'
 
 @Component({
   selector: 'app-clistprogresocomponent',
-  imports: [MatTableModule, MatButtonModule, DatePipe],
+  imports: [MatTableModule, MatButtonModule, DatePipe, RouterLink],
   templateUrl: './clistprogresocomponent.html',
   styleUrl: './clistprogresocomponent.css',
 })

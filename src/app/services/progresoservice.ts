@@ -16,4 +16,7 @@ export class Progresoservice {
     const params = new HttpParams().set('pagina', pagina).set('tamano', tamano);
     return this.http.get<Page<ProgresoDTO>>(this.apiURL, { params });
   }
+  insertProgreso(dto: ProgresoDTO): Observable<ProgresoDTO> {
+    return this.http.post<ProgresoDTO>(this.apiURL, dto);
+  }
 }
