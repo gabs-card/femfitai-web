@@ -17,6 +17,8 @@ import { Ceditrutinascomponent } from './components/rutinascomponent/ceditrutina
 import { Progresocomponent } from './components/progresocomponent/progresocomponent';
 import { Clistprogresocomponent } from './components/progresocomponent/clistprogresocomponent/clistprogresocomponent';
 import { Cinsertprogresocomponent } from './components/progresocomponent/cinsertprogresocomponent/cinsertprogresocomponent';
+import { Ceditprogresocomponent } from './components/progresocomponent/ceditprogresocomponent/ceditprogresocomponent';
+
 
 export const routes: Routes = [
   {
@@ -105,6 +107,10 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Cinsertprogresocomponent
+      },
+      {
+        path: 'editar/:id',
+        component: Ceditprogresocomponent
       },
     ],
   },

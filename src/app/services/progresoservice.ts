@@ -19,4 +19,11 @@ export class Progresoservice {
   insertProgreso(dto: ProgresoDTO): Observable<ProgresoDTO> {
     return this.http.post<ProgresoDTO>(this.apiURL, dto);
   }
+  getProgresoPorId(id: number): Observable<ProgresoDTO> {
+    return this.http.get<ProgresoDTO>(`${this.apiURL}/${id}`);
+  }
+
+  updateProgreso(id: number, dto: ProgresoDTO): Observable<ProgresoDTO> {
+    return this.http.put<ProgresoDTO>(`${this.apiURL}/${id}`, dto);
+  }
 }

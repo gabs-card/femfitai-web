@@ -6,15 +6,16 @@ import { ProgresoDTO } from '../../../models/ProgresoDTO';
 import { Progresoservice } from '../../../services/progresoservice';
 import { mensajeDeError } from '../../../utils/errores';
 import { RouterLink } from '@angular/router'
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-clistprogresocomponent',
-  imports: [MatTableModule, MatButtonModule, DatePipe, RouterLink],
+  imports: [MatTableModule, MatButtonModule, DatePipe, RouterLink, MatIconModule],
   templateUrl: './clistprogresocomponent.html',
   styleUrl: './clistprogresocomponent.css',
 })
 export class Clistprogresocomponent implements OnInit {
-  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4'];
+  displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4', 'C5'];
   dataSource: ProgresoDTO[] = [];
   pagina = 0;
   totalPaginas = 1;
