@@ -1,0 +1,28 @@
+﻿:host { display: block; --mat-table-background-color: #fff; --mat-table-header-headline-color: #63535e; --mat-table-row-item-label-text-color: #342b34; --mat-button-text-label-text-color: #a82f64; --mat-form-field-outlined-focus-outline-color: #c2457a; --mat-form-field-outlined-focus-label-text-color: #a82f64; --mat-form-field-filled-focus-active-indicator-color: #c2457a; --mat-form-field-filled-focus-label-text-color: #a82f64; --mat-select-focused-arrow-color: #a82f64; }
+.catalogo { min-width: 0; padding: 24px; border: 1px solid #eee5eb; border-radius: 20px; background: #fff; box-shadow: 0 8px 28px #39192e09; }
+.ff-top { margin-bottom: 24px; }
+h2 { margin: 0; color: #2a1c25; font: 500 26px/1.2 Georgia, serif; }
+.ff-sub { margin: 8px 0 0; color: #6c5d67; line-height: 1.6; }
+.filtros { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; padding: 20px 20px 0; margin-bottom: 22px; border: 1px solid #f0dce5; border-radius: 14px; background: #fff8fb; }
+mat-form-field { width: 100%; min-width: 0; }
+.tabla-contenedor { max-width: 100%; overflow-x: auto; border: 1px solid #eee5eb; border-radius: 14px; }
+table { width: 100%; min-width: 740px; }
+th { background: #fff3f7; font-size: 12px; font-weight: 700; }
+td, th { border-bottom-color: #eee5eb; }
+td { padding-top: 14px; padding-bottom: 14px; line-height: 1.6; }
+tr:last-child td { border-bottom: 0; }
+tr:hover td { background: #fdf9fb; }
+.mat-column-C1 { min-width: 160px; }
+.mat-column-C4 { max-width: 400px; overflow-wrap: anywhere; }
+.tipo-ejercicio { display: inline-block; padding: 4px 10px; border-radius: 30px; background: #fce8ef; color: #a82f64; font-size: 12px; font-weight: 600; }
+.paginacion { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 20px; color: #6c5d67; font-size: 13px; }
+.acciones-pagina { display: flex; gap: 8px; flex-wrap: wrap; }
+.acciones-pagina button { min-height: 44px; border: 1px solid #e6d5df; border-radius: 10px; }
+.acciones-pagina button:not(:disabled):hover { background: #fff3f7; }
+button:focus-visible, .tabla-contenedor:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
+.estado { padding: 18px; border-radius: 14px; background: #faf7f9; color: #6c5d67; line-height: 1.6; }
+.estado-vacio { padding: 30px 20px; border: 1px dashed #e8cdd9; text-align: center; }
+.estado-vacio > span { color: #c2457a; font-size: 36px; }
+h3 { margin: 8px 0; color: #2a1c25; font: 500 23px Georgia, serif; }
+.estado-vacio p { margin: 8px 0; }
+@media (max-width: 650px) { .catalogo { padding: 18px; } .filtros { grid-template-columns: 1fr; gap: 8px; padding: 16px 16px 0; } }
