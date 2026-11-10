@@ -1,13 +1,13 @@
-<div>
-  <div class="ff-top">
+<section class="catalogo" aria-labelledby="titulo-catalogo" [attr.aria-busy]="cargando">
+  <header class="ff-top">
     <div>
-      <h2>Ejercicios</h2>
+      <h2 id="titulo-catalogo">Catálogo de ejercicios</h2>
       <p class="ff-sub">Catálogo de ejercicios disponibles.</p>
     </div>
-  </div>
+  </header>
 
   <div>
-    <form [formGroup]="filtros">
+    <form class="filtros" [formGroup]="filtros" aria-label="Buscar y filtrar ejercicios">
       <mat-form-field>
         <mat-label>Buscar</mat-label>
         <input matInput formControlName="query" placeholder="Nombre del ejercicio" />
@@ -24,17 +24,18 @@
     </form>
 
     @if (cargando) {
-      <p>Cargando ejercicios...</p>
+      <p class="estado" role="status">Cargando ejercicios...</p>
     }
     @if (mensaje) {
       <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
     }
 
     @if (dataSource.length > 0) {
-      <table mat-table [dataSource]="dataSource">
+      <div class="tabla-contenedor" role="region" aria-label="Catálogo, desplaza para ver todas las columnas" tabindex="0">
+      <table mat-table [dataSource]="dataSource" aria-label="Ejercicios disponibles">
         <ng-container matColumnDef="C1">
           <th mat-header-cell *matHeaderCellDef>Ejercicio</th>
-          <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+          <td mat-cell *matCellDef="let element"><strong>{{ element.nombre }}</strong></td>
         </ng-container>
         <ng-container matColumnDef="C2">
           <th mat-header-cell *matHeaderCellDef>Grupo muscular</th>
@@ -42,7 +43,7 @@
         </ng-container>
         <ng-container matColumnDef="C3">
           <th mat-header-cell *matHeaderCellDef>Tipo</th>
-          <td mat-cell *matCellDef="let element">{{ element.tipo }}</td>
+          <td mat-cell *matCellDef="let element"><span class="tipo-ejercicio">{{ element.tipo }}</span></td>
         </ng-container>
         <ng-container matColumnDef="C4">
           <th mat-header-cell *matHeaderCellDef>Descripción</th>
@@ -52,16 +53,17 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      </div>
 
-      <div>
-        <span>Página {{ pagina + 1 }} de {{ totalPaginas }}</span>
-        <div>
+      <nav class="paginacion" aria-label="Páginas del catálogo">
+        <span role="status">Página {{ pagina + 1 }} de {{ totalPaginas }}</span>
+        <div class="acciones-pagina">
           <button matButton type="button" [disabled]="pagina === 0" (click)="cambiarPagina(-1)">Anterior</button>
           <button matButton type="button" [disabled]="pagina + 1 >= totalPaginas" (click)="cambiarPagina(1)">Siguiente</button>
         </div>
-      </div>
+      </nav>
     } @else if (!cargando && !mensaje) {
-      <p >No hay ejercicios registrados.</p>
+      <div class="estado estado-vacio"><span aria-hidden="true">↗</span><h3>Explora a tu ritmo</h3><p>No se encontraron ejercicios con los filtros actuales.</p><p>Prueba otro nombre o selecciona Todos en el filtro de tipo.</p></div>
     }
   </div>
-</div>
+</section>
