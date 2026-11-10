@@ -1,21 +1,25 @@
-<h2>Progreso</h2>
-<a matButton="filled" routerLink="/progreso/insertar">Registrar medición</a>
+<section class="historial" aria-labelledby="titulo-historial" [attr.aria-busy]="cargando">
+<header class="encabezado-historial">
+  <div><h2 id="titulo-historial">Historial de progreso</h2><p>Tus mediciones y anotaciones, a tu ritmo.</p></div>
+  <a class="boton-registrar" routerLink="/progreso/insertar"><span aria-hidden="true">+</span> Registrar medición</a>
+</header>
 @if (cargando) {
-  <p>Cargando historial...</p>
+  <p class="estado" role="status">Cargando historial...</p>
 }
 @if (mensaje) {
   <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
 
 @if (dataSource.length > 0) {
-  <table mat-table [dataSource]="dataSource">
+  <div class="tabla-contenedor" role="region" aria-label="Historial de progreso, desplaza para ver todas las columnas" tabindex="0">
+  <table mat-table [dataSource]="dataSource" aria-label="Mediciones de progreso">
     <ng-container matColumnDef="C1">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>
       <td mat-cell *matCellDef="let element">{{ element.fecha | date: 'dd/MM/yyyy' }}</td>
     </ng-container>
     <ng-container matColumnDef="C2">
       <th mat-header-cell *matHeaderCellDef>Peso (kg)</th>
-      <td mat-cell *matCellDef="let element">{{ element.pesoKg }}</td>
+      <td mat-cell *matCellDef="let element"><strong>{{ element.pesoKg }}</strong></td>
     </ng-container>
     <ng-container matColumnDef="C3">
       <th mat-header-cell *matHeaderCellDef>Medida (cm)</th>
@@ -23,7 +27,7 @@
     </ng-container>
     <ng-container matColumnDef="C4">
       <th mat-header-cell *matHeaderCellDef>Nota</th>
-      <td mat-cell *matCellDef="let element">{{ element.notaPersonal || '—' }}</td>
+      <td mat-cell *matCellDef="let element" class="nota-personal">{{ element.notaPersonal || '—' }}</td>
     </ng-container>
     <ng-container matColumnDef="C5">
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
@@ -39,10 +43,16 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  </div>
 
-  <p>Página {{ pagina + 1 }} de {{ totalPaginas }}</p>
+  <nav class="paginacion" aria-label="Páginas del historial">
+  <p role="status">Página {{ pagina + 1 }} de {{ totalPaginas }}</p>
+  <div class="acciones-pagina">
   <button matButton type="button" [disabled]="pagina === 0" (click)="cambiarPagina(-1)">Anterior</button>
   <button matButton type="button" [disabled]="pagina + 1 >= totalPaginas" (click)="cambiarPagina(1)">Siguiente</button>
+  </div>
+  </nav>
 } @else if (!cargando && !mensaje) {
-  <p>Aún no tienes registros de progreso.</p>
+  <div class="estado estado-vacio"><span aria-hidden="true">↗</span><h3>Cada avance tiene su lugar</h3><p>Aún no tienes registros de progreso.</p><p>Usa Registrar medición para guardar tus medidas y una nota personal.</p></div>
 }
+</section>

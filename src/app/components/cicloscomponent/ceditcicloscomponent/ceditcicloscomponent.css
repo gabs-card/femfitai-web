@@ -1,0 +1,14 @@
+﻿:host { display: block; --mat-datepicker-calendar-date-selected-state-background-color: #c2457a; --mat-datepicker-calendar-date-selected-state-text-color: #fff; --mat-form-field-outlined-focus-outline-color: #c2457a; --mat-form-field-outlined-focus-label-text-color: #a82f64; --mat-form-field-filled-focus-active-indicator-color: #c2457a; --mat-form-field-filled-focus-label-text-color: #a82f64; --mat-button-text-label-text-color: #a82f64; --mat-button-filled-container-color: #c2457a; --mat-button-filled-label-text-color: #fff; }
+.container, .edicion { box-sizing: border-box; max-width: 760px; padding: 28px; background: #fff; border: 1px solid #eee5eb; border-radius: 20px; box-shadow: 0 8px 28px #39192e09; }
+h2 { margin: 0; color: #2a1c25; font: 500 27px/1.2 Georgia, serif; }
+.descripcion { color: #6c5d67; line-height: 1.6; margin: 10px 0 24px; }
+form { display: flex; flex-direction: column; align-items: stretch; gap: 16px; }
+mat-form-field { width: 100%; }
+.ayuda { margin: 0; padding: 14px 16px; border: 1px solid #f0dce5; border-radius: 12px; color: #744457; background: #fff3f7; line-height: 1.6; font-size: 13px; }
+.acciones { display: flex; flex-wrap: wrap; gap: 12px; }
+.boton-principal { align-self: flex-start; background: #c2457a; color: #fff; border-radius: 12px; padding: 10px 20px; min-height: 44px; }
+.boton-principal:hover { background: #a82f64; }
+.boton-principal:disabled { background: #eee5eb; color: #6c5d67; }
+.estado { color: #6c5d67; padding: 16px; background: #faf7f9; border-radius: 12px; }
+a:focus-visible, button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
+@media (max-width: 650px) { .container, .edicion { padding: 20px; max-width: 100%; } }

@@ -1,0 +1,60 @@
+<header class="cabecera">
+  <a class="marca" href="#presentacion" aria-label="FemFitAI, presentación">FemFit<span>AI</span></a>
+  <nav aria-label="Navegación pública">
+    <a class="enlace" href="#como-funciona">Cómo funciona</a>
+    <button class="boton secundario" type="button" (click)="iniciarSesion.emit()">Iniciar sesión</button>
+    <button class="boton principal" type="button" (click)="crearCuenta.emit()">Crear cuenta</button>
+  </nav>
+</header>
+
+<main id="presentacion">
+  <section class="presentacion contenedor" aria-labelledby="titulo-landing">
+    <div>
+      <p class="etiqueta">TU FUERZA, A TU RITMO</p>
+      <h1 id="titulo-landing">Entrena fuerte.<br><em>Escucha tu ciclo.</em></h1>
+      <p class="descripcion">Tu entrenamiento también puede adaptarse a ti. Organiza tus rutinas según tus objetivos y lleva un registro de tu ciclo y tu progreso.</p>
+      <div class="acciones">
+        <button class="boton principal" type="button" (click)="crearCuenta.emit()">Empezar ahora <span aria-hidden="true">→</span></button>
+        <a class="boton secundario" href="#como-funciona">Cómo funciona <span aria-hidden="true">↗</span></a>
+      </div>
+      <ul class="beneficios" aria-label="A tu ritmo"><li>Sin presiones</li><li>Rutinas flexibles</li><li>A tu medida</li></ul>
+    </div>
+    <figure class="visual-deportivo">
+      <img class="foto-entrenamiento" src="imagenes/landing-entrenamiento.jpg" alt="Mujer entrenando con mancuernas sobre un banco en un gimnasio luminoso" width="2048" height="1366" fetchpriority="high">
+      <span class="sello-deportivo">FUERZA · EQUILIBRIO · MOVIMIENTO</span>
+      <figcaption class="lema-deportivo"><span aria-hidden="true">↗</span><div>Más fuerte.<br><strong>Más tú.</strong></div><span class="detalle-lema" aria-hidden="true">♡</span></figcaption>
+    </figure>
+  </section>
+
+  <section class="seccion franja-rosa" id="como-funciona" aria-labelledby="titulo-proceso">
+    <div class="contenedor">
+    <p class="etiqueta">UN PROCESO SIMPLE</p>
+    <h2 id="titulo-proceso">Tu movimiento, con más contexto.</h2>
+    <p>Una experiencia personal sin complicarte la vida.</p>
+    <div class="pasos">
+      <article class="tarjeta"><span class="numero">01</span><h3>Registra tu ciclo</h3><p>Guarda las fechas de tus ciclos y consulta tus registros.</p></article>
+      <article class="tarjeta"><span class="numero">02</span><h3>Cuéntanos tu objetivo</h3><p>Indica tu nivel de entrenamiento, tus metas y el tiempo que tienes disponible.</p></article>
+      <article class="tarjeta"><span class="numero">03</span><h3>Entrena a tu manera</h3><p>Explora ejercicios, organiza tus rutinas y lleva un registro de tu progreso.</p></article>
+    </div>
+    </div>
+  </section>
+
+  <section class="contenedor seccion" aria-labelledby="titulo-ritmo">
+    <p class="etiqueta">ENTRENAMIENTO CONSCIENTE</p>
+    <h2 id="titulo-ritmo">Conoce tus fases. Elige cómo moverte.</h2>
+    <p>Las sensaciones varían entre personas y ciclos. Ajusta tu actividad según cómo te sientes.</p>
+    <div class="fases">
+      <article class="tarjeta"><h3>Menstrual</h3><p>Prioriza tu comodidad y escucha tus necesidades.</p></article>
+      <article class="tarjeta"><h3>Folicular</h3><p>Avanza de forma gradual según tu energía y tus objetivos.</p></article>
+      <article class="tarjeta"><h3>Ovulatoria</h3><p>Continúa a tu ritmo, sin exigencias por la fase.</p></article>
+      <article class="tarjeta"><h3>Lútea</h3><p>Adapta cargas y descansos si notas cambios en tu energía.</p></article>
+    </div>
+  </section>
+
+  <section class="contenedor cierre" aria-labelledby="titulo-meta">
+    <p class="etiqueta">A TU RITMO</p>
+    <h2 id="titulo-meta">Tu próxima meta empieza contigo.</h2>
+    <p>Elige objetivos realistas, escucha cómo te sientes y entrena con confianza.</p>
+  </section>
+</main>
+<footer class="pie">FemFitAI · Cada progreso cuenta.</footer>

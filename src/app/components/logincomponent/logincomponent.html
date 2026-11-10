@@ -1,4 +1,10 @@
 
+<div class="barra-publica">
+    <button type="button" class="btn-registro" (click)="volverLanding.emit()" [disabled]="cargando()">
+        ← Volver a FemFitAI
+    </button>
+</div>
+
 @if (mostrarRegistro()) {
 
     <app-usuarioscomponent

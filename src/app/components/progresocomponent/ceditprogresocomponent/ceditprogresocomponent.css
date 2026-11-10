@@ -1,0 +1,14 @@
+﻿:host { display: block; --mat-button-filled-container-color: #c2457a; --mat-button-filled-label-text-color: #fff; --mat-button-text-label-text-color: #a82f64; --mat-form-field-outlined-focus-outline-color: #c2457a; --mat-form-field-outlined-focus-label-text-color: #a82f64; --mat-form-field-filled-focus-active-indicator-color: #c2457a; --mat-form-field-filled-focus-label-text-color: #a82f64; --mat-datepicker-calendar-date-selected-state-background-color: #c2457a; --mat-datepicker-calendar-date-selected-state-text-color: #fff; }
+.formulario-progreso { box-sizing: border-box; max-width: 900px; padding: 28px; border: 1px solid #eee5eb; border-radius: 20px; background: #fff; box-shadow: 0 8px 28px #39192e09; }
+h2 { margin: 0; color: #2a1c25; font: 500 27px/1.2 Georgia, serif; }
+.descripcion { margin: 10px 0 24px; color: #6c5d67; line-height: 1.6; }
+form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+mat-form-field { width: 100%; min-width: 0; }
+mat-form-field:last-of-type { grid-column: 1 / -1; }
+textarea { resize: vertical; }
+.acciones { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; grid-column: 1 / -1; }
+.boton-principal { min-height: 44px; border-radius: 12px; }
+.formulario-progreso > a { margin-top: 12px; }
+a:focus-visible, button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
+.estado { padding: 16px; border-radius: 12px; background: #faf7f9; color: #6c5d67; }
+@media (max-width: 650px) { .formulario-progreso { padding: 20px; max-width: 100%; } form { grid-template-columns: 1fr; gap: 16px; } }

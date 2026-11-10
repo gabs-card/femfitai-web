@@ -1,0 +1,90 @@
+:host {
+  display: block;
+  background: #fff;
+  color: #342b34;
+}
+
+.pagina-inicio {
+  box-sizing: border-box;
+  width: 88%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 30px 0 40px;
+}
+
+.pagina-inicio * { box-sizing: border-box; }
+.encabezado-inicio { margin-bottom: 24px; }
+.etiqueta {
+  margin: 0 0 10px;
+  color: #a82f64;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  color: #2a1c25;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+h1 { font-size: clamp(30px, 3.1vw, 46px); letter-spacing: -.03em; }
+h1 span { color: #c2457a; }
+h2 { font-size: 25px; }
+h3 { font-size: 21px; }
+p { line-height: 1.6; }
+.subtitulo { margin: 12px 0 0; color: #777079; }
+.panel-inicio { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.panel-inicio > .tarjeta { grid-column: span 2; }
+.panel-inicio > .tarjeta-ciclo, .panel-inicio > .tarjeta-rutinas { grid-column: span 3; }
+.panel-inicio[aria-label="Administración"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.panel-inicio[aria-label="Administración"] > .tarjeta { grid-column: auto; }
+.tarjeta {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #eee5eb;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 10px 34px rgba(57, 25, 46, .055);
+}
+
+.tarjeta > p, .recuadro p, .tarjeta-perfil p { color: #777079; margin: 10px 0 16px; }
+.tarjeta .etiqueta { color: #a82f64; margin: 0 0 10px; }
+.titulo-tarjeta { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.distintivo { padding: 5px 11px; border-radius: 30px; background: #fce8f0; color: #a82f64; font-size: 12px; font-weight: 600; }
+.simbolo-ciclo { display: grid; place-items: center; width: 64px; height: 64px; margin: 14px auto; border: 6px solid #fce8f0; border-radius: 50%; color: #c2457a; font-size: 30px; }
+.tarjeta-ciclo { text-align: center; }
+.tarjeta-ciclo .titulo-tarjeta { text-align: left; }
+.marca { color: #a82f64; font-size: 28px; }
+.recuadro { margin: 16px 0; padding: 18px; border: 1px solid #f4dce7; border-radius: 15px; background: #fff3f7; }
+.recuadro p { margin-bottom: 0; }
+.tarjeta .nota { font-size: 13px; }
+.tarjeta-rosada { background: linear-gradient(120deg, #fff3f7, #fffcfd); border-color: #f4dce7; }
+.boton, .enlace { display: inline-flex; align-items: center; justify-content: center; gap: 16px; min-height: 44px; font-weight: 600; font-size: 14px; text-decoration: none; }
+.boton { padding: 11px 18px; border: 1px solid transparent; border-radius: 12px; transition: background .16s, border-color .16s; }
+.boton-principal { background: #c2457a; color: #fff; }
+.boton-principal:hover { background: #a82f64; }
+.boton-secundario { background: #fff; border-color: #e6d5df; color: #a82f64; }
+.boton-secundario:hover { background: #fce8f0; border-color: #c2457a; }
+.enlace { color: #a82f64; }
+.enlace:hover { text-decoration: underline; }
+a:focus-visible { outline: 3px solid #a82f64; outline-offset: 4px; }
+.tarjeta-perfil p { margin-bottom: 16px; }
+.pie-inicio { text-align: center; color: #777079; margin: 28px 0 0; font-size: 13px; }
+
+@media (max-width: 1100px) {
+  .panel-inicio { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .panel-inicio > .tarjeta, .panel-inicio > .tarjeta-ciclo, .panel-inicio > .tarjeta-rutinas { grid-column: auto; }
+}
+
+@media (max-width: 650px) {
+  .pagina-inicio { width: calc(100% - 32px); padding: 24px 0 35px; }
+  .panel-inicio, .panel-inicio[aria-label="Administración"] { grid-template-columns: 1fr; gap: 16px; }
+  .tarjeta { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton { transition: none; }
+}

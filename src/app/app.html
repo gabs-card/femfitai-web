@@ -7,6 +7,16 @@
 
 } @else {
 
-    <app-logincomponent></app-logincomponent>
+    @if (vistaPublica() === 'landing') {
+        <app-landingcomponent
+            (iniciarSesion)="vistaPublica.set('login')"
+            (crearCuenta)="vistaPublica.set('registro')">
+        </app-landingcomponent>
+    } @else {
+        <app-logincomponent
+            [registroInicial]="vistaPublica() === 'registro'"
+            (volverLanding)="vistaPublica.set('landing')">
+        </app-logincomponent>
+    }
 
 }
