@@ -1,14 +1,22 @@
-<h2>Mi perfil</h2>
+<main class="pagina-perfil" aria-labelledby="titulo-perfil" [attr.aria-busy]="cargando">
+<header class="encabezado-perfil">
+  <p class="etiqueta">MI INFORMACIÓN</p>
+  <h1 id="titulo-perfil">Mi perfil</h1>
+  <p>Personaliza FemFitAI con tus preferencias. Puedes cambiar tus objetivos cuando quieras.</p>
+</header>
 
 @if (cargando) {
-  <p>Cargando perfil...</p>
+  <p class="estado" role="status">Cargando perfil...</p>
 }
 @if (mensaje) {
   <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
 @if (sinPerfil) {
+  <section class="tarjeta tarjeta-registro" aria-labelledby="titulo-registro">
+  <p class="etiqueta">TU PUNTO DE PARTIDA</p>
+  <h2 id="titulo-registro">Completa tu perfil</h2>
   <p>Aún no completaste tu perfil de entrenamiento.</p>
-  <form [formGroup]="form" (ngSubmit)="registrarPerfil()">
+  <form class="formulario-registro" [formGroup]="form" (ngSubmit)="registrarPerfil()">
     <mat-form-field>
       <mat-label>Nivel</mat-label>
       <mat-select formControlName="nivel">
@@ -18,7 +26,6 @@
       </mat-select>
       <mat-error>Selecciona tu nivel</mat-error>
     </mat-form-field>
-    <br />
     <mat-form-field>
       <mat-label>Objetivo principal</mat-label>
       <mat-select formControlName="objetivo">
@@ -28,7 +35,6 @@
       </mat-select>
       <mat-error>Selecciona tu objetivo</mat-error>
     </mat-form-field>
-    <br />
     <mat-form-field>
       <mat-label>Fecha de nacimiento</mat-label>
       <input matInput [matDatepicker]="pickerNac" [max]="hoy" formControlName="fechaNacimiento" />
@@ -37,7 +43,6 @@
       <mat-datepicker #pickerNac></mat-datepicker>
       <mat-error>Selecciona tu fecha de nacimiento</mat-error>
     </mat-form-field>
-    <br />
     <mat-form-field>
       <mat-label>Días disponibles por semana</mat-label>
       <mat-select formControlName="dias">
@@ -47,21 +52,21 @@
       </mat-select>
       <mat-error>Selecciona entre 1 y 7 días</mat-error>
     </mat-form-field>
-    <br />
     <mat-form-field>
       <mat-label>Minutos por sesión</mat-label>
       <input matInput type="number" formControlName="tiempo" />
       <mat-hint>Entre 10 y 180</mat-hint>
       <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
     </mat-form-field>
-    <br />
-    <button matButton type="submit" [disabled]="guardando">Registrar perfil</button>
+    <div class="acciones"><button matButton class="boton-principal" type="submit" [disabled]="guardando">Registrar perfil</button></div>
   </form>
+  </section>
 }
 
 @if (perfil) {
-  <section>
-    <h3>Entrenamiento</h3>
+  <div class="perfil-grid">
+  <section class="tarjeta" aria-labelledby="titulo-entrenamiento">
+    <div class="cabecera-tarjeta"><span class="simbolo" aria-hidden="true">↗</span><div><h2 id="titulo-entrenamiento">Mi entrenamiento</h2><p>Metas y experiencia</p></div></div>
     @if (editandoEntrenamiento) {
       <form [formGroup]="formEntrenamiento" (ngSubmit)="guardarEntrenamiento()">
         <mat-form-field>
@@ -73,7 +78,6 @@
           </mat-select>
           <mat-error>Selecciona tu nivel</mat-error>
         </mat-form-field>
-        <br />
         <mat-form-field>
           <mat-label>Objetivo principal</mat-label>
           <mat-select formControlName="objetivo">
@@ -83,9 +87,9 @@
           </mat-select>
           <mat-error>Selecciona tu objetivo</mat-error>
         </mat-form-field>
-        <br />
-        <button matButton type="submit">Guardar</button>
+        <div class="acciones"><button matButton class="boton-principal" type="submit">Guardar</button>
         <button matButton type="button" (click)="editandoEntrenamiento = false">Cancelar</button>
+        </div>
       </form>
     } @else {
       <dl>
@@ -96,13 +100,13 @@
         <dt>Fecha de nacimiento</dt>
         <dd>{{ perfil.fechaNacimiento | date: 'dd/MM/yyyy' }}</dd>
       </dl>
-      <p>La fecha de nacimiento no se puede modificar.</p>
-      <button matButton type="button" (click)="editarEntrenamiento()">Editar entrenamiento</button>
+      <p class="ayuda">La fecha de nacimiento no se puede modificar.</p>
+      <button matButton class="boton-secundario" type="button" (click)="editarEntrenamiento()">Editar entrenamiento</button>
     }
   </section>
 
-  <section>
-    <h3>Disponibilidad</h3>
+  <section class="tarjeta" aria-labelledby="titulo-disponibilidad">
+    <div class="cabecera-tarjeta"><span class="simbolo" aria-hidden="true">♡</span><div><h2 id="titulo-disponibilidad">Mi disponibilidad</h2><p>Organiza tu semana sin presión</p></div></div>
     @if (editandoDisponibilidad) {
       <form [formGroup]="formDisponibilidad" (ngSubmit)="guardarDisponibilidad()">
         <mat-form-field>
@@ -114,25 +118,27 @@
           </mat-select>
           <mat-error>Selecciona entre 1 y 7 días</mat-error>
         </mat-form-field>
-        <br />
         <mat-form-field>
           <mat-label>Minutos por sesión</mat-label>
           <input matInput type="number" formControlName="tiempo" />
           <mat-hint>Entre 10 y 180</mat-hint>
           <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
         </mat-form-field>
-        <br />
-        <button matButton type="submit">Guardar</button>
+        <div class="acciones"><button matButton class="boton-principal" type="submit">Guardar</button>
         <button matButton type="button" (click)="editandoDisponibilidad = false">Cancelar</button>
+        </div>
       </form>
     } @else {
       <dl>
         <dt>Días por semana</dt>
-        <dd>{{ perfil.diasDisponibles }}</dd>
+        <dd>{{ perfil.diasDisponibles }} <span>días</span></dd>
         <dt>Minutos por sesión</dt>
-        <dd>{{ perfil.tiempoDisponible }}</dd>
+        <dd>{{ perfil.tiempoDisponible }} <span>minutos</span></dd>
       </dl>
-      <button matButton type="button" (click)="editarDisponibilidad()">Editar disponibilidad</button>
+      <button matButton class="boton-secundario" type="button" (click)="editarDisponibilidad()">Editar disponibilidad</button>
     }
   </section>
+  </div>
 }
+<p class="nota-perfil">Tu ritmo es personal. Usa estos datos como punto de partida, no como una exigencia.</p>
+</main>
