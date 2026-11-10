@@ -1,4 +1,6 @@
-<h2>Editar ciclo</h2>
+<section class="edicion" aria-labelledby="titulo-edicion">
+<h2 id="titulo-edicion">Editar ciclo</h2>
+<p class="descripcion">Actualiza tus fechas y conserva tu seguimiento.</p>
 @if (errorCarga) {
   <p class="aviso" role="alert">{{ errorCarga }}</p>
   <a matButton="filled" routerLink="/ciclos/listar">Volver a la lista</a>
@@ -12,7 +14,6 @@
     <mat-datepicker-toggle matIconSuffix [for]="pickerInicio"></mat-datepicker-toggle>
     <mat-datepicker #pickerInicio></mat-datepicker>
   </mat-form-field>
-  <br />
   <mat-form-field>
     <mat-label>Fecha de fin real (opcional)</mat-label>
     <input matInput [matDatepicker]="pickerReal" [max]="hoy" formControlName="fechaReal" />
@@ -20,12 +21,16 @@
     <mat-datepicker-toggle matIconSuffix [for]="pickerReal"></mat-datepicker-toggle>
     <mat-datepicker #pickerReal></mat-datepicker>
   </mat-form-field>
-  <br />
-  <p>El fin estimado (28 días después del inicio) lo calcula el sistema.</p>
-  <button matButton type="submit" [disabled]="guardando">Guardar cambios</button>
-  <a matButton routerLink="/ciclos/listar">Volver a la lista</a>
+  <p class="ayuda">El fin estimado (28 días después del inicio) lo calcula el sistema.</p>
+  <div class="acciones">
+    <button matButton class="boton-principal" type="submit" [disabled]="guardando">Guardar cambios</button>
+    <a matButton routerLink="/ciclos/listar">Volver a la lista</a>
+  </div>
 </form>
+} @else {
+  <p class="estado" role="status">Cargando ciclo...</p>
 }
+</section>
 @if (mensaje) {
   <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
