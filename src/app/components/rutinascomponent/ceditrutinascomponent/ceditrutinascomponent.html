@@ -1,4 +1,5 @@
-<h2>Editar rutina</h2>
+<section class="formulario-rutina" aria-label="Formulario de rutina">
+<h2>Editar rutina</h2><p class="descripcion">Ajusta tu plan a tus objetivos actuales.</p>
 @if (errorCarga) {
   <p class="aviso" role="alert">{{ errorCarga }}</p>
 } @else if (rutina) {
@@ -8,7 +9,7 @@
       <input matInput formControlName="nombre" />
       <mat-error>El nombre es obligatorio (máximo 100 caracteres)</mat-error>
     </mat-form-field>
-    <br />
+
     <mat-form-field>
       <mat-label>Objetivo</mat-label>
       <mat-select formControlName="objetivo">
@@ -18,7 +19,7 @@
       </mat-select>
       <mat-error>Selecciona un objetivo</mat-error>
     </mat-form-field>
-    <br />
+
     <mat-form-field>
       <mat-label>Nivel</mat-label>
       <mat-select formControlName="nivel">
@@ -28,11 +29,14 @@
       </mat-select>
       <mat-error>Selecciona un nivel</mat-error>
     </mat-form-field>
-    <br />
-    <button matButton="filled" type="submit" [disabled]="guardando">Guardar cambios</button>
+
+    <button matButton="filled" class="boton-principal" type="submit" [disabled]="guardando">Guardar cambios</button>
   </form>
+} @else {
+  <p class="estado" role="status">Cargando rutina...</p>
 }
 <a matButton routerLink="/rutinas/listar">Volver a la lista</a>
 @if (mensaje) {
   <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
+</section>

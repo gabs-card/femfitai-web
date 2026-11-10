@@ -1,0 +1,32 @@
+﻿:host { display: block; }
+.encabezado-listado, .acciones-listado, .cabecera-tarjeta, .acciones-rutina { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.encabezado-listado { justify-content: space-between; margin-bottom: 22px; }
+h2, h3 { margin: 0; color: #2a1c25; font-family: Georgia, serif; font-weight: 500; line-height: 1.25; }
+h2 { font-size: 26px; }
+h3 { font-size: 24px; overflow-wrap: anywhere; }
+.encabezado-listado p { margin: 8px 0 0; color: #6c5d67; }
+.rutinas-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.tarjeta-rutina { min-width: 0; padding: 24px; border: 1px solid #eee5eb; border-radius: 20px; background: #fff; box-shadow: 0 8px 28px #39192e09; }
+.rutina-activa { border-color: #edc5d7; }
+.cabecera-tarjeta { justify-content: space-between; margin-bottom: 18px; }
+.icono-rutina { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; background: #fff3f7; color: #a82f64; }
+.etiqueta-estado { border-radius: 30px; padding: 5px 11px; background: #f3eff2; color: #655762; font-size: 12px; font-weight: 600; }
+.activa { background: #e5f5ee; color: #23745e; }
+.datos-rutina { display: grid; gap: 12px; margin: 20px 0; }
+.datos-rutina > div { display: flex; gap: 12px; justify-content: space-between; }
+dt { color: #6c5d67; font-size: 13px; }
+dd { margin: 0; color: #342b34; font-weight: 500; text-align: right; overflow-wrap: anywhere; min-width: 0; }
+.acciones-rutina { padding-top: 18px; border-top: 1px solid #eee5eb; justify-content: space-between; }
+.boton { display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-height: 44px; box-sizing: border-box; padding: 10px 16px; border: 1px solid transparent; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.principal { background: #c2457a; color: #fff; }
+.principal:hover { background: #a82f64; }
+.secundario { border-color: #e6d5df; background: #fff; color: #a82f64; }
+.secundario:hover, .boton-estado:hover { background: #fce8ef; }
+.boton-estado { background: transparent; color: #a82f64; }
+a:focus-visible, button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
+.estado { padding: 18px; background: #faf7f9; border-radius: 14px; color: #6c5d67; line-height: 1.6; }
+.estado-vacio { text-align: center; border: 1px dashed #e8cdd9; padding: 30px 20px; }
+.estado-vacio > span { color: #c2457a; font-size: 36px; }
+.estado-vacio p { margin: 10px 0; }
+@media (max-width: 1100px) { .rutinas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) { .rutinas-grid { grid-template-columns: 1fr; gap: 16px; } .tarjeta-rutina { padding: 20px; } .encabezado-listado { align-items: flex-start; } }
