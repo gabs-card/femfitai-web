@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Authservice } from '../../services/authservice';
 import { UsuariosService } from '../../services/usuariosservices';
@@ -9,11 +9,17 @@ import { Usuarioscomponent } from '../usuarioscomponent/usuarioscomponent';
   styleUrl: './logincomponent.css',
   templateUrl: './logincomponent.html',
 })
-export class Logincomponent {
+export class Logincomponent implements OnInit {
+  @Input() registroInicial = false;
+  @Output() volverLanding = new EventEmitter<void>();
   cargando = signal(false);
   mensaje = signal('');
 
   constructor(private authService: Authservice, public usuariosService: UsuariosService) {}
+
+  ngOnInit(): void {
+    this.mostrarRegistro.set(this.registroInicial);
+  }
 
   iniciarSesion(correo: string, password: string): void {
     if (this.cargando() || this.usuariosService.cargando()) {
