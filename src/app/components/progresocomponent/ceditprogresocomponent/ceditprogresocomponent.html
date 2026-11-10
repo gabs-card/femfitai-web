@@ -1,4 +1,6 @@
-<h2>Editar registro de progreso</h2>
+<section class="formulario-progreso" aria-labelledby="titulo-edicion">
+<h2 id="titulo-edicion">Editar registro de progreso</h2>
+<p class="descripcion">Actualiza tus mediciones y conserva tus anotaciones.</p>
 @if (errorCarga) {
   <p class="aviso" role="alert">{{ errorCarga }}</p>
 } @else if (cargado) {
@@ -11,31 +13,30 @@
       <mat-datepicker #pickerFecha></mat-datepicker>
       <mat-error>Selecciona una fecha válida</mat-error>
     </mat-form-field>
-    <br />
     <mat-form-field>
       <mat-label>Peso (kg)</mat-label>
       <input matInput type="number" formControlName="peso" />
       <mat-hint>Entre 20 y 400, máximo 2 decimales</mat-hint>
       <mat-error>Ingresa un peso válido (20 a 400 kg, máximo 2 decimales)</mat-error>
     </mat-form-field>
-    <br />
     <mat-form-field>
       <mat-label>Medida (cm, opcional)</mat-label>
       <input matInput type="number" formControlName="medida" />
       <mat-error>Ingresa una medida válida (10 a 300 cm, máximo 2 decimales)</mat-error>
     </mat-form-field>
-    <br />
     <mat-form-field>
       <mat-label>Nota personal (opcional)</mat-label>
       <textarea matInput formControlName="nota" rows="3"></textarea>
       <mat-hint>Máximo 255 caracteres</mat-hint>
       <mat-error>La nota supera los 255 caracteres</mat-error>
     </mat-form-field>
-    <br />
-    <button matButton="filled" type="submit" [disabled]="guardando">Guardar cambios</button>
+    <div class="acciones"><button matButton="filled" class="boton-principal" type="submit" [disabled]="guardando">Guardar cambios</button></div>
   </form>
+} @else {
+  <p class="estado" role="status">Cargando registro...</p>
 }
 <a matButton routerLink="/progreso/listar">Volver al historial</a>
 @if (mensaje) {
   <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
+</section>

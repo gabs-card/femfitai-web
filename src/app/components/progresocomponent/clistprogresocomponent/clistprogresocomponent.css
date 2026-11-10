@@ -1,0 +1,26 @@
+﻿:host { display: block; --mat-table-background-color: #fff; --mat-table-header-headline-color: #63535e; --mat-table-row-item-label-text-color: #342b34; --mat-icon-color: #a82f64; --mat-button-text-label-text-color: #a82f64; }
+.historial { min-width: 0; padding: 24px; border: 1px solid #eee5eb; border-radius: 20px; background: #fff; box-shadow: 0 8px 28px #39192e09; }
+.encabezado-historial { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; margin-bottom: 22px; }
+h2 { margin: 0; color: #2a1c25; font: 500 26px/1.2 Georgia, serif; }
+.encabezado-historial p { margin: 8px 0 0; color: #6c5d67; line-height: 1.6; }
+.boton-registrar { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; box-sizing: border-box; padding: 11px 18px; border-radius: 12px; background: #c2457a; color: #fff; font-weight: 600; text-decoration: none; }
+.boton-registrar:hover { background: #a82f64; }
+.tabla-contenedor { max-width: 100%; overflow-x: auto; border: 1px solid #eee5eb; border-radius: 14px; }
+table { width: 100%; min-width: 720px; }
+th { background: #fff3f7; font-size: 12px; font-weight: 700; }
+td, th { border-bottom-color: #eee5eb; }
+tr:last-child td { border-bottom: 0; }
+tr:hover td { background: #fdf9fb; }
+.nota-personal { max-width: 420px; min-width: 180px; white-space: pre-wrap; overflow-wrap: anywhere; padding-top: 16px; padding-bottom: 16px; line-height: 1.6; }
+.paginacion { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 20px; color: #6c5d67; }
+.paginacion p { margin: 0; font-size: 13px; }
+.acciones-pagina { display: flex; gap: 8px; flex-wrap: wrap; }
+.acciones-pagina button { min-height: 44px; border: 1px solid #e6d5df; border-radius: 10px; }
+.acciones-pagina button:not(:disabled):hover { background: #fff3f7; }
+.estado { padding: 18px; background: #faf7f9; border-radius: 14px; color: #6c5d67; line-height: 1.6; }
+.estado-vacio { text-align: center; border: 1px dashed #e8cdd9; padding: 30px 20px; }
+.estado-vacio > span { color: #c2457a; font-size: 36px; }
+h3 { margin: 8px 0; font: 500 23px Georgia, serif; color: #2a1c25; }
+.estado-vacio p { margin: 8px 0; }
+a:focus-visible, button:focus-visible, .tabla-contenedor:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
+@media (max-width: 650px) { .historial { padding: 18px; } .encabezado-historial { align-items: flex-start; flex-direction: column; } }
