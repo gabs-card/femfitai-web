@@ -1,10 +1,12 @@
 <header class="menu">
+  <div class="menu-contenido">
 
     <div class="menu-logo">
         <a routerLink="/">FemFitAI</a>
     </div>
 
-            <a routerLink="/"
+    <nav class="menu-navegacion" aria-label="Navegación principal">
+        <a routerLink="/"
            routerLinkActive="activo"
            [routerLinkActiveOptions]="{ exact: true }">
             Inicio
@@ -41,7 +43,9 @@
                 Mi perfil
             </a>
         }
+    </nav>
   <button type="button" class="btn-cerrar" (click)="cerrarSesion()">
     Cerrar sesión
 </button>
+  </div>
 </header>
