@@ -1,1 +1,147 @@
-<p>chatcomponent works!</p>
+
+<main class="pagina-chat">
+
+  <header class="encabezado-chat">
+    <div>
+      <p class="etiqueta">TU ESPACIO PERSONAL</p>
+      <h1>Asistente FemFitAI <span>♡</span></h1>
+      <p class="subtitulo">
+        Estoy aquí para acompañarte en tu entrenamiento y bienestar.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-nueva"
+      (click)="nuevaConversacion()">
+      + Nueva conversación
+    </button>
+  </header>
+
+  <section class="chat-contenedor">
+
+    <div class="chat-cabecera">
+      <div class="avatar-ia">♡</div>
+
+      <div class="info-ia">
+        <h2>FemFitAI</h2>
+        <span>
+          <span class="punto-online"></span>
+          Asistente de inteligencia artificial
+        </span>
+      </div>
+    </div>
+
+    <div class="chat-mensajes">
+
+      <!-- Mensaje inicial -->
+      <div class="fila-mensaje mensaje-ia">
+        <div class="avatar-mensaje">♡</div>
+
+        <div class="burbuja">
+          <p>
+            ¡Hola! Bienvenida a FemFitAI. 💗
+          </p>
+          <p>
+            Soy tu asistente de bienestar. Puedes preguntarme
+            sobre entrenamiento, actividad física y hábitos
+            saludables. ¿Cómo puedo ayudarte hoy?
+          </p>
+        </div>
+      </div>
+
+      <!-- Mensajes de la conversación -->
+      @for (mensaje of mensajes; track $index) {
+
+        <div
+          class="fila-mensaje"
+          [class.mensaje-usuaria]="mensaje.role === 'user'"
+          [class.mensaje-ia]="mensaje.role === 'model'">
+
+          @if (mensaje.role === 'model') {
+            <div class="avatar-mensaje">♡</div>
+          }
+
+          <div class="burbuja">
+            <p>{{ mensaje.content }}</p>
+          </div>
+
+        </div>
+
+      }
+
+      <!-- Indicador de escritura -->
+      @if (cargando) {
+        <div class="fila-mensaje mensaje-ia">
+          <div class="avatar-mensaje">♡</div>
+          <div class="burbuja escribiendo">
+            FemFitAI está escribiendo...
+          </div>
+        </div>
+      }
+
+    </div>
+
+    <!-- Sugerencias iniciales -->
+    @if (mensajes.length === 0) {
+
+      <div class="sugerencias">
+        <p>¿Sobre qué te gustaría conversar?</p>
+
+        <button
+          type="button"
+          (click)="usarSugerencia('Quiero empezar a entrenar')">
+          Quiero empezar a entrenar
+        </button>
+
+        <button
+          type="button"
+          (click)="usarSugerencia('¿Qué ejercicios puedo realizar?')">
+          Ejercicios recomendados
+        </button>
+
+        <button
+          type="button"
+          (click)="usarSugerencia('Quiero mejorar mis hábitos saludables')">
+          Hábitos saludables
+        </button>
+      </div>
+
+    }
+
+    <!-- Error -->
+    @if (error) {
+      <p class="mensaje-error" role="alert">{{ error }}</p>
+    }
+
+    <!-- Entrada de mensaje -->
+    <form class="chat-entrada" (ngSubmit)="enviarMensaje()">
+
+      <textarea
+        name="mensaje"
+        [(ngModel)]="mensajeActual"
+        placeholder="Escribe tu mensaje aquí..."
+        rows="2"
+        maxlength="1500"
+        [disabled]="cargando"
+        (keydown)="manejarEnter($event)">
+      </textarea>
+
+      <button
+        type="submit"
+        class="btn-enviar"
+        [disabled]="!mensajeActual.trim() || cargando">
+        Enviar
+        <span>➤</span>
+      </button>
+
+    </form>
+
+    <p class="aviso-chat">
+      FemFitAI utiliza inteligencia artificial. Sus respuestas son
+      orientativas y no sustituyen la atención de profesionales de salud.
+    </p>
+
+  </section>
+
+</main>

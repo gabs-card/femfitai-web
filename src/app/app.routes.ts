@@ -19,7 +19,7 @@ import { Clistprogresocomponent } from './components/progresocomponent/clistprog
 import { Cinsertprogresocomponent } from './components/progresocomponent/cinsertprogresocomponent/cinsertprogresocomponent';
 import { Ceditprogresocomponent } from './components/progresocomponent/ceditprogresocomponent/ceditprogresocomponent';
 import { testerGuard } from './guards/testerguard';
-
+import { Chatcomponent } from './components/chatcomponent/chatcomponent';
 export const routes: Routes = [
   {
     path: '',
@@ -138,4 +138,9 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+  path: 'chat',
+  canActivate: [testerGuard],
+  component: Chatcomponent,
+},
 ];
