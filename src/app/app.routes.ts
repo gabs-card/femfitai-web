@@ -9,6 +9,7 @@ import { Cinsertcicloscomponent } from './components/cicloscomponent/cinsertcicl
 import { Ejercicioscomponent } from './components/ejercicioscomponent/ejercicioscomponent';
 import { Clistejercicioscomponent } from './components/ejercicioscomponent/clistejercicioscomponent/clistejercicioscomponent';
 import { Ceditcicloscomponent } from './components/cicloscomponent/ceditcicloscomponent/ceditcicloscomponent';
+import { Detallediariocomponent } from './components/cicloscomponent/detallediariocomponent/detallediariocomponent';
 import { Perfilcomponent } from './components/perfilcomponent/perfilcomponent';
 import { Rutinascomponent } from './components/rutinascomponent/rutinascomponent';
 import { Clistrutinascomponent } from './components/rutinascomponent/clistrutinascomponent/clistrutinascomponent';
@@ -49,6 +50,10 @@ export const routes: Routes = [
       {
         path: 'insertar',
         component: Cinsertcicloscomponent,
+      },
+      {
+        path: 'diario/:id',
+        component: Detallediariocomponent,
       },
     ],
   },
