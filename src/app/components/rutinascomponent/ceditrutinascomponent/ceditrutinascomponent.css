@@ -8,4 +8,37 @@ mat-form-field { width: 100%; }
 a { margin-top: 8px; }
 a:focus-visible, button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
 .estado { padding: 16px; border-radius: 12px; background: #faf7f9; color: #6c5d67; }
+.panel-asignaciones { margin-top: 30px; padding-top: 26px; border-top: 1px solid #eee5eb; }
+.panel-asignaciones h2 { font-size: 23px; }
+.panel-asignaciones .descripcion { margin-bottom: 18px; }
+.formulario-asignacion { display: grid; gap: 14px; }
+.formulario-asignacion label { display: grid; gap: 6px; width: 100%; color: #473743; font-size: 14px; font-weight: 600; }
+.formulario-asignacion input { box-sizing: border-box; width: 100%; min-height: 44px; padding: 9px 12px; border: 1px solid #d9cbd4; border-radius: 10px; color: #342b34; background: #fff; font: inherit; font-weight: 400; }
+.formulario-asignacion input:focus-visible { border-color: #a82f64; outline: 3px solid #f7dce8; }
+.campo-buscador input { font-weight: 400; }
+.sugerencias-ejercicios { display: grid; max-height: 18rem; overflow: auto; margin-top: -14px; border: 1px solid #eadde5; border-radius: 0 0 12px 12px; background: #fff; box-shadow: 0 8px 18px #39192e10; }
+.opcion-ejercicio { display: flex; flex-direction: column; gap: 3px; width: 100%; padding: 11px 13px; border: 0; border-bottom: 1px solid #f0e8ed; color: #342b34; background: #fff; font: inherit; text-align: left; cursor: pointer; }
+.opcion-ejercicio:hover, .opcion-ejercicio:focus-visible { background: #fff3f7; outline: 2px solid #a82f64; outline-offset: -2px; }
+.opcion-ejercicio small, .estado-busqueda { color: #6c5d67; }
+.estado-busqueda, .error-busqueda { padding: 10px 13px; margin: 0; }
+.error-busqueda { color: #a42c4a; }
+.configuracion-asignacion { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ayuda-validacion { margin: -4px 0 0; color: #6c5d67; font-size: 13px; line-height: 1.5; }
+.acciones-asignacion { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.lista-asignaciones { display: grid; gap: 12px; margin-top: 20px; }
+.tarjeta-asignacion { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid #eee5eb; border-radius: 14px; background: #fff; }
+.datos-asignacion { min-width: 0; }
+.datos-asignacion h3 { margin: 0; color: #2a1c25; font: 500 19px/1.3 Georgia, serif; overflow-wrap: anywhere; }
+.datos-asignacion > p { margin: 5px 0 12px; color: #6c5d67; font-size: 14px; }
+.datos-asignacion dl { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; }
+.datos-asignacion dl > div { display: flex; gap: 5px; font-size: 13px; }
+.datos-asignacion dt { color: #6c5d67; }
+.datos-asignacion dd { margin: 0; color: #342b34; font-weight: 600; }
+.tarjeta-asignacion .acciones-asignacion { flex-shrink: 0; }
+.boton-eliminar { color: #a42c4a; }
+.mensaje-asignaciones { padding: 11px 13px; border-radius: 10px; color: #a42c4a; background: #fff3f3; line-height: 1.5; }
+.mensaje-asignaciones.mensaje-ok { color: #23745e; background: #eaf7f1; }
+.estado-vacio { border: 1px dashed #e8cdd9; }
+a:focus-visible, button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
 @media (max-width: 650px) { .formulario-rutina { max-width: 100%; padding: 20px; } }
+@media (max-width: 650px) { .configuracion-asignacion { grid-template-columns: 1fr; } .tarjeta-asignacion { align-items: flex-start; flex-direction: column; } .tarjeta-asignacion .acciones-asignacion { width: 100%; } }

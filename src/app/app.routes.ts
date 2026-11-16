@@ -11,10 +11,6 @@ import { Clistejercicioscomponent } from './components/ejercicioscomponent/clist
 import { Ceditcicloscomponent } from './components/cicloscomponent/ceditcicloscomponent/ceditcicloscomponent';
 import { Detallediariocomponent } from './components/cicloscomponent/detallediariocomponent/detallediariocomponent';
 import { Perfilcomponent } from './components/perfilcomponent/perfilcomponent';
-import { Rutinascomponent } from './components/rutinascomponent/rutinascomponent';
-import { Clistrutinascomponent } from './components/rutinascomponent/clistrutinascomponent/clistrutinascomponent';
-import { Cinsertrutinascomponent } from './components/rutinascomponent/cinsertrutinascomponent/cinsertrutinascomponent';
-import { Ceditrutinascomponent } from './components/rutinascomponent/ceditrutinascomponent/ceditrutinascomponent';
 import { Progresocomponent } from './components/progresocomponent/progresocomponent';
 import { Clistprogresocomponent } from './components/progresocomponent/clistprogresocomponent/clistprogresocomponent';
 import { Cinsertprogresocomponent } from './components/progresocomponent/cinsertprogresocomponent/cinsertprogresocomponent';
@@ -81,26 +77,7 @@ export const routes: Routes = [
     {
     path: 'rutinas',
     canActivate: [testerGuard],
-    component: Rutinascomponent,
-    children: [
-      { 
-        path: '',
-        redirectTo: 'listar',
-        pathMatch: 'full' 
-      },
-      { 
-        path: 'listar',
-        component: Clistrutinascomponent
-      },
-      { 
-        path: 'insertar',
-        component: Cinsertrutinascomponent
-      },
-      { 
-        path: 'editar/:id',
-        component: Ceditrutinascomponent
-      },
-    ],
+    loadChildren: () => import('./components/rutinascomponent/rutinas.routes').then((m) => m.RUTINAS_ROUTES),
   },
     {
     path: 'progreso',
