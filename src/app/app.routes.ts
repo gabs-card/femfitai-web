@@ -20,6 +20,8 @@ import { Cinsertprogresocomponent } from './components/progresocomponent/cinsert
 import { Ceditprogresocomponent } from './components/progresocomponent/ceditprogresocomponent/ceditprogresocomponent';
 import { testerGuard } from './guards/testerguard';
 import { Chatcomponent } from './components/chatcomponent/chatcomponent';
+import { Recomendacionescomponent } from './components/recomendacionescomponent/recomendacionescomponent';
+
 export const routes: Routes = [
   {
     path: '',
@@ -142,5 +144,11 @@ export const routes: Routes = [
   path: 'chat',
   canActivate: [testerGuard],
   component: Chatcomponent,
+},
+
+{
+  path: 'recomendaciones',
+  canActivate: [testerGuard],
+  component: Recomendacionescomponent
 },
 ];

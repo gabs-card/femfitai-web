@@ -1,0 +1,304 @@
+
+:host {
+  display: block;
+  min-height: calc(100vh - 75px);
+  color: #342b34;
+}
+
+.pagina-recomendaciones {
+  width: 88%;
+  max-width: 1250px;
+  margin: auto;
+  padding: 35px 0 50px;
+}
+
+.etiqueta {
+  color: #b83d73;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .15em;
+}
+
+.encabezado h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(32px, 4vw, 46px);
+  margin: 8px 0;
+  color: #291d26;
+}
+
+.encabezado h1 span {
+  color: #c2457a;
+}
+
+.encabezado > p:last-child {
+  color: #777079;
+  line-height: 1.7;
+}
+
+.tarjeta-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  background: #fff3f7;
+  border: 1px solid #f2dbe5;
+  border-radius: 18px;
+  padding: 28px;
+  margin: 30px 0;
+}
+
+.icono {
+  font-size: 26px;
+  color: #c2457a;
+}
+
+.tarjeta-intro h2,
+.titulo-seccion h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: 27px;
+  margin: 8px 0;
+}
+
+.tarjeta-intro p {
+  color: #777079;
+  max-width: 650px;
+  line-height: 1.7;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.btn-generar {
+  flex-shrink: 0;
+  background: #c2457a;
+  color: white;
+  border: none;
+  border-radius: 11px;
+  padding: 15px 22px;
+  font-weight: 600;
+}
+
+.btn-generar:hover,
+.btn-aceptar:hover {
+  background: #a82f64;
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.mensaje {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.mensaje-ok {
+  background: #e8f5e9;
+  color: #226b36;
+  border-left: 4px solid #2e7d32;
+}
+
+.mensaje-error {
+  background: #fdecea;
+  color: #a12622;
+  border-left: 4px solid #c62828;
+}
+
+.titulo-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin: 40px 0 22px;
+}
+
+.titulo-seccion h2 {
+  margin: 5px 0;
+}
+
+.btn-actualizar {
+  background: white;
+  border: 1px solid #ecd6e1;
+  color: #a82f64;
+  border-radius: 9px;
+  padding: 11px 16px;
+}
+
+.estado-vacio {
+  background: white;
+  border: 1px dashed #e8cfdb;
+  border-radius: 18px;
+  padding: 45px 20px;
+  text-align: center;
+  color: #777079;
+}
+
+.icono-vacio {
+  color: #c2457a;
+  font-size: 38px;
+}
+
+.estado-vacio h3 {
+  color: #342b34;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 24px;
+}
+
+.lista-recomendaciones {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+.tarjeta-recomendacion {
+  background: white;
+  border: 1px solid #eee2e9;
+  border-radius: 17px;
+  padding: 25px;
+  box-shadow: 0 8px 25px rgba(57, 25, 46, .04);
+}
+
+.cabecera-recomendacion {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: flex-start;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f1e7ed;
+}
+
+.tipo {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: #b83d73;
+}
+
+.cabecera-recomendacion h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 25px;
+  font-weight: 500;
+  margin: 8px 0;
+}
+
+.fecha {
+  color: #88808a;
+  font-size: 12px;
+}
+
+.estado {
+  background: #fff3df;
+  color: #94601a;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.estado-aceptado {
+  background: #e8f5e9;
+  color: #226b36;
+}
+
+.motivo {
+  margin-top: 20px;
+  padding: 17px;
+  background: #fff8fb;
+  border-radius: 11px;
+  line-height: 1.6;
+  font-size: 13px;
+}
+
+.motivo strong {
+  color: #a82f64;
+}
+
+.contenido {
+  margin-top: 22px;
+  line-height: 1.8;
+}
+
+.contenido h4 {
+  color: #342b34;
+  font-size: 16px;
+}
+
+.contenido p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #625965;
+  font-size: 14px;
+}
+
+.acciones-recomendacion {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+.btn-aceptar {
+  background: #c2457a;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 12px 19px;
+  font-weight: 600;
+}
+
+.paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 30px;
+  color: #777079;
+  font-size: 13px;
+}
+
+.paginacion button {
+  background: white;
+  border: 1px solid #ecd6e1;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: #a82f64;
+}
+
+.aviso-final {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 12px;
+  color: #88808a;
+}
+
+@media (max-width: 700px) {
+  .pagina-recomendaciones {
+    width: calc(100% - 28px);
+  }
+
+  .tarjeta-intro {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-generar {
+    width: 100%;
+  }
+
+  .cabecera-recomendacion {
+    flex-direction: column;
+  }
+
+  .acciones-recomendacion {
+    justify-content: stretch;
+  }
+
+  .btn-aceptar {
+    width: 100%;
+  }
+}

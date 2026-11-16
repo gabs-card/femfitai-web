@@ -1,0 +1,204 @@
+
+<main class="pagina-recomendaciones">
+
+  <header class="encabezado">
+    <p class="etiqueta">TU ENTRENAMIENTO PERSONALIZADO</p>
+
+    <h1>Mis recomendaciones <span>♡</span></h1>
+
+    <p>
+      Descubre recomendaciones de entrenamiento adaptadas
+      a tu perfil y a tu ciclo menstrual.
+    </p>
+  </header>
+
+  <!-- Introducción -->
+  <section class="tarjeta-intro">
+
+    <div>
+      <span class="icono">✦</span>
+
+      <h2>Tu bienestar, a tu ritmo</h2>
+
+      <p>
+        FemFitAI utiliza inteligencia artificial para generar
+        propuestas de entrenamiento según tu perfil y la fase
+        estimada de tu ciclo.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-generar"
+      (click)="generarRecomendacion()"
+      [disabled]="generando || cargando">
+
+      @if (generando) {
+        Generando recomendación...
+      } @else {
+        Generar recomendación ✨
+      }
+
+    </button>
+
+  </section>
+
+  <!-- Mensajes -->
+  @if (mensaje) {
+    <div class="mensaje mensaje-ok" role="status">
+      {{ mensaje }}
+    </div>
+  }
+
+  @if (mensajeError) {
+    <div class="mensaje mensaje-error" role="alert">
+      {{ mensajeError }}
+    </div>
+  }
+
+  <!-- Título del historial -->
+  <section class="seccion-historial">
+
+    <div class="titulo-seccion">
+      <div>
+        <p class="etiqueta">TU PROGRESO</p>
+        <h2>Historial de recomendaciones</h2>
+      </div>
+
+      <button
+        type="button"
+        class="btn-actualizar"
+        (click)="listarRecomendaciones(pagina)"
+        [disabled]="cargando || generando">
+        Actualizar ↻
+      </button>
+    </div>
+
+    @if (cargando) {
+
+      <div class="estado-vacio">
+        Cargando tus recomendaciones...
+      </div>
+
+    } @else if (recomendaciones.length === 0) {
+
+      <div class="estado-vacio">
+
+        <div class="icono-vacio">♡</div>
+
+        <h3>Aún no tienes recomendaciones</h3>
+
+        <p>
+          Genera tu primera recomendación personalizada
+          para comenzar a organizar tus entrenamientos.
+        </p>
+
+      </div>
+
+    } @else {
+
+      <div class="lista-recomendaciones">
+
+        @for (recomendacion of recomendaciones; track recomendacion.idRecomendacion) {
+
+          <article class="tarjeta-recomendacion">
+
+            <div class="cabecera-recomendacion">
+
+              <div>
+                <span class="tipo">
+                  ENTRENAMIENTO
+                </span>
+
+                <h3>Tu plan personalizado</h3>
+
+                <p class="fecha">
+                  {{ recomendacion.fecha | date:'dd/MM/yyyy HH:mm' }}
+                </p>
+              </div>
+
+              <span
+                class="estado"
+                [class.estado-aceptado]="recomendacion.aceptada">
+
+                {{ recomendacion.aceptada ? 'Aceptada' : 'Pendiente' }}
+
+              </span>
+
+            </div>
+
+            <div class="motivo">
+              <strong>¿Por qué recibes esta recomendación?</strong>
+
+              <p>{{ recomendacion.motivo }}</p>
+            </div>
+
+            <div class="contenido">
+              <h4>Tu recomendación de entrenamiento</h4>
+
+              <p>{{ limpiarContenido(recomendacion.contenido) }}</p>
+            </div>
+
+            <div class="acciones-recomendacion">
+
+              <button
+                type="button"
+                class="btn-aceptar"
+                [disabled]="recomendacion.aceptada || aceptandoId !== null"
+                (click)="aceptarRecomendacion(recomendacion.idRecomendacion)">
+
+                @if (aceptandoId === recomendacion.idRecomendacion) {
+                  Guardando...
+                } @else if (recomendacion.aceptada) {
+                  ✓ Recomendación aceptada
+                } @else {
+                  Aceptar recomendación
+                }
+
+              </button>
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+      <!-- Paginación -->
+      @if (totalPaginas > 1) {
+
+        <div class="paginacion">
+
+          <button
+            type="button"
+            (click)="anterior()"
+            [disabled]="pagina === 0 || cargando">
+            Anterior
+          </button>
+
+          <span>
+            Página {{ pagina + 1 }} de {{ totalPaginas }}
+          </span>
+
+          <button
+            type="button"
+            (click)="siguiente()"
+            [disabled]="pagina + 1 >= totalPaginas || cargando">
+            Siguiente
+          </button>
+
+        </div>
+
+      }
+
+    }
+
+  </section>
+
+  <p class="aviso-final">
+    Las recomendaciones son orientativas y no sustituyen
+    la evaluación de profesionales de salud o entrenamiento.
+  </p>
+
+</main>
