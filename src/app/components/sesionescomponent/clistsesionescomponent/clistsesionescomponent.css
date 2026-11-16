@@ -1,0 +1,9 @@
+.encabezado,.tarjeta-cabecera,.acciones { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.encabezado { margin-bottom:1.5rem; } h1,h2,p { margin-top:0; } .encabezado p,.tarjeta p { color:#686477; }
+.sesiones-lista { display:grid; gap:1rem; } .tarjeta,.vacio { background:#fff; border:1px solid #e8e3ed; border-radius:16px; padding:1.25rem; box-shadow:0 5px 20px #4026590c; }
+.tarjeta-cabecera span { color:#684d7d; background:#f1eaf5; padding:.35rem .7rem; border-radius:20px; }
+dl { display:flex; flex-wrap:wrap; gap:2rem; margin:1rem 0; } dt { color:#777; font-size:.85rem; } dd { margin:.2rem 0 0; font-weight:600; }
+.boton { display:inline-flex; align-items:center; justify-content:center; padding:.65rem .9rem; border-radius:9px; border:1px solid #ddd; text-decoration:none; font:inherit; cursor:pointer; }
+.primario { background:#70458c; color:#fff; border-color:#70458c; } .secundario { color:#593c70; background:#fff; } .peligro { color:#a42c4a; background:#fff; }
+.mensaje { color:#9d2945; } .vacio { text-align:center; padding:2rem; }
+@media(max-width:650px) { .encabezado,.tarjeta-cabecera { align-items:flex-start; flex-direction:column; } .acciones { flex-wrap:wrap; justify-content:flex-start; } }

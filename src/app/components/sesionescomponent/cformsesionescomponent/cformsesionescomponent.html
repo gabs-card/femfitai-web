@@ -1,0 +1,32 @@
+<a class="volver" routerLink="/sesiones/listar">← Mis sesiones</a>
+<section class="formulario">
+  <h1>{{ editando ? 'Editar sesión' : 'Registrar sesión' }}</h1>
+  <p>La sesión queda asociada a tu cuenta y a una de tus rutinas.</p>
+  @if (cargando) { <p role="status">Cargando datos…</p> }
+  @if (mensaje) { <p class="mensaje" role="alert">{{ mensaje }}</p> }
+  @if (!cargando && rutinas.length === 0) { <p class="mensaje">Primero necesitas tener una rutina propia para registrar una sesión.</p> }
+  @if (!cargando && rutinas.length > 0 && (!editando || !mensaje)) {
+    <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+      <label>Rutina
+        <select formControlName="idRutina"><option [ngValue]="null">Selecciona una rutina</option>
+          @for (rutina of rutinas; track rutina.idRutina) { <option [ngValue]="rutina.idRutina">{{ rutina.nombre }}{{ rutina.estado ? '' : ' (inactiva)' }}</option> }
+        </select>
+      </label>
+      @if (form.controls.idRutina.touched && form.controls.idRutina.invalid) { <small>Selecciona una rutina.</small> }
+      <label>Fecha y hora<input type="datetime-local" formControlName="fecha" /></label>
+      @if (form.controls.fecha.touched && form.controls.fecha.invalid) { <small>Indica fecha y hora.</small> }
+      <label>Duración (minutos)<input type="number" min="1" step="1" formControlName="duracionMin" /></label>
+      @if (form.controls.duracionMin.touched && form.controls.duracionMin.invalid) { <small>Indica una cantidad entera mayor que cero.</small> }
+      <label>Nivel de energía
+        <select formControlName="nivelEnergia"><option [ngValue]="null">Selecciona (1–5)</option>@for (nivel of energia; track nivel) { <option [ngValue]="nivel">{{ nivel }}</option> }</select>
+      </label>
+      @if (form.controls.nivelEnergia.touched && form.controls.nivelEnergia.invalid) { <small>Selecciona un valor entre 1 y 5.</small> }
+      <label>Esfuerzo percibido
+        <select formControlName="esfuerzoPercibido"><option [ngValue]="null">Selecciona (1–10)</option>@for (nivel of esfuerzos; track nivel) { <option [ngValue]="nivel">{{ nivel }}</option> }</select>
+      </label>
+      @if (form.controls.esfuerzoPercibido.touched && form.controls.esfuerzoPercibido.invalid) { <small>Selecciona un valor entre 1 y 10.</small> }
+      <label>Estado (opcional)<input type="text" maxlength="30" formControlName="estado" placeholder="Completada, pausada…" /></label>
+      <div class="acciones"><button class="primario" type="submit" [disabled]="guardando">{{ guardando ? 'Guardando…' : 'Guardar sesión' }}</button><a routerLink="/sesiones/listar">Cancelar</a></div>
+    </form>
+  }
+</section>

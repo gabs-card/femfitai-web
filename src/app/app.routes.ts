@@ -156,4 +156,9 @@ export const routes: Routes = [
   canActivate: [testerGuard],
   component: Recomendacionescomponent
 },
+  {
+    path: 'sesiones',
+    canActivate: [testerGuard],
+    loadChildren: () => import('./components/sesionescomponent/sesiones.routes').then((m) => m.SESIONES_ROUTES),
+  },
 ];

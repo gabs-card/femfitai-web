@@ -1,0 +1,26 @@
+<header class="encabezado">
+  <div><h1>Mis sesiones</h1><p>Registra tus entrenamientos y el detalle de cada ejercicio.</p></div>
+  <a class="boton primario" routerLink="/sesiones/insertar">Registrar sesión</a>
+</header>
+@if (cargando) { <p role="status">Cargando sesiones…</p> }
+@if (mensaje) { <p class="mensaje" role="alert">{{ mensaje }}</p> }
+@if (!cargando && sesiones.length === 0 && !mensaje) {
+  <section class="vacio"><h2>Aún no hay sesiones</h2><p>Registra una sesión para empezar a anotar tus ejercicios y series.</p></section>
+}
+<section class="sesiones-lista" aria-label="Sesiones registradas">
+  @for (sesion of sesiones; track sesion.idSesion) {
+    <article class="tarjeta">
+      <div class="tarjeta-cabecera"><div><h2>{{ nombreRutina(sesion.idRutina) }}</h2><p>{{ sesion.fecha | date:'medium' }}</p></div><span>{{ sesion.estado || 'Registrada' }}</span></div>
+      <dl>
+        <div><dt>Duración</dt><dd>{{ sesion.duracionMin ? sesion.duracionMin + ' min' : '—' }}</dd></div>
+        <div><dt>Energía</dt><dd>{{ sesion.nivelEnergia ?? '—' }}</dd></div>
+        <div><dt>Esfuerzo percibido</dt><dd>{{ sesion.esfuerzoPercibido ?? '—' }}</dd></div>
+      </dl>
+      <div class="acciones">
+        <a class="boton secundario" [routerLink]="['/sesiones/detalle', sesion.idSesion]">Ejercicios y series</a>
+        <a class="boton secundario" [routerLink]="['/sesiones/editar', sesion.idSesion]">Editar</a>
+        <button class="boton peligro" type="button" [disabled]="eliminando" (click)="eliminar(sesion)">Eliminar</button>
+      </div>
+    </article>
+  }
+</section>

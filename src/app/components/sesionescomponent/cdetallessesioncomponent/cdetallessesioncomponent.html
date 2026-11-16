@@ -1,0 +1,59 @@
+<a class="volver" routerLink="/sesiones/listar">← Mis sesiones</a>
+<header class="encabezado"><div><h1>Ejercicios de la sesión</h1><p>{{ sesion?.fecha | date:'medium' }} · Sesión #{{ idSesion }}</p></div></header>
+@if (mensaje) { <p class="mensaje" role="alert">{{ mensaje }}</p> }
+<section class="panel">
+  <h2>{{ detalleEditando === null ? 'Agregar ejercicio' : 'Editar observación' }}</h2>
+  <form [formGroup]="ejercicioForm" (ngSubmit)="guardarDetalle()" novalidate>
+  <label class="campo-buscador" for="busqueda-ejercicio">Buscar ejercicio por nombre o grupo muscular
+  <input id="busqueda-ejercicio" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="sugerencias-ejercicios" [attr.aria-expanded]="sugerenciasAbiertas" [formControl]="busquedaEjercicio" placeholder="Escribe un nombre o grupo muscular" />
+</label>
+@if (sugerenciasAbiertas) {
+  <div id="sugerencias-ejercicios" class="sugerencias-ejercicios" role="listbox" aria-label="Sugerencias de ejercicios">
+    @if (buscandoEjercicios) {
+      <p class="estado-busqueda" role="status">Buscando ejercicios...</p>
+    } @else if (mensajeBusqueda) {
+      <p class="error-busqueda" role="alert">{{ mensajeBusqueda }}</p>
+    } @else if (ejercicios.length === 0) {
+      <p class="estado-busqueda">No se encontraron ejercicios.</p>
+    } @else {
+      @for (ejercicio of ejercicios; track ejercicio.idEjercicio) {
+        <button type="button" class="opcion-ejercicio" role="option" (click)="seleccionarEjercicio(ejercicio)">
+          <strong>{{ ejercicio.nombre }}</strong>
+          <small>{{ ejercicio.grupoMuscular || 'Grupo muscular no indicado' }}</small>
+        </button>
+      }
+    }
+  </div>
+}
+  <label>Observación (opcional)<textarea rows="2" maxlength="255" formControlName="observacion"></textarea></label>
+  <div class="acciones">
+    <button class="primario" type="submit" [disabled]="guardandoDetalle">{{ detalleEditando === null ? 'Agregar ejercicio' : 'Guardar observación' }}</button>
+    @if (detalleEditando !== null) { <button class="secundario" type="button" (click)="cancelarEdicionDetalle()">Cancelar</button> }
+  </div>
+</form>
+</section>
+@if (cargando) { <p role="status">Cargando ejercicios y series…</p> }
+@if (!cargando && detalles.length === 0) { <p class="vacio">Todavía no agregas ejercicios a esta sesión.</p> }
+<section class="detalles">
+  @for (detalle of detalles; track detalle.idDetalle) {
+    <article class="detalle">
+      <header><div><h2>{{ detalle.nombre }}</h2><p>{{ detalle.grupoMuscular || 'Grupo muscular no indicado' }}</p></div>
+        <div class="acciones"><button class="secundario" type="button" (click)="editarDetalle(detalle)">Editar observación</button><button class="peligro" type="button" [disabled]="eliminandoId !== null" (click)="eliminarDetalle(detalle)">Eliminar ejercicio</button></div>
+      </header>
+      @if (detalle.observacion) { <p class="observacion">{{ detalle.observacion }}</p> }
+      <div class="tabla-wrap"><table><thead><tr><th>Serie</th><th>Repeticiones</th><th>Peso (kg)</th><th>Acciones</th></tr></thead><tbody>
+        @for (serie of detalle.series; track serie.idSerie) { <tr><td>{{ serie.numeroSerie }}</td><td>{{ serie.repeticiones }}</td><td>{{ serie.pesoKg }}</td><td><button class="texto" type="button" (click)="editarSerie(detalle, serie)">Editar</button><button class="texto peligro-texto" type="button" (click)="eliminarSerie(serie)">Eliminar</button></td></tr> }
+      </tbody></table></div>
+      @if (detalle.series.length === 0) { <p class="sin-series">Sin series registradas.</p> }
+      <button class="secundario nueva-serie" type="button" (click)="iniciarSerie(detalle)">Agregar serie</button>
+      @if (serieParaDetalle === detalle.idDetalle) {
+        <form class="form-serie" [formGroup]="serieForm" (ngSubmit)="guardarSerie()" novalidate>
+          <label>Número<input type="number" min="1" step="1" formControlName="numeroSerie" /></label>
+          <label>Repeticiones<input type="number" min="1" step="1" formControlName="repeticiones" /></label>
+          <label>Peso (kg)<input type="number" min="0" max="9999.99" step="0.01" formControlName="pesoKg" /></label>
+          <button class="primario" type="submit" [disabled]="guardandoSerie">{{ serieEditando === null ? 'Guardar serie' : 'Actualizar serie' }}</button><button class="secundario" type="button" (click)="cancelarSerie()">Cancelar</button>
+        </form>
+      }
+    </article>
+  }
+</section>
