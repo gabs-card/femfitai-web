@@ -9,15 +9,23 @@ import { EjercicioDTO } from '../../../models/EjercicioDTO';
 import { DetalleSesionEjercicioDTO } from '../../../models/DetalleSesionDTO';
 import { DetalleSerieDTO } from '../../../models/DetalleSerieDTO';
 import { Page } from '../../../models/Page';
+import { RutinaEjercicioDetalleDTO } from '../../../models/RutinaEjerciciosDTO';
 import { SesionEntrenamientoDTO } from '../../../models/SesionEntrenamientoDTO';
 import { Authservice } from '../../../services/authservice';
 import { Detallesesionservice } from '../../../services/detallesesionservice';
 import { Detalleserieservice } from '../../../services/detalleserieservice';
 import { Ejerciciosservice } from '../../../services/ejerciciosservice';
+import { Rutinaejerciciosservice } from '../../../services/rutinaejerciciosservice';
+import { Rutinasservice } from '../../../services/rutinasservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 
-interface DetalleConSeries extends DetalleSesionEjercicioDTO { series: DetalleSerieDTO[]; }
+interface DetalleConSeries extends DetalleSesionEjercicioDTO {
+  series: DetalleSerieDTO[];
+  planificacion: RutinaEjercicioDetalleDTO | null;
+  esAdicional: boolean;
+  planificacionAmbigua: boolean;
+}
 
 @Component({
   selector: 'app-cdetallessesioncomponent',
@@ -38,16 +46,29 @@ export class Cdetallessesioncomponent implements OnInit {
   serieParaDetalle: number | null = null;
   eliminandoId: number | null = null;
   mensaje = '';
+  mensajeExito = false;
   mensajeBusqueda = '';
+  mensajePlanificacion = '';
+  mensajeRutina = '';
   buscandoEjercicios = false;
   sugerenciasAbiertas = false;
   ejercicioSeleccionado: EjercicioDTO | null = null;
+  rutinaNombre = '';
+  planificaciones: RutinaEjercicioDetalleDTO[] = [];
+  cargandoPlanificacion = false;
+  planificacionCargada = false;
+  mostrarEvaluacion = false;
+  finalizando = false;
+  private finalizadaCorrectamente = false;
   readonly busquedaEjercicio = new FormControl('', { nonNullable: true });
   ejercicioForm: any;
   serieForm: any;
+  evaluacionForm: any;
   private readonly route = inject(ActivatedRoute);
   private readonly auth = inject(Authservice);
   private readonly sesionesService = inject(Sesionesservice);
+  private readonly rutinasService = inject(Rutinasservice);
+  private readonly rutinaEjerciciosService = inject(Rutinaejerciciosservice);
   private readonly detallesService = inject(Detallesesionservice);
   private readonly seriesService = inject(Detalleserieservice);
   private readonly ejerciciosService = inject(Ejerciciosservice);
@@ -58,6 +79,11 @@ export class Cdetallessesioncomponent implements OnInit {
   constructor() {
     this.ejercicioForm = this.fb.group({ observacion: ['', Validators.maxLength(255)] });
     this.serieForm = this.fb.group({ numeroSerie: [1, [Validators.required, Validators.min(1), Validators.pattern(/^\d+$/)]], repeticiones: [null, [Validators.required, Validators.min(1), Validators.pattern(/^\d+$/)]], pesoKg: [0, [Validators.required, Validators.min(0), Validators.max(9999.99), Validators.pattern(/^\d{1,4}(\.\d{1,2})?$/)]] });
+    this.evaluacionForm = this.fb.group({
+      duracionMin: [null, [Validators.required, Validators.min(1), Validators.pattern(/^\d+$/)]],
+      nivelEnergia: [null, [Validators.required, Validators.min(1), Validators.max(5), Validators.pattern(/^[1-5]$/)]],
+      esfuerzoPercibido: [null, [Validators.required, Validators.min(1), Validators.max(10), Validators.pattern(/^(10|[1-9])$/)]],
+    });
   }
 
   ngOnInit(): void {
@@ -81,16 +107,179 @@ export class Cdetallessesioncomponent implements OnInit {
   }
 
   private cargarSesionPropia(idUsuario: number): void {
-    this.sesionesService.obtener(this.idSesion).subscribe({
+    this.sesionesService.obtenerDetalle(this.idSesion).subscribe({
       next: (sesion) => {
         if (sesion.idUsuario !== idUsuario) {
           this.mensaje = 'Esta sesiÃ³n pertenece a otra cuenta.'; this.cargando = false; this.cdr.detectChanges(); return;
         }
         this.sesion = sesion;
+        this.cargarNombreRutina(sesion.idRutina, idUsuario);
+        this.cargarPlanificacion(sesion.idRutina);
         this.conectarBusquedaEjercicios();
         this.cargarDetalles();
       },
       error: (err) => { this.mensaje = mensajeDeCarga(err); this.cargando = false; this.cdr.detectChanges(); },
+    });
+  }
+
+  private cargarNombreRutina(idRutina: number, idUsuario: number): void {
+    this.rutinasService.getRutina(idRutina).subscribe({
+      next: (rutina) => {
+        if (rutina.idUsuario !== idUsuario) {
+          this.mensajeRutina = 'No se pudo verificar la rutina asociada a esta sesión.';
+        } else {
+          this.rutinaNombre = rutina.nombre;
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.mensajeRutina = mensajeDeError(err, 'No se pudo cargar el nombre de la rutina.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  private cargarPlanificacion(idRutina: number): void {
+    this.cargandoPlanificacion = true;
+    this.mensajePlanificacion = '';
+    this.rutinaEjerciciosService.listarPorRutina(idRutina).subscribe({
+      next: (planificaciones) => {
+        this.planificaciones = planificaciones;
+        this.planificacionCargada = true;
+        this.cargandoPlanificacion = false;
+        const repetidos = [...new Set(planificaciones
+          .map((plan) => plan.idEjercicio)
+          .filter((idEjercicio, indice, ids) => ids.indexOf(idEjercicio) !== indice))];
+        if (repetidos.length) {
+          this.mensajePlanificacion = 'La rutina contiene ejercicios asignados más de una vez. No se asociará una planificación arbitraria a esos ejercicios.';
+        }
+        this.detalles = this.detalles.map((detalle) => this.construirDetalle(detalle, detalle.series));
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.cargandoPlanificacion = false;
+        this.mensajePlanificacion = mensajeDeError(err, 'No se pudo cargar la planificación original de la rutina.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  private construirDetalle(
+    detalle: DetalleSesionEjercicioDTO,
+    series: DetalleSerieDTO[],
+    cantidadEnSesion = this.detalles.filter((item) => item.idEjercicio === detalle.idEjercicio).length,
+  ): DetalleConSeries {
+    const enriquecido: DetalleConSeries = {
+      ...detalle,
+      series,
+      planificacion: null,
+      esAdicional: false,
+      planificacionAmbigua: false,
+    };
+    if (!this.planificacionCargada) return enriquecido;
+
+    const coincidencias = this.planificaciones.filter((plan) => plan.idEjercicio === detalle.idEjercicio);
+    if (coincidencias.length === 0) {
+      enriquecido.esAdicional = true;
+      return enriquecido;
+    }
+    if (coincidencias.length > 1 || cantidadEnSesion > 1) {
+      enriquecido.planificacionAmbigua = true;
+      return enriquecido;
+    }
+    enriquecido.planificacion = coincidencias[0];
+    return enriquecido;
+  }
+
+  get entrenamientoEnCurso(): boolean {
+    return this.sesion?.estado?.trim().toUpperCase() === 'EN_CURSO' && !this.finalizadaCorrectamente;
+  }
+
+  get sesionFinalizada(): boolean {
+    return this.finalizadaCorrectamente || this.sesion?.estado?.trim().toUpperCase() === 'FINALIZADA';
+  }
+
+  get sesionSoloLectura(): boolean {
+    return this.sesion !== null && !this.entrenamientoEnCurso;
+  }
+
+  readonly energiaOpciones = [
+    { valor: 1, emoji: '😴', descripcion: 'Sin energía' },
+    { valor: 2, emoji: '🥱', descripcion: 'Poca energía' },
+    { valor: 3, emoji: '🙂', descripcion: 'Energía moderada' },
+    { valor: 4, emoji: '💪', descripcion: 'Buena energía' },
+    { valor: 5, emoji: '⚡', descripcion: 'Muchísima energía' },
+  ];
+  readonly opcionesEsfuerzo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  get estadoSesion(): string {
+    return this.sesion?.estado?.replaceAll('_', ' ') ?? 'Cargando';
+  }
+
+  get energiaRegistrada() {
+    return this.energiaOpciones.find((opcion) => opcion.valor === this.sesion?.nivelEnergia) ?? null;
+  }
+
+  get intensidadEsfuerzo(): string {
+    const valor = this.sesion?.esfuerzoPercibido;
+    if (valor === null || valor === undefined) return 'No registrada';
+    if (valor <= 3) return 'Baja';
+    if (valor <= 6) return 'Moderada';
+    return 'Alta';
+  }
+
+  abrirEvaluacion(): void {
+    if (!this.entrenamientoEnCurso || this.finalizando) return;
+    this.mostrarEvaluacion = true;
+    this.mensaje = '';
+    this.mensajeExito = false;
+  }
+
+  cancelarEvaluacion(): void {
+    if (this.finalizando) return;
+    this.mostrarEvaluacion = false;
+    this.evaluacionForm.reset({ duracionMin: null, nivelEnergia: null, esfuerzoPercibido: null });
+  }
+
+  seleccionarEnergia(valor: number): void {
+    this.evaluacionForm.controls.nivelEnergia.setValue(valor);
+    this.evaluacionForm.controls.nivelEnergia.markAsTouched();
+  }
+
+  seleccionarEsfuerzo(valor: number): void {
+    this.evaluacionForm.controls.esfuerzoPercibido.setValue(valor);
+    this.evaluacionForm.controls.esfuerzoPercibido.markAsTouched();
+  }
+
+  confirmarFinalizacion(): void {
+    this.mensaje = '';
+    this.mensajeExito = false;
+    if (!this.entrenamientoEnCurso || this.finalizando || this.evaluacionForm.invalid) {
+      this.evaluacionForm.markAllAsTouched();
+      if (this.evaluacionForm.invalid) this.mensaje = 'Completa la duración, la energía y el esfuerzo con valores válidos.';
+      return;
+    }
+    const valores = this.evaluacionForm.getRawValue();
+    this.finalizando = true;
+    this.sesionesService.finalizar(this.idSesion, {
+      duracionMin: Number(valores.duracionMin),
+      nivelEnergia: Number(valores.nivelEnergia),
+      esfuerzoPercibido: Number(valores.esfuerzoPercibido),
+    }).subscribe({
+      next: (sesion) => {
+        this.sesion = { ...sesion, estado: 'FINALIZADA' };
+        this.finalizadaCorrectamente = true;
+        this.finalizando = false;
+        this.mostrarEvaluacion = false;
+        this.mensaje = 'Entrenamiento finalizado correctamente.';
+        this.mensajeExito = true;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.finalizando = false;
+        this.mensaje = mensajeDeError(err, 'No se pudo finalizar el entrenamiento.');
+        this.cdr.detectChanges();
+      },
     });
   }
 
@@ -141,7 +330,15 @@ export class Cdetallessesioncomponent implements OnInit {
         forkJoin(detalles.map((detalle) => this.seriesService.listarPorDetalle(detalle.idDetalle!).pipe(
           switchMap((series) => [{ ...detalle, series } as DetalleConSeries]),
         ))).subscribe({
-          next: (filas) => { this.detalles = filas; this.cargando = false; this.cdr.detectChanges(); },
+          next: (filas) => {
+            this.detalles = filas.map((fila) => this.construirDetalle(
+              fila,
+              fila.series,
+              filas.filter((item) => item.idEjercicio === fila.idEjercicio).length,
+            ));
+            this.cargando = false;
+            this.cdr.detectChanges();
+          },
           error: (err) => { this.mensaje = mensajeDeError(err, 'No se pudieron cargar las series.'); this.cargando = false; this.cdr.detectChanges(); },
         });
       },
@@ -150,6 +347,7 @@ export class Cdetallessesioncomponent implements OnInit {
   }
 
   guardarDetalle(): void {
+    if (this.sesionSoloLectura) return;
     this.mensaje = '';
     if (this.ejercicioForm.invalid) { this.ejercicioForm.markAllAsTouched(); this.mensaje = 'Revisa la observacion.'; return; }
     if (this.detalleEditando === null && (!this.ejercicioSeleccionado || !Number.isInteger(this.ejercicioSeleccionado.idEjercicio) || this.ejercicioSeleccionado.idEjercicio <= 0)) {
@@ -169,6 +367,7 @@ export class Cdetallessesioncomponent implements OnInit {
   }
 
   editarDetalle(detalle: DetalleConSeries): void {
+    if (this.sesionSoloLectura) return;
     this.detalleEditando = detalle.idDetalle;
     this.ejercicioSeleccionado = {
       idEjercicio: detalle.idEjercicio,
@@ -192,6 +391,7 @@ export class Cdetallessesioncomponent implements OnInit {
   }
 
   eliminarDetalle(detalle: DetalleConSeries): void {
+    if (this.sesionSoloLectura) return;
     if (this.eliminandoId !== null) return;
     if (!confirm(`Â¿Eliminar ${detalle.nombre} y sus ${detalle.series.length} series?`)) return;
     const idDetalle = detalle.idDetalle!; this.eliminandoId = idDetalle; this.mensaje = '';
@@ -205,12 +405,14 @@ export class Cdetallessesioncomponent implements OnInit {
   }
 
   iniciarSerie(detalle: DetalleConSeries): void {
+    if (this.sesionSoloLectura) return;
     this.serieParaDetalle = detalle.idDetalle;
     this.serieEditando = null;
     this.serieForm.reset({ numeroSerie: Math.max(0, ...detalle.series.map((s) => s.numeroSerie)) + 1, repeticiones: null, pesoKg: 0 });
   }
 
   editarSerie(detalle: DetalleConSeries, serie: DetalleSerieDTO): void {
+    if (this.sesionSoloLectura) return;
     this.serieParaDetalle = detalle.idDetalle; this.serieEditando = serie.idSerie;
     this.serieForm.patchValue({ numeroSerie: serie.numeroSerie, repeticiones: serie.repeticiones, pesoKg: serie.pesoKg });
     this.serieForm.controls.numeroSerie.disable();
@@ -223,6 +425,7 @@ export class Cdetallessesioncomponent implements OnInit {
   }
 
   guardarSerie(): void {
+    if (this.sesionSoloLectura) return;
     this.mensaje = '';
     if (this.serieForm.invalid || this.serieParaDetalle === null) { this.serieForm.markAllAsTouched(); this.mensaje = 'Indica nÃºmero de serie, repeticiones y un peso vÃ¡lido.'; return; }
     const valor = this.serieForm.getRawValue();
@@ -238,6 +441,7 @@ export class Cdetallessesioncomponent implements OnInit {
   }
 
   eliminarSerie(serie: DetalleSerieDTO): void {
+    if (this.sesionSoloLectura) return;
     if (!confirm(`Â¿Eliminar la serie ${serie.numeroSerie}?`)) return;
     this.seriesService.eliminar(serie.idSerie).subscribe({
       next: () => { this.mensaje = 'Serie eliminada correctamente.'; this.cargarDetalles(); },

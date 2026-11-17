@@ -16,3 +16,72 @@ form { display:grid; gap:.9rem; } label { display:grid; gap:.4rem; font-weight:6
 .tabla-wrap { overflow-x:auto; } table { width:100%; border-collapse:collapse; } th,td { text-align:left; padding:.65rem; border-bottom:1px solid #eee9f1; } .texto { border:0; background:none; color:#684681; cursor:pointer; margin-right:.5rem; font:inherit; } .peligro-texto { color:#a42c4a; }
 .observacion,.sin-series,.vacio { color:#706a78; } .nueva-serie { margin-top:.8rem; } .form-serie { grid-template-columns:repeat(3,minmax(100px,1fr)); align-items:end; margin-top:1rem; } .form-serie button { min-height:42px; }
 .mensaje { color:#a42c4a; } @media(max-width:700px) { .detalle>header { flex-direction:column; } .form-serie { grid-template-columns:1fr 1fr; } }
+.mensaje-exito { padding:.75rem 1rem; border:1px solid #b9dfc8; border-radius:10px; background:#eaf7ef; color:#23745e; }
+
+.encabezado-entrenamiento { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin:1.25rem 0; padding:1.35rem 1.5rem; border:1px solid #eadfeb; border-radius:18px; background:linear-gradient(120deg,#fff8fb,#f8f4fc); }
+.encabezado-entrenamiento h1 { margin:.15rem 0 .35rem; color:#35233e; font-family:Georgia,serif; font-weight:500; }
+.sobrelinea { margin:0; color:#865b91; font-size:.72rem; font-weight:800; letter-spacing:.12em; }
+.datos-sesion { margin:0; color:#706a78; }
+.estado-sesion { flex:0 0 auto; padding:.45rem .8rem; border-radius:999px; background:#f1edf2; color:#5d5361; font-size:.8rem; font-weight:800; letter-spacing:.04em; }
+.estado-en-curso { background:#e4f4eb; color:#23745e; }
+.estado-finalizada { background:#ece7f1; color:#684681; }
+.acciones-entrenamiento { display:flex; justify-content:flex-end; margin:1rem 0; }
+.boton-finalizar { padding:.8rem 1.2rem; border-radius:12px; background:#a42c4a; border-color:#a42c4a; font-weight:700; }
+.boton-finalizar:hover { background:#87243d; }
+.primario:disabled,.secundario:disabled { opacity:.6; cursor:wait; }
+.aviso-plan { padding:.75rem 1rem; border:1px solid #e8d7ab; border-radius:10px; background:#fff9e8; color:#705a25; }
+.evaluacion { margin:1.2rem 0; padding:clamp(1rem,3vw,2rem); border:1px solid #e5d6eb; border-radius:20px; background:linear-gradient(140deg,#fff,#faf5fc); box-shadow:0 12px 32px #40265912; }
+.encabezado-evaluacion { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1.25rem; }
+.encabezado-evaluacion h2 { margin:.2rem 0; color:#35233e; font-family:Georgia,serif; font-size:1.7rem; font-weight:500; }
+.encabezado-evaluacion>p { max-width:22rem; color:#706a78; }
+.campo-duracion { max-width:24rem; }
+.grupo-evaluacion { min-width:0; margin:1.4rem 0 0; padding:0; border:0; }
+.grupo-evaluacion legend { margin-bottom:.7rem; color:#35233e; font-size:1.1rem; font-weight:750; }
+.opciones-energia { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.65rem; }
+.opcion-energia { display:flex; min-height:112px; flex-direction:column; align-items:center; justify-content:center; gap:.25rem; padding:.65rem .4rem; border:1px solid #e4dce8; border-radius:14px; background:#fff; color:#4d4353; cursor:pointer; text-align:center; font:inherit; transition:transform .15s,border-color .15s,background .15s; }
+.opcion-energia:hover { transform:translateY(-2px); border-color:#a276b3; }
+.opcion-energia.seleccionada { border:2px solid #70458c; background:#f5edf8; color:#593c70; box-shadow:0 0 0 3px #70458c18; }
+.emoji-energia { font-size:1.6rem; }
+.opcion-energia strong { font-size:.85rem; }
+.opcion-energia>span:last-child { font-size:.75rem; line-height:1.25; }
+.ayuda-escala { margin:-.25rem 0 .75rem; color:#706a78; }
+.escala-esfuerzo { display:grid; grid-template-columns:repeat(10,minmax(2.4rem,1fr)); gap:.4rem; }
+.escala-esfuerzo button { min-height:42px; border:1px solid #ddd3e2; border-radius:10px; background:#fff; color:#55465f; cursor:pointer; font:inherit; font-weight:700; }
+.escala-esfuerzo button:hover { border-color:#a276b3; background:#faf5fc; }
+.escala-esfuerzo button.seleccionada { border-color:#70458c; background:#70458c; color:#fff; box-shadow:0 0 0 3px #70458c22; }
+.referencias-esfuerzo { display:flex; justify-content:space-between; margin-top:.45rem; color:#706a78; font-size:.78rem; }
+.esfuerzo-seleccionado { min-height:1.4em; margin:.65rem 0 0; color:#593c70; }
+.error-validacion { display:block; margin-top:.25rem; color:#a42c4a; }
+.acciones-evaluacion { display:flex; justify-content:flex-end; gap:.65rem; margin-top:1.4rem; }
+.acciones-evaluacion button { min-height:44px; padding:.6rem 1rem; font-weight:700; }
+.encabezado-detalle { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+.encabezado-detalle h2 { margin-bottom:.25rem; color:#35233e; }
+.bloque-planificacion,.bloque-realizado { margin-top:1rem; padding:1rem; border-radius:12px; }
+.bloque-planificacion { border:1px solid #eaddec; background:#fbf7fc; }
+.bloque-realizado { border:1px solid #dcebe3; background:#f7fbf8; }
+.bloque-planificacion h3,.bloque-realizado h3 { margin:0 0 .7rem; color:#493653; font-size:1rem; }
+.datos-planificados { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.7rem; margin:0; }
+.datos-planificados>div { padding:.65rem .75rem; border-radius:9px; background:#fff; }
+.datos-planificados dt { color:#706a78; font-size:.78rem; }
+.datos-planificados dd { margin:.15rem 0 0; color:#35233e; font-size:1rem; font-weight:750; }
+.etiqueta-adicional { display:inline-block; padding:.32rem .65rem; border-radius:999px; background:#fff0d8; color:#835a16; font-size:.78rem; font-weight:750; }
+.texto-secundario { margin:.35rem 0 0; color:#706a78; }
+.aviso-ambiguo { margin:.2rem 0 0; color:#8a5a16; font-size:.9rem; }
+.bloque-realizado table { background:#fff; }
+.bloque-realizado th { color:#43624f; }
+.evaluacion-resumen { margin:1rem 0; padding:1rem; border:1px solid #dcebe3; border-radius:14px; background:#f7fbf8; }
+.evaluacion-resumen dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.6rem; margin:0; }
+.evaluacion-resumen dl>div { padding:.6rem; border-radius:9px; background:#fff; }
+@media(max-width:760px) {
+  .encabezado-entrenamiento,.encabezado-evaluacion,.encabezado-detalle { flex-direction:column; }
+  .opciones-energia { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .opcion-energia:last-child { grid-column:span 2; }
+  .escala-esfuerzo { grid-template-columns:repeat(5,minmax(2.4rem,1fr)); }
+  .datos-planificados { grid-template-columns:1fr; }
+  .evaluacion-resumen dl { grid-template-columns:1fr; }
+}
+@media(max-width:420px) {
+  .referencias-esfuerzo { font-size:.68rem; }
+  .acciones-evaluacion { flex-direction:column-reverse; }
+  .acciones-evaluacion button { width:100%; }
+}

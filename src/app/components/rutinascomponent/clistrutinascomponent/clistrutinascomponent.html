@@ -28,6 +28,11 @@
           <div><dt>Creada</dt><dd>{{ element.fechaCreacion | date: 'dd/MM/yyyy' }}</dd></div>
         </dl>
         <div class="acciones-rutina">
+          @if (element.estado) {
+            <button class="boton principal boton-iniciar" type="button" (click)="iniciarEntrenamiento(element)" [disabled]="iniciandoRutinaId !== null" [attr.aria-busy]="iniciandoRutinaId === element.idRutina" [attr.aria-label]="'Iniciar entrenamiento de ' + element.nombre">
+              @if (iniciandoRutinaId === element.idRutina) { <span class="indicador-carga" aria-hidden="true"></span> Iniciando... } @else { Iniciar entrenamiento }
+            </button>
+          }
           <a class="boton secundario" [routerLink]="['/rutinas/editar', element.idRutina]" [attr.aria-label]="'Editar rutina ' + element.nombre">Editar <span aria-hidden="true">→</span></a>
           @if (element.estado) {
             <button class="boton boton-estado" type="button" (click)="cambiarEstado(element)" [attr.aria-label]="'Desactivar rutina ' + element.nombre">Desactivar</button>

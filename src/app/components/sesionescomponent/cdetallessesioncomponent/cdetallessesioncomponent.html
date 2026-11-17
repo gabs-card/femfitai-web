@@ -1,59 +1,189 @@
 <a class="volver" routerLink="/sesiones/listar">← Mis sesiones</a>
-<header class="encabezado"><div><h1>Ejercicios de la sesión</h1><p>{{ sesion?.fecha | date:'medium' }} · Sesión #{{ idSesion }}</p></div></header>
-@if (mensaje) { <p class="mensaje" role="alert">{{ mensaje }}</p> }
+
+<header class="encabezado-entrenamiento">
+  <div>
+    <p class="sobrelinea">ENTRENAMIENTO</p>
+    <h1>{{ rutinaNombre || (sesion ? 'Rutina #' + sesion.idRutina : 'Sesión') }}</h1>
+    <p class="datos-sesion">
+      {{ sesion?.fecha | date:'medium' }}
+      <span aria-hidden="true">·</span>
+      Sesión #{{ idSesion }}
+    </p>
+  </div>
+  @if (sesion) {
+    <span class="estado-sesion" [class.estado-en-curso]="entrenamientoEnCurso" [class.estado-finalizada]="sesionFinalizada">
+      {{ estadoSesion }}
+    </span>
+  }
+</header>
+
+@if (mensaje) { <p class="mensaje" [class.mensaje-exito]="mensajeExito" role="alert">{{ mensaje }}</p> }
+@if (mensajeRutina) { <p class="aviso-plan" role="status">{{ mensajeRutina }}</p> }
+
+@if (sesionFinalizada) {
+  <section class="evaluacion-resumen" aria-labelledby="titulo-evaluacion-guardada">
+    <h2 id="titulo-evaluacion-guardada">Evaluación del entrenamiento</h2>
+    <dl>
+      <div><dt>Duración</dt><dd>{{ sesion?.duracionMin ?? '—' }}{{ sesion?.duracionMin !== null && sesion?.duracionMin !== undefined ? ' min' : '' }}</dd></div>
+      <div><dt>Energía</dt><dd>{{ energiaRegistrada?.emoji ?? '' }} {{ sesion?.nivelEnergia ?? '—' }}{{ energiaRegistrada ? ' · ' + energiaRegistrada.descripcion : '' }}</dd></div>
+      <div><dt>Esfuerzo percibido</dt><dd>{{ sesion?.esfuerzoPercibido ?? '—' }}{{ sesion?.esfuerzoPercibido !== null && sesion?.esfuerzoPercibido !== undefined ? ' / 10 · ' + intensidadEsfuerzo : '' }}</dd></div>
+    </dl>
+  </section>
+}
+
+@if (entrenamientoEnCurso) {
+  <div class="acciones-entrenamiento">
+    <button class="primario boton-finalizar" type="button" (click)="abrirEvaluacion()" [disabled]="finalizando || guardandoDetalle || guardandoSerie || eliminandoId !== null">
+      Finalizar entrenamiento
+    </button>
+  </div>
+}
+
+@if (mostrarEvaluacion && entrenamientoEnCurso) {
+  <section class="evaluacion" aria-labelledby="titulo-evaluacion">
+    <div class="encabezado-evaluacion">
+      <div><p class="sobrelinea">ÚLTIMO PASO</p><h2 id="titulo-evaluacion">¿Cómo te fue?</h2></div>
+      <p>Registra cómo te sentiste durante este entrenamiento.</p>
+    </div>
+    <form [formGroup]="evaluacionForm" (ngSubmit)="confirmarFinalizacion()" novalidate>
+      <label class="campo-duracion" for="duracion-minutos">Duración del entrenamiento (minutos)
+        <input id="duracion-minutos" type="number" min="1" step="1" formControlName="duracionMin" placeholder="Ej. 60" />
+      </label>
+      @if (evaluacionForm.controls.duracionMin.touched && evaluacionForm.controls.duracionMin.invalid) {
+        <small class="error-validacion">Ingresa una duración obligatoria mayor que cero, en minutos enteros.</small>
+      }
+
+      <fieldset class="grupo-evaluacion">
+        <legend>Nivel de energía</legend>
+        <div class="opciones-energia">
+          @for (opcion of energiaOpciones; track opcion.valor) {
+            <button class="opcion-energia" [class.seleccionada]="evaluacionForm.controls.nivelEnergia.value === opcion.valor" type="button" [attr.aria-pressed]="evaluacionForm.controls.nivelEnergia.value === opcion.valor" (click)="seleccionarEnergia(opcion.valor)">
+              <span class="emoji-energia" aria-hidden="true">{{ opcion.emoji }}</span>
+              <strong>{{ opcion.valor }}</strong>
+              <span>{{ opcion.descripcion }}</span>
+            </button>
+          }
+        </div>
+        @if (evaluacionForm.controls.nivelEnergia.touched && evaluacionForm.controls.nivelEnergia.invalid) {
+          <small class="error-validacion">Selecciona un nivel de energía del 1 al 5.</small>
+        }
+      </fieldset>
+
+      <fieldset class="grupo-evaluacion">
+        <legend>Esfuerzo percibido</legend>
+        <p class="ayuda-escala">¿Qué tan exigente fue el entrenamiento?</p>
+        <div class="escala-esfuerzo" role="group" aria-label="Selecciona esfuerzo percibido del 1 al 10">
+          @for (opcion of opcionesEsfuerzo; track opcion) {
+            <button type="button" [class.seleccionada]="evaluacionForm.controls.esfuerzoPercibido.value === opcion" [attr.aria-pressed]="evaluacionForm.controls.esfuerzoPercibido.value === opcion" [attr.aria-label]="'Esfuerzo ' + opcion + ' de 10'" (click)="seleccionarEsfuerzo(opcion)">{{ opcion }}</button>
+          }
+        </div>
+        <div class="referencias-esfuerzo"><span>Bajo · 1</span><span>Moderado · 5</span><span>Alto · 10</span></div>
+        <p class="esfuerzo-seleccionado" aria-live="polite">
+          @if (evaluacionForm.controls.esfuerzoPercibido.value) { Esfuerzo seleccionado: <strong>{{ evaluacionForm.controls.esfuerzoPercibido.value }}/10</strong> }
+          @else { Selecciona un valor del 1 al 10 }
+        </p>
+        @if (evaluacionForm.controls.esfuerzoPercibido.touched && evaluacionForm.controls.esfuerzoPercibido.invalid) {
+          <small class="error-validacion">Selecciona el esfuerzo percibido del 1 al 10.</small>
+        }
+      </fieldset>
+
+      <div class="acciones-evaluacion">
+        <button class="secundario" type="button" (click)="cancelarEvaluacion()" [disabled]="finalizando">Cancelar</button>
+        <button class="primario" type="submit" [disabled]="finalizando">{{ finalizando ? 'Finalizando...' : 'Confirmar y finalizar' }}</button>
+      </div>
+    </form>
+  </section>
+}
+
+@if (sesion && !sesionSoloLectura) {
 <section class="panel">
   <h2>{{ detalleEditando === null ? 'Agregar ejercicio' : 'Editar observación' }}</h2>
   <form [formGroup]="ejercicioForm" (ngSubmit)="guardarDetalle()" novalidate>
-  <label class="campo-buscador" for="busqueda-ejercicio">Buscar ejercicio por nombre o grupo muscular
-  <input id="busqueda-ejercicio" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="sugerencias-ejercicios" [attr.aria-expanded]="sugerenciasAbiertas" [formControl]="busquedaEjercicio" placeholder="Escribe un nombre o grupo muscular" />
-</label>
-@if (sugerenciasAbiertas) {
-  <div id="sugerencias-ejercicios" class="sugerencias-ejercicios" role="listbox" aria-label="Sugerencias de ejercicios">
-    @if (buscandoEjercicios) {
-      <p class="estado-busqueda" role="status">Buscando ejercicios...</p>
-    } @else if (mensajeBusqueda) {
-      <p class="error-busqueda" role="alert">{{ mensajeBusqueda }}</p>
-    } @else if (ejercicios.length === 0) {
-      <p class="estado-busqueda">No se encontraron ejercicios.</p>
-    } @else {
-      @for (ejercicio of ejercicios; track ejercicio.idEjercicio) {
-        <button type="button" class="opcion-ejercicio" role="option" (click)="seleccionarEjercicio(ejercicio)">
-          <strong>{{ ejercicio.nombre }}</strong>
-          <small>{{ ejercicio.grupoMuscular || 'Grupo muscular no indicado' }}</small>
-        </button>
-      }
+    <label class="campo-buscador" for="busqueda-ejercicio">Buscar ejercicio por nombre o grupo muscular
+      <input id="busqueda-ejercicio" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="sugerencias-ejercicios" [attr.aria-expanded]="sugerenciasAbiertas" [formControl]="busquedaEjercicio" placeholder="Escribe un nombre o grupo muscular" />
+    </label>
+    @if (sugerenciasAbiertas) {
+      <div id="sugerencias-ejercicios" class="sugerencias-ejercicios" role="listbox" aria-label="Sugerencias de ejercicios">
+        @if (buscandoEjercicios) {
+          <p class="estado-busqueda" role="status">Buscando ejercicios...</p>
+        } @else if (mensajeBusqueda) {
+          <p class="error-busqueda" role="alert">{{ mensajeBusqueda }}</p>
+        } @else if (ejercicios.length === 0) {
+          <p class="estado-busqueda">No se encontraron ejercicios.</p>
+        } @else {
+          @for (ejercicio of ejercicios; track ejercicio.idEjercicio) {
+            <button type="button" class="opcion-ejercicio" role="option" (click)="seleccionarEjercicio(ejercicio)">
+              <strong>{{ ejercicio.nombre }}</strong><small>{{ ejercicio.grupoMuscular || 'Grupo muscular no indicado' }}</small>
+            </button>
+          }
+        }
+      </div>
     }
-  </div>
-}
-  <label>Observación (opcional)<textarea rows="2" maxlength="255" formControlName="observacion"></textarea></label>
-  <div class="acciones">
-    <button class="primario" type="submit" [disabled]="guardandoDetalle">{{ detalleEditando === null ? 'Agregar ejercicio' : 'Guardar observación' }}</button>
-    @if (detalleEditando !== null) { <button class="secundario" type="button" (click)="cancelarEdicionDetalle()">Cancelar</button> }
-  </div>
-</form>
+    <label>Observación (opcional)<textarea rows="2" maxlength="255" formControlName="observacion"></textarea></label>
+    <div class="acciones">
+      <button class="primario" type="submit" [disabled]="guardandoDetalle">{{ detalleEditando === null ? 'Agregar ejercicio' : 'Guardar observación' }}</button>
+      @if (detalleEditando !== null) { <button class="secundario" type="button" (click)="cancelarEdicionDetalle()">Cancelar</button> }
+    </div>
+  </form>
 </section>
+}
+
 @if (cargando) { <p role="status">Cargando ejercicios y series…</p> }
+@if (cargandoPlanificacion) { <p class="aviso-plan" role="status">Cargando la planificación original de la rutina…</p> }
+@if (mensajePlanificacion) { <p class="aviso-plan" role="status">{{ mensajePlanificacion }}</p> }
 @if (!cargando && detalles.length === 0) { <p class="vacio">Todavía no agregas ejercicios a esta sesión.</p> }
-<section class="detalles">
+
+<section class="detalles" aria-label="Ejercicios del entrenamiento">
   @for (detalle of detalles; track detalle.idDetalle) {
     <article class="detalle">
-      <header><div><h2>{{ detalle.nombre }}</h2><p>{{ detalle.grupoMuscular || 'Grupo muscular no indicado' }}</p></div>
+      <header class="encabezado-detalle">
+        <div><h2>{{ detalle.nombre }}</h2><p>{{ detalle.grupoMuscular || 'Grupo muscular no indicado' }}</p></div>
+        @if (!sesionSoloLectura) {
         <div class="acciones"><button class="secundario" type="button" (click)="editarDetalle(detalle)">Editar observación</button><button class="peligro" type="button" [disabled]="eliminandoId !== null" (click)="eliminarDetalle(detalle)">Eliminar ejercicio</button></div>
+        }
       </header>
       @if (detalle.observacion) { <p class="observacion">{{ detalle.observacion }}</p> }
-      <div class="tabla-wrap"><table><thead><tr><th>Serie</th><th>Repeticiones</th><th>Peso (kg)</th><th>Acciones</th></tr></thead><tbody>
-        @for (serie of detalle.series; track serie.idSerie) { <tr><td>{{ serie.numeroSerie }}</td><td>{{ serie.repeticiones }}</td><td>{{ serie.pesoKg }}</td><td><button class="texto" type="button" (click)="editarSerie(detalle, serie)">Editar</button><button class="texto peligro-texto" type="button" (click)="eliminarSerie(serie)">Eliminar</button></td></tr> }
-      </tbody></table></div>
-      @if (detalle.series.length === 0) { <p class="sin-series">Sin series registradas.</p> }
-      <button class="secundario nueva-serie" type="button" (click)="iniciarSerie(detalle)">Agregar serie</button>
-      @if (serieParaDetalle === detalle.idDetalle) {
-        <form class="form-serie" [formGroup]="serieForm" (ngSubmit)="guardarSerie()" novalidate>
-          <label>Número<input type="number" min="1" step="1" formControlName="numeroSerie" /></label>
-          <label>Repeticiones<input type="number" min="1" step="1" formControlName="repeticiones" /></label>
-          <label>Peso (kg)<input type="number" min="0" max="9999.99" step="0.01" formControlName="pesoKg" /></label>
-          <button class="primario" type="submit" [disabled]="guardandoSerie">{{ serieEditando === null ? 'Guardar serie' : 'Actualizar serie' }}</button><button class="secundario" type="button" (click)="cancelarSerie()">Cancelar</button>
-        </form>
-      }
+
+      <section class="bloque-planificacion" aria-label="Planificación del ejercicio">
+        <h3>Planificado</h3>
+        @if (cargandoPlanificacion) {
+          <p class="texto-secundario">Consultando planificación…</p>
+        } @else if (detalle.planificacion) {
+          <dl class="datos-planificados">
+            <div><dt>Series</dt><dd>{{ detalle.planificacion.series ?? 'No definido' }}</dd></div>
+            <div><dt>Repeticiones objetivo</dt><dd>{{ detalle.planificacion.repeticiones ?? 'No definido' }}</dd></div>
+            <div><dt>Descanso</dt><dd>{{ detalle.planificacion.descansoSeg !== null ? detalle.planificacion.descansoSeg + ' s' : 'No definido' }}</dd></div>
+          </dl>
+        } @else if (detalle.planificacionAmbigua) {
+          <p class="aviso-ambiguo">No se muestra la planificación: este ejercicio se repite en la rutina o en la sesión y no se puede asociar de forma inequívoca.</p>
+        } @else if (planificacionCargada && detalle.esAdicional) {
+          <span class="etiqueta-adicional">Ejercicio adicional</span>
+          <p class="texto-secundario">No tiene parámetros planificados para esta rutina.</p>
+        } @else if (!planificacionCargada && mensajePlanificacion) {
+          <p class="aviso-ambiguo">No se pudo consultar la planificación de este ejercicio.</p>
+        } @else {
+          <p class="texto-secundario">Planificación no disponible.</p>
+        }
+      </section>
+
+      <section class="bloque-realizado" aria-label="Series realmente realizadas">
+        <h3>Realizado</h3>
+        <div class="tabla-wrap"><table><thead><tr><th>Número de serie</th><th>Repeticiones</th><th>Peso (kg)</th>@if (!sesionSoloLectura) { <th>Acciones</th> }</tr></thead><tbody>
+          @for (serie of detalle.series; track serie.idSerie) { <tr><td>{{ serie.numeroSerie }}</td><td>{{ serie.repeticiones }}</td><td>{{ serie.pesoKg }}</td>@if (!sesionSoloLectura) { <td><button class="texto" type="button" (click)="editarSerie(detalle, serie)">Editar</button><button class="texto peligro-texto" type="button" (click)="eliminarSerie(serie)">Eliminar</button></td> }</tr> }
+        </tbody></table></div>
+        @if (detalle.series.length === 0) { <p class="sin-series">Sin series registradas.</p> }
+        @if (!sesionSoloLectura) {
+        <button class="secundario nueva-serie" type="button" (click)="iniciarSerie(detalle)">Agregar serie</button>
+        @if (serieParaDetalle === detalle.idDetalle) {
+          <form class="form-serie" [formGroup]="serieForm" (ngSubmit)="guardarSerie()" novalidate>
+            <label>Número<input type="number" min="1" step="1" formControlName="numeroSerie" /></label>
+            <label>Repeticiones<input type="number" min="1" step="1" formControlName="repeticiones" /></label>
+            <label>Peso (kg)<input type="number" min="0" max="9999.99" step="0.01" formControlName="pesoKg" /></label>
+            <button class="primario" type="submit" [disabled]="guardandoSerie">{{ serieEditando === null ? 'Guardar serie' : 'Actualizar serie' }}</button><button class="secundario" type="button" (click)="cancelarSerie()">Cancelar</button>
+          </form>
+        }
+        }
+      </section>
     </article>
   }
 </section>

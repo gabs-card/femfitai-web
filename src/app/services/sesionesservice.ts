@@ -13,8 +13,23 @@ export class Sesionesservice {
     return this.http.get<SesionEntrenamientoDTO[]>(`${this.apiURL}/usuario/${idUsuario}`);
   }
 
+  iniciarDesdeRutina(idRutina: number): Observable<SesionEntrenamientoDTO> {
+    return this.http.post<SesionEntrenamientoDTO>(`${this.apiURL}/rutina/${idRutina}/iniciar`, null);
+  }
+
   obtener(id: number): Observable<SesionEntrenamientoDTO> {
     return this.http.get<SesionEntrenamientoDTO>(`${this.apiURL}/${id}`);
+  }
+
+  obtenerDetalle(id: number): Observable<SesionEntrenamientoDTO> {
+    return this.http.get<SesionEntrenamientoDTO>(`${this.apiURL}/detalle/${id}`);
+  }
+
+  finalizar(
+    id: number,
+    datos: Pick<SesionEntrenamientoDTO, 'duracionMin' | 'nivelEnergia' | 'esfuerzoPercibido'>,
+  ): Observable<SesionEntrenamientoDTO> {
+    return this.http.put<SesionEntrenamientoDTO>(`${this.apiURL}/${id}/finalizar`, datos);
   }
 
   insertar(dto: SesionEntrenamientoDTO): Observable<SesionEntrenamientoDTO> {

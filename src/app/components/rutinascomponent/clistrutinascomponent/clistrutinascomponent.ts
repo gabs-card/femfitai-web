@@ -4,8 +4,9 @@ import { MatTableModule } from '@angular/material/table';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Authservice } from '../../../services/authservice';
+import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeError } from '../../../utils/errores';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -20,8 +21,11 @@ export class Clistrutinascomponent implements OnInit {
   dataSource: RutinaDTO[] = [];
   cargando = false;
   mensaje = '';
+  iniciandoRutinaId: number | null = null;
 
   private rs = inject(Rutinasservice);
+  private sesiones = inject(Sesionesservice);
+  private router = inject(Router);
   private auth = inject(Authservice);
   private cdr = inject(ChangeDetectorRef);
 
@@ -66,6 +70,38 @@ export class Clistrutinascomponent implements OnInit {
       },
       error: (err) => {
         this.mensaje = mensajeDeError(err, 'No se pudo cambiar el estado de la rutina.');
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  iniciarEntrenamiento(rutina: RutinaDTO): void {
+    if (!rutina.estado || this.iniciandoRutinaId !== null) return;
+
+    this.iniciandoRutinaId = rutina.idRutina;
+    this.mensaje = '';
+    this.sesiones.iniciarDesdeRutina(rutina.idRutina).subscribe({
+      next: (sesion) => {
+        if (!Number.isSafeInteger(sesion?.idSesion) || sesion.idSesion <= 0) {
+          this.mensaje = 'El servidor no devolvió un identificador de sesión válido.';
+          this.iniciandoRutinaId = null;
+          this.cdr.detectChanges();
+          return;
+        }
+
+        this.router.navigate(['/sesiones/detalle', sesion.idSesion]).then((navegado) => {
+          if (!navegado) this.mensaje = 'La sesión se inició, pero no se pudo abrir su detalle.';
+          this.iniciandoRutinaId = null;
+          this.cdr.detectChanges();
+        }).catch((err) => {
+          this.mensaje = mensajeDeError(err, 'La sesión se inició, pero no se pudo abrir su detalle.');
+          this.iniciandoRutinaId = null;
+          this.cdr.detectChanges();
+        });
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(err, 'No se pudo iniciar el entrenamiento.');
+        this.iniciandoRutinaId = null;
         this.cdr.detectChanges();
       },
     });
