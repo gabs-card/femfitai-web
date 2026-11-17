@@ -1,0 +1,26 @@
+:host { display: block; --mat-datepicker-calendar-date-selected-state-background-color: #c2457a; --mat-datepicker-calendar-date-selected-state-text-color: #fff; --mat-form-field-outlined-focus-outline-color: #c2457a; --mat-form-field-outlined-focus-label-text-color: #a82f64; --mat-button-filled-container-color: #c2457a; --mat-button-filled-label-text-color: #fff; }
+.pagina-diario { display: grid; gap: 20px; }
+.volver { width: fit-content; color: #a82f64; font-weight: 600; text-decoration: none; }
+.encabezado, .formulario, .historial { box-sizing: border-box; padding: 24px; background: #fff; border: 1px solid #eee5eb; border-radius: 18px; box-shadow: 0 8px 28px #39192e09; }
+.etiqueta { color: #a82f64; font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+h2, h3 { margin: 8px 0; color: #2a1c25; font: 500 25px/1.25 Georgia, serif; }
+.encabezado p, .estado { color: #6c5d67; line-height: 1.6; }
+.formulario h3, .historial h3 { margin: 0 0 18px; }
+.campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; }
+mat-form-field { width: 100%; }
+.observaciones { grid-column: 1 / -1; }
+.acciones, .acciones-fila { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.boton-principal { background: #c2457a; color: #fff; border-radius: 11px; padding: 8px 18px; min-height: 42px; }
+.boton-principal:hover { background: #a82f64; }
+.boton-principal:disabled { background: #eee5eb; color: #6c5d67; }
+.aviso { margin: 14px 0 0; padding: 12px 15px; border-radius: 11px; background: #fff3f7; color: #744457; line-height: 1.5; }
+.aviso-ok { background: #eaf6f0; color: #23745e; }
+.estado { padding: 15px; background: #faf7f9; border-radius: 11px; }
+.tabla-contenedor { max-width: 100%; overflow-x: auto; border: 1px solid #eee5eb; border-radius: 12px; }
+table { width: 100%; min-width: 720px; border-collapse: collapse; text-align: left; }
+th, td { padding: 12px 14px; border-bottom: 1px solid #eee5eb; vertical-align: middle; }
+th { background: #fff3f7; color: #63535e; font-size: 12px; }
+tr:last-child td { border-bottom: 0; }
+tr:hover td { background: #fdf9fb; }
+button:focus-visible, a:focus-visible, .tabla-contenedor:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
+@media (max-width: 650px) { .campos { grid-template-columns: 1fr; } .observaciones { grid-column: auto; } .encabezado, .formulario, .historial { padding: 18px; } }

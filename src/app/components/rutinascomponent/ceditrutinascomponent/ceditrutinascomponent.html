@@ -32,6 +32,84 @@
 
     <button matButton="filled" class="boton-principal" type="submit" [disabled]="guardando">Guardar cambios</button>
   </form>
+  <section class="panel-asignaciones" aria-labelledby="titulo-asignaciones" [attr.aria-busy]="cargandoAsignaciones">
+    <h2 id="titulo-asignaciones">Ejercicios de la rutina</h2>
+    <p class="descripcion">Busca ejercicios y configura sus series, repeticiones y descanso.</p>
+
+    <form class="formulario-asignacion" [formGroup]="formularioAsignacion" (ngSubmit)="guardarAsignacion()" novalidate>
+      <label class="campo-buscador" for="busqueda-ejercicio">Ejercicio del catálogo
+        <input id="busqueda-ejercicio" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="sugerencias-ejercicios" [attr.aria-expanded]="sugerenciasAbiertas" [formControl]="busquedaEjercicio" placeholder="Escribe un nombre o grupo muscular" (focus)="abrirSugerencias()" />
+      </label>
+      @if (sugerenciasAbiertas && !busquedaEjercicio.disabled) {
+        <div id="sugerencias-ejercicios" class="sugerencias-ejercicios" role="listbox" aria-label="Ejercicios disponibles">
+          @if (buscandoEjercicios) {
+            <p class="estado-busqueda" role="status">Buscando ejercicios...</p>
+          } @else if (mensajeBusqueda) {
+            <p class="error-busqueda" role="alert">{{ mensajeBusqueda }}</p>
+          } @else if (!busquedaEjercicio.value.trim()) {
+            <p class="estado-busqueda">Escribe el nombre de un ejercicio o un grupo muscular.</p>
+          } @else if (ejercicios.length === 0) {
+            <p class="estado-busqueda">No se encontraron ejercicios.</p>
+          } @else {
+            @for (ejercicio of ejercicios; track ejercicio.idEjercicio) {
+              <button type="button" class="opcion-ejercicio" role="option" (click)="seleccionarEjercicio(ejercicio)">
+                <strong>{{ ejercicio.nombre }}</strong>
+                <small>{{ ejercicio.grupoMuscular || 'Grupo muscular no indicado' }}</small>
+              </button>
+            }
+          }
+        </div>
+      }
+
+      <div class="configuracion-asignacion">
+        <label>Series
+          <input type="number" min="1" step="1" formControlName="series" />
+        </label>
+        <label>Repeticiones
+          <input type="number" min="1" step="1" formControlName="repeticiones" />
+        </label>
+        <label>Descanso (segundos)
+          <input type="number" min="0" step="1" formControlName="descansoSeg" />
+        </label>
+      </div>
+      <p class="ayuda-validacion">Los campos pueden quedar vacíos. Si los completas, series y repeticiones deben ser enteros mayores que cero; descanso puede ser cero.</p>
+      <div class="acciones-asignacion">
+        <button matButton="filled" class="boton-principal" type="submit" [disabled]="guardandoAsignacion || (asignacionEditando === null && !ejercicioSeleccionado)">{{ asignacionEditando ? 'Guardar cambios' : 'Agregar a la rutina' }}</button>
+        @if (asignacionEditando) {
+          <button matButton type="button" (click)="cancelarEdicionAsignacion()">Cancelar edición</button>
+        }
+      </div>
+    </form>
+
+    @if (mensajeAsignaciones) {
+      <p class="mensaje-asignaciones" [class.mensaje-ok]="mensajeAsignaciones.endsWith('correctamente.') || mensajeAsignaciones.endsWith('rutina.')" role="alert">{{ mensajeAsignaciones }}</p>
+    }
+    @if (cargandoAsignaciones) {
+      <p class="estado" role="status">Cargando ejercicios asignados...</p>
+    } @else if (asignaciones.length > 0) {
+      <div class="lista-asignaciones">
+        @for (asignacion of asignaciones; track asignacion.idRutinaEjercicio) {
+          <article class="tarjeta-asignacion">
+            <div class="datos-asignacion">
+              <h3>{{ asignacion.nombre }}</h3>
+              <p>{{ asignacion.grupoMuscular || 'Grupo muscular no indicado' }}</p>
+              <dl>
+                <div><dt>Series</dt><dd>{{ asignacion.series ?? '—' }}</dd></div>
+                <div><dt>Repeticiones</dt><dd>{{ asignacion.repeticiones ?? '—' }}</dd></div>
+                <div><dt>Descanso</dt><dd>{{ asignacion.descansoSeg === null ? '—' : asignacion.descansoSeg + ' s' }}</dd></div>
+              </dl>
+            </div>
+            <div class="acciones-asignacion">
+              <button matButton type="button" (click)="editarAsignacion(asignacion)" [disabled]="guardandoAsignacion || eliminandoAsignacion !== null">Editar parámetros</button>
+              <button matButton type="button" class="boton-eliminar" (click)="eliminarAsignacion(asignacion)" [disabled]="guardandoAsignacion || eliminandoAsignacion !== null" [attr.aria-label]="'Quitar ' + asignacion.nombre + ' de la rutina'">{{ eliminandoAsignacion === asignacion.idRutinaEjercicio ? 'Quitando...' : 'Quitar' }}</button>
+            </div>
+          </article>
+        }
+      </div>
+    } @else if (!mensajeAsignaciones) {
+      <p class="estado estado-vacio">Esta rutina todavía no tiene ejercicios asignados.</p>
+    }
+  </section>
 } @else {
   <p class="estado" role="status">Cargando rutina...</p>
 }

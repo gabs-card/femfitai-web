@@ -1,0 +1,111 @@
+<section class="pagina-diario" aria-labelledby="titulo-diario" [attr.aria-busy]="cargando">
+  <a class="volver" routerLink="/ciclos/listar">← Volver a ciclos</a>
+  <header class="encabezado">
+    <div>
+      <span class="etiqueta">AUTOCONOCIMIENTO</span>
+      <h2 id="titulo-diario">Bitácora diaria del ciclo</h2>
+      @if (fechaInicioCiclo) {
+        <p>Ciclo iniciado el {{ fechaInicioCiclo | date: 'dd/MM/yyyy' }}.</p>
+      }
+    </div>
+  </header>
+
+  @if (errorCarga) {
+    <p class="aviso" role="alert">{{ errorCarga }}</p>
+  } @else if (!cicloValidado) {
+    <p class="estado" role="status">Verificando el ciclo...</p>
+  } @else {
+    <form class="formulario" [formGroup]="form" (ngSubmit)="guardar()">
+      <h3>{{ detalleEditando ? 'Editar registro' : 'Registrar un día' }}</h3>
+      <div class="campos">
+        <mat-form-field>
+          <mat-label>Fecha</mat-label>
+          <input matInput [matDatepicker]="selectorFecha" [max]="hoy" formControlName="fecha" />
+          <mat-hint>DD/MM/AAAA</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="selectorFecha"></mat-datepicker-toggle>
+          <mat-datepicker #selectorFecha></mat-datepicker>
+          @if (form.controls.fecha.hasError('required')) {
+            <mat-error>Selecciona una fecha.</mat-error>
+          }
+          @if (form.controls.fecha.hasError('matDatepickerMax') || form.controls.fecha.hasError('fechaInvalida')) {
+            <mat-error>La fecha no puede ser futura.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Fase (opcional)</mat-label>
+          <mat-select formControlName="faseRegistrada">
+            <mat-option [value]="null">Sin especificar</mat-option>
+            @for (fase of fases; track fase) {
+              <mat-option [value]="fase">{{ fase }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Nivel de energía</mat-label>
+          <mat-select formControlName="nivelEnergia">
+            @for (nivel of nivelesEnergia; track nivel) {
+              <mat-option [value]="nivel">{{ nivel }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.nivelEnergia.hasError('required')) {
+            <mat-error>Selecciona tu nivel de energía.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field class="observaciones">
+          <mat-label>Observaciones (opcional)</mat-label>
+          <textarea matInput rows="3" maxlength="255" formControlName="observaciones"></textarea>
+          <mat-hint align="end">{{ form.controls.observaciones.value?.length ?? 0 }}/255</mat-hint>
+          @if (form.controls.observaciones.hasError('maxlength')) {
+            <mat-error>Usa hasta 255 caracteres.</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="acciones">
+        <button matButton class="boton-principal" type="submit" [disabled]="guardando">
+          {{ guardando ? 'Guardando…' : (detalleEditando ? 'Guardar cambios' : 'Registrar día') }}
+        </button>
+        @if (detalleEditando) {
+          <button matButton type="button" (click)="cancelarEdicion()" [disabled]="guardando">Cancelar edición</button>
+        }
+      </div>
+      @if (mensaje) {
+        <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="status">{{ mensaje }}</p>
+      }
+    </form>
+
+    <section class="historial" aria-labelledby="titulo-historial">
+      <h3 id="titulo-historial">Registros de este ciclo</h3>
+      @if (cargando) {
+        <p class="estado" role="status">Cargando registros…</p>
+      } @else if (detalles.length === 0) {
+        <p class="estado">Todavía no hay registros para este ciclo.</p>
+      } @else {
+        <div class="tabla-contenedor" role="region" aria-label="Bitácora diaria" tabindex="0">
+          <table>
+            <thead><tr><th>Fecha</th><th>Fase</th><th>Energía</th><th>Observaciones</th><th>Acciones</th></tr></thead>
+            <tbody>
+              @for (detalle of detalles; track detalle.idDetalleDiarioCiclo) {
+                <tr>
+                  <td>{{ detalle.fecha | date: 'dd/MM/yyyy' }}</td>
+                  <td>{{ detalle.faseRegistrada || '—' }}</td>
+                  <td>{{ detalle.nivelEnergia ?? '—' }}</td>
+                  <td>{{ detalle.observaciones || '—' }}</td>
+                  <td class="acciones-fila">
+                    <button matButton type="button" (click)="editar(detalle)" [disabled]="guardando || eliminandoId !== null">Editar</button>
+                    <button matButton type="button" (click)="eliminar(detalle)" [disabled]="eliminandoId !== null || guardando">
+                      {{ eliminandoId === detalle.idDetalleDiarioCiclo ? 'Eliminando…' : 'Eliminar' }}
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  }
+</section>
