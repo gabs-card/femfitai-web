@@ -7,7 +7,7 @@ import { RutinaDTO } from '../../../models/RutinaDTO';
 import { SesionEntrenamientoDTO } from '../../../models/SesionEntrenamientoDTO';
 import { Detallesesionservice } from '../../../services/detallesesionservice';
 import { Detalleserieservice } from '../../../services/detalleserieservice';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeError } from '../../../utils/errores';

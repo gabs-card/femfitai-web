@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { UsuarioDTO, UsuarioEditDTO } from '../models/UsuarioDTO';
-import { Authservice } from './authservice';
+import { Authservice } from './loginservice';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { SesionEntrenamientoDTO } from '../../../models/SesionEntrenamientoDTO';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';

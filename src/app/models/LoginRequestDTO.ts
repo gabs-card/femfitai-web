@@ -1,4 +1,4 @@
-export class LoginDTO {
+export class LoginRequestDTO {
     correo: string = '';
     password: string = '';
 }

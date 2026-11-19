@@ -3,7 +3,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Logincomponent } from './components/logincomponent/logincomponent';
 import { Menucomponent } from './components/menucomponent/menucomponent';
-import { Authservice } from './services/authservice';
+import { Authservice } from './services/loginservice';
 import { Landingcomponent } from './components/landingcomponent/landingcomponent';
 
 @Component({

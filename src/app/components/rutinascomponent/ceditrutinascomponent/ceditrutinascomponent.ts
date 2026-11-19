@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Rutinaejerciciosservice } from '../../../services/rutinaejerciciosservice';
 import { Ejerciciosservice } from '../../../services/ejerciciosservice';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { EjercicioDTO } from '../../../models/EjercicioDTO';
 import { Page } from '../../../models/Page';

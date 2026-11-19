@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Authservice } from '../../services/authservice';
+import { Authservice } from '../../services/loginservice';
 import { UsuariosService } from '../../services/usuariosservices';
 import { Usuarioscomponent } from '../usuarioscomponent/usuarioscomponent';
 @Component({
