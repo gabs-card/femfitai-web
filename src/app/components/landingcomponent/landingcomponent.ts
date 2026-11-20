@@ -1,13 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-landingcomponent',
-  standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './landingcomponent.html',
   styleUrl: './landingcomponent.css',
 })
-export class Landingcomponent {
-  @Output() iniciarSesion = new EventEmitter<void>();
-  @Output() crearCuenta = new EventEmitter<void>();
-}
+export class Landingcomponent {}
