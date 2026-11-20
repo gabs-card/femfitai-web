@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { UsuarioDTO, UsuarioEditDTO } from '../models/UsuarioDTO';
-import { Authservice } from './loginservice';
+import { Loginservice } from './loginservice';
 import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {
@@ -12,24 +12,22 @@ export class UsuariosService {
 
   constructor(
     private http: HttpClient,
-    private authService: Authservice,
+    private authService: Loginservice,
   ) {}
 
   listar(): void {
     this.usuarios.set([]);
     this.error.set('');
 
-    const token = this.authService.token();
-    if (!token) {
+    if (!this.authService.isAuthenticated()) {
+
       this.error.set('Inicia sesión para consultar los usuarios de FemFitAI.');
       return;
     }
 
     this.cargando.set(true);
     this.http
-      .get<UsuarioDTO[]>(`${environment.apiUrl}/usuarios`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get<UsuarioDTO[]>(`${environment.apiUrl}/usuarios`)
       .subscribe({
         next: (usuarios) => {
           this.usuarios.set(usuarios);
