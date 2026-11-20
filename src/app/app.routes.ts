@@ -21,7 +21,6 @@ import { Cinsertcicloscomponent } from './components/cicloscomponent/cinsertcicl
 import { Ceditcicloscomponent } from './components/cicloscomponent/ceditcicloscomponent/ceditcicloscomponent';
 import { Clistcicloscomponent } from './components/cicloscomponent/clistcicloscomponent/clistcicloscomponent';
 import { Cicloscomponent } from './components/cicloscomponent/cicloscomponent';
-// ... el resto de imports de componentes (están completos en el patch 4)
 
 export const routes: Routes = [
   { path: '', component: Landingcomponent, pathMatch: 'full' },
@@ -37,7 +36,7 @@ export const routes: Routes = [
         path: 'ciclos',
         component: Cicloscomponent,
         canActivate: [roleGuard],
-        data: { roles: ['TESTER'] },
+        data: { roles: ['USUARIA'] },
         children: [
           { path: '', redirectTo: 'listar', pathMatch: 'full' },
           { path: 'listar', component: Clistcicloscomponent },
@@ -50,17 +49,17 @@ export const routes: Routes = [
         path: 'ejercicios',
         component: Ejercicioscomponent,
         canActivate: [roleGuard],
-        data: { roles: ['TESTER'] },
+        data: { roles: ['USUARIA'] },
         children: [
           { path: '', redirectTo: 'listar', pathMatch: 'full' },
           { path: 'listar', component: Clistejercicioscomponent },
         ],
       },
-      { path: 'perfil', component: Perfilcomponent, canActivate: [roleGuard], data: { roles: ['TESTER'] } },
+      { path: 'perfil', component: Perfilcomponent, canActivate: [roleGuard], data: { roles: ['USUARIA'] } },
       {
         path: 'rutinas',
         canActivate: [roleGuard],
-        data: { roles: ['TESTER'] },
+        data: { roles: ['USUARIA'] },
         loadChildren: () =>
           import('./components/rutinascomponent/rutinas.routes').then((m) => m.RUTINAS_ROUTES),
       },
@@ -68,7 +67,7 @@ export const routes: Routes = [
         path: 'progreso',
         component: Progresocomponent,
         canActivate: [roleGuard],
-        data: { roles: ['TESTER'] },
+        data: { roles: ['USUARIA'] },
         children: [
           { path: '', redirectTo: 'listar', pathMatch: 'full' },
           { path: 'listar', component: Clistprogresocomponent },
@@ -79,19 +78,19 @@ export const routes: Routes = [
       {
         path: 'usuarios',
         canActivate: [roleGuard],
-        data: { roles: ['PROGRAMADOR'] },
+        data: { roles: ['ADMIN'] },
         children: [
           { path: '', redirectTo: 'listar', pathMatch: 'full' },
           { path: 'listar', component: Clistusuarioscomponent },
           { path: 'editar/:id', component: Ceditusuarioscomponent },
         ],
       },
-      { path: 'chat', component: Chatcomponent, canActivate: [roleGuard], data: { roles: ['TESTER'] } },
-      { path: 'recomendaciones', component: Recomendacionescomponent, canActivate: [roleGuard], data: { roles: ['TESTER'] } },
+      { path: 'chat', component: Chatcomponent, canActivate: [roleGuard], data: { roles: ['USUARIA'] } },
+      { path: 'recomendaciones', component: Recomendacionescomponent, canActivate: [roleGuard], data: { roles: ['USUARIA'] } },
       {
         path: 'sesiones',
         canActivate: [roleGuard],
-        data: { roles: ['TESTER'] },
+        data: { roles: ['USUARIA'] },
         loadChildren: () =>
           import('./components/sesionescomponent/sesiones.routes').then((m) => m.SESIONES_ROUTES),
       },
