@@ -11,7 +11,11 @@ import { Loginservice } from '../../services/loginservice';
 export class Homecomponent {
   constructor(private readonly loginService: Loginservice) { }
 
-  get esProgramador(): boolean {
-    return this.loginService.hasAnyRole(['PROGRAMADOR']);
+  get esAdmin(): boolean {
+  return this.loginService.hasAnyRole(['ADMIN']);
+  }
+
+ get esUsuaria(): boolean {
+  return this.loginService.hasAnyRole(['USUARIA']);
   }
 }

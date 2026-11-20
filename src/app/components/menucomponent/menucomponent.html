@@ -12,12 +12,12 @@
             Inicio
         </a>
 
-        @if (esProgramador) {
+        @if (esAdmin) {
             <a routerLink="/usuarios/listar"
                routerLinkActive="activo">
                 Usuarios
             </a>
-        } @else {
+        } @else if (esUsuaria) {
             <a routerLink="/ciclos/listar"
                routerLinkActive="activo">
                 Listar ciclos

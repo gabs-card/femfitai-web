@@ -4,7 +4,7 @@
     <h1 id="titulo-inicio">Bienvenida a FemFitAI <span aria-hidden="true">♡</span></h1>
     <p class="subtitulo">Tu entrenamiento, a tu ritmo. Un espacio para cuidarte y seguir avanzando.</p>
   </header>
-  @if (esProgramador) {
+  @if (esAdmin) {
     <nav class="panel-inicio" aria-label="Administración">
       <article class="tarjeta tarjeta-rosada">
         <p class="etiqueta">ADMINISTRACIÓN</p>
@@ -13,7 +13,7 @@
         <a class="boton boton-principal" routerLink="/usuarios/listar">Usuarios <span aria-hidden="true">→</span></a>
       </article>
     </nav>
-  } @else {
+  } @else if (esUsuaria) {
     <nav class="panel-inicio" aria-label="Elige a dónde quieres ir">
       <article class="tarjeta tarjeta-ciclo">
         <div class="titulo-tarjeta"><h2>Tu ciclo hoy</h2><span class="distintivo">Mi ciclo</span></div>

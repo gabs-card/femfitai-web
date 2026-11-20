@@ -14,9 +14,13 @@ export class Menucomponent {
     private readonly router: Router
   ) { }
 
-  get esProgramador(): boolean {
-    return this.loginService.hasAnyRole(['PROGRAMADOR']);
+  get esAdmin(): boolean {
+   return this.loginService.hasAnyRole(['ADMIN']);
   }
+
+ get esUsuaria(): boolean {
+   return this.loginService.hasAnyRole(['USUARIA']);
+ }
 
   cerrarSesion(): void {
     this.loginService.logout();
