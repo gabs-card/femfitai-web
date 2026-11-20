@@ -1,56 +1,65 @@
-import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Authservice } from '../../services/loginservice';
-import { UsuariosService } from '../../services/usuariosservices';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Loginservice } from '../../services/loginservice';
 import { Usuarioscomponent } from '../usuarioscomponent/usuarioscomponent';
+
 @Component({
-  imports: [Usuarioscomponent],
   selector: 'app-logincomponent',
-  styleUrl: './logincomponent.css',
+  imports: [ReactiveFormsModule, Usuarioscomponent],
   templateUrl: './logincomponent.html',
+  styleUrl: './logincomponent.css',
 })
 export class Logincomponent implements OnInit {
-  @Input() registroInicial = false;
-  @Output() volverLanding = new EventEmitter<void>();
-  cargando = signal(false);
-  mensaje = signal('');
+  private readonly fb = inject(FormBuilder);
+  private readonly auth = inject(Loginservice);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  constructor(private authService: Authservice, public usuariosService: UsuariosService) {}
+  readonly form = this.fb.nonNullable.group({
+    correo: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
+
+  mensaje = signal('');
+  submitting = signal(false);
+  mostrarRegistro = signal(false);
 
   ngOnInit(): void {
-    this.mostrarRegistro.set(this.registroInicial);
+    this.mostrarRegistro.set(this.route.snapshot.data['registroInicial'] === true);
   }
 
-  iniciarSesion(correo: string, password: string): void {
-    if (this.cargando() || this.usuariosService.cargando()) {
+  submit(): void {
+    if (this.form.invalid || this.submitting()) {
+      this.form.markAllAsTouched();
       return;
     }
 
     this.mensaje.set('');
-    this.authService.logout();
-    this.usuariosService.usuarios.set([]);
-    this.usuariosService.error.set('');
+    this.submitting.set(true);
 
-    if (!correo.trim() || !password) {
-      this.mensaje.set('Ingresa tu correo y contraseña.');
-      return;
-    }
+    const { correo, password } = this.form.getRawValue();
 
-    this.cargando.set(true);
-    this.authService.login({ correo: correo.trim(), password }).subscribe({
-      next: (respuesta) => {
-        this.cargando.set(false);
-        this.mensaje.set('Sesión iniciada.');
+    this.auth.login({ correo: correo.trim(), password }).subscribe({
+      next: () => {
+        this.submitting.set(false);
 
-      if (respuesta.rol === 'PROGRAMADOR') {
-          this.usuariosService.listar();
-      }
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        const destination =
+          returnUrl?.startsWith('/') && !returnUrl.startsWith('//') && returnUrl !== '/'
+            ? returnUrl
+            : '/inicio';
+
+        void this.router.navigateByUrl(destination);
       },
-      error: (respuesta: HttpErrorResponse) => {
-        this.cargando.set(false);
-        if (respuesta.status === 401) {
+      error: (error: HttpErrorResponse) => {
+        this.submitting.set(false);
+        this.form.controls.password.reset('');
+
+        if (error.status === 401) {
           this.mensaje.set('Correo o contraseña incorrectos, o cuenta inactiva.');
-        } else if (respuesta.status === 0) {
+        } else if (error.status === 0) {
           this.mensaje.set('No se pudo conectar con FemFitAI. Verifica la conexión con el servidor.');
         } else {
           this.mensaje.set('No se pudo iniciar sesión.');
@@ -59,17 +68,20 @@ export class Logincomponent implements OnInit {
     });
   }
 
-        mostrarRegistro = signal(false);
+  volverLanding(): void {
+    void this.router.navigateByUrl('/');
+  }
 
-      abrirRegistro(): void {
-        this.mostrarRegistro.set(true);
-        this.mensaje.set('');
-      }
+  abrirRegistro(): void {
+    this.mostrarRegistro.set(true);
+    this.mensaje.set('');
+  }
 
-      volverLogin(): void {
-        this.mostrarRegistro.set(false);
-        this.mensaje.set('');
-}
+  volverLogin(): void {
+    this.mostrarRegistro.set(false);
+    this.mensaje.set('');
+  }
+
   cuentaCreada(): void {
     this.mostrarRegistro.set(false);
     this.mensaje.set('Cuenta creada correctamente.');

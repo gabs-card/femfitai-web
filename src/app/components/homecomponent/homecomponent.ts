@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Authservice } from '../../services/loginservice';
+import { Loginservice } from '../../services/loginservice';
 
 @Component({
   imports: [RouterLink],
@@ -9,5 +9,9 @@ import { Authservice } from '../../services/loginservice';
   templateUrl: './homecomponent.html',
 })
 export class Homecomponent {
-  auth = inject(Authservice);
+  constructor(private readonly loginService: Loginservice) { }
+
+  get esProgramador(): boolean {
+    return this.loginService.hasAnyRole(['PROGRAMADOR']);
+  }
 }
