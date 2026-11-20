@@ -6,7 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UsuariosService } from '../../../services/usuariosservices';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { UsuarioDTO } from '../../../models/UsuarioDTO';
 import { mensajeDeError } from '../../../utils/errores';
 

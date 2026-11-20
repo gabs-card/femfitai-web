@@ -11,7 +11,7 @@ import { DetalleSerieDTO } from '../../../models/DetalleSerieDTO';
 import { Page } from '../../../models/Page';
 import { RutinaEjercicioDetalleDTO } from '../../../models/RutinaEjerciciosDTO';
 import { SesionEntrenamientoDTO } from '../../../models/SesionEntrenamientoDTO';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { Detallesesionservice } from '../../../services/detallesesionservice';
 import { Detalleserieservice } from '../../../services/detalleserieservice';
 import { Ejerciciosservice } from '../../../services/ejerciciosservice';

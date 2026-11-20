@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
 import { Ciclosservice } from '../../../services/ciclosservice';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { CicloDTO } from '../../../models/CicloDTO';
 import { aISO } from '../../../utils/fechas';
 import { mensajeDeError } from '../../../utils/errores';

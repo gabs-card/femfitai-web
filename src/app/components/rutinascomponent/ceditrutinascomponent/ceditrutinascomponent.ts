@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Rutinaejerciciosservice } from '../../../services/rutinaejerciciosservice';
 import { Ejerciciosservice } from '../../../services/ejerciciosservice';
-import { Authservice } from '../../../services/authservice';
+import { Loginservice } from '../../../services/loginservice';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { EjercicioDTO } from '../../../models/EjercicioDTO';
 import { Page } from '../../../models/Page';
@@ -48,7 +48,7 @@ export class Ceditrutinascomponent implements OnInit {
   private rs = inject(Rutinasservice);
   private readonly rutinaEjerciciosService = inject(Rutinaejerciciosservice);
   private readonly ejerciciosService = inject(Ejerciciosservice);
-  private auth = inject(Authservice);
+  private auth = inject(Loginservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
@@ -68,7 +68,7 @@ export class Ceditrutinascomponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.rs.getRutina(this.id).subscribe({
       next: (r) => {
-        if (r.idUsuario !== this.auth.idUsuario()) {
+        if (r.idUsuario !== this.auth.getIdUsuario()) {
           this.errorCarga = 'Esta rutina pertenece a otra cuenta.';
           this.cdr.detectChanges();
           return;

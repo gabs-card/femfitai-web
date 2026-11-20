@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { Ciclosservice } from '../../../services/ciclosservice';
 import { Detallediariocicloservice } from '../../../services/detallediariocicloservice';
 import { DetalleDiarioCicloDTO } from '../../../models/DetalleDiarioCicloDTO';

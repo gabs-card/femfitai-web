@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { Rutinasservice } from '../../../services/rutinasservice';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { NIVELES, OBJETIVOS } from '../../../models/catalogos';
 import { mensajeDeError } from '../../../utils/errores';

@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { Rutinasservice } from '../../../services/rutinasservice';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeError } from '../../../utils/errores';
 import { Router, RouterLink } from '@angular/router';

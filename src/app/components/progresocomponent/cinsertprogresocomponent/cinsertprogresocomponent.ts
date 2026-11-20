@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { Progresoservice } from '../../../services/progresoservice';
-import { Authservice } from '../../../services/authservice';
+import { Authservice } from '../../../services/loginservice';
 import { ProgresoDTO } from '../../../models/ProgresoDTO';
 import { aISO } from '../../../utils/fechas';
 import { mensajeDeError } from '../../../utils/errores';

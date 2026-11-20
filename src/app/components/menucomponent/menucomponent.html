@@ -2,22 +2,22 @@
   <div class="menu-contenido">
 
     <div class="menu-logo">
-        <a routerLink="/">FemFitAI</a>
+        <a routerLink="/inicio">FemFitAI</a>
     </div>
 
     <nav class="menu-navegacion" aria-label="Navegación principal">
-        <a routerLink="/"
+        <a routerLink="/inicio"
            routerLinkActive="activo"
            [routerLinkActiveOptions]="{ exact: true }">
             Inicio
         </a>
 
-        @if (auth.esProgramador()) {
+        @if (esAdmin) {
             <a routerLink="/usuarios/listar"
                routerLinkActive="activo">
                 Usuarios
             </a>
-        } @else {
+        } @else if (esUsuaria) {
             <a routerLink="/ciclos/listar"
                routerLinkActive="activo">
                 Listar ciclos

@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { NIVELES, OBJETIVOS } from '../../models/catalogos';
-import { Authservice } from '../../services/authservice';
+import { Authservice } from '../../services/loginservice';
 import { aISO } from '../../utils/fechas';
 import { PerfilUpdateDTO } from '../../models/PerfilUpdateDTO';
 import { DisponibilidadDTO } from '../../models/DisponibilidadDTO';
