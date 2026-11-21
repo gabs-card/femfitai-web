@@ -1,5 +1,10 @@
 # Avance de CRUD y gráficos
 
+**Informe del avance inicial.** El estado actual se amplía en
+[Centro de gestión](centro-gestion.md): ADMIN dispone de mantenimiento real mediante
+endpoints separados. El resto de este documento conserva el alcance y las
+validaciones de la integración inicial como antecedente.
+
 Se revisó como referencia el backend indicado por el equipo en
 `trabajo/FemFitAI-main`.
 Los diseños ADMIN fueron aprobados y su integración se documenta en

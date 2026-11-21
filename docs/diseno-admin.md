@@ -4,6 +4,8 @@ Las maquetas aprobadas se conservan en `propuestas-html/ABRIR.html`. Son
 referencias visuales independientes, con ejemplos explícitos. No se usan
 sus datos de demostración en los componentes Angular.
 
+La gestión real por ADMIN se amplía en [Centro de gestión](centro-gestion.md).
+
 ## Rutas
 
 | Ruta                                    | Rol         | Contenido                                                                   |
@@ -18,7 +20,7 @@ sus datos de demostración en los componentes Angular.
 | `/administracion/ejercicios/insertar`   | ADMIN       | Crear ejercicio                                                             |
 | `/administracion/ejercicios/editar/:id` | ADMIN       | Editar ejercicio                                                            |
 | `/administracion/metricas`              | ADMIN       | Gráficos de usuarios y catálogo                                             |
-| `/administracion/modulos`               | ADMIN       | Mapa informativo de módulos y relaciones                                    |
+| `/administracion/modulos`               | ADMIN       | Centro de gestión con tarjetas y navegación a cada módulo                   |
 | `/estadisticas`                         | USUARIA     | Sesiones del mes, tiempo registrado, rutinas activas y mediciones recientes |
 
 Las rutas personales anteriores permanecen disponibles a USUARIA. Se conserva
@@ -67,15 +69,17 @@ la validación y escape finales permanecen en el backend.
 
 Los indicadores se calculan con las respuestas de los endpoints existentes.
 Una petición fallida se distingue de una lista vacía: se muestra el error y
-los indicadores no se sustituyen por ceros. No se inventan endpoints de métricas,
-ni se consulta información personal de usuarias desde ADMIN. El mapa de módulos
-es informativo y no proporciona un CRUD universal de datos personales.
+los indicadores no se sustituyen por ceros. No se inventan endpoints de métricas.
+La administración de registros personales se realiza mediante los nuevos endpoints
+exclusivos de ADMIN, documentados en [Centro de gestión](centro-gestion.md).
 
 ## Operaciones que requieren un acuerdo adicional
 
-El backend actual no ofrece DELETE de Perfil ni PUT/DELETE genéricos de
-Recomendaciones. Tampoco hay endpoints administrativos de estadísticas de
-rutinas, ciclos o sesiones. No se crean acciones ficticias para esas operaciones.
+Las rutas personales no ofrecen DELETE de Perfil ni PUT/DELETE genéricos de
+Recomendaciones. Los nuevos endpoints administrativos permiten esas operaciones a ADMIN.
+Las sesiones mantienen su flujo de inicio y finalización y se conservan como historial.
+Las métricas actuales cubren cuentas y catálogo; no representan estadísticas
+globales de ciclos, rutinas o sesiones.
 La sincronización wger y la generación de recomendaciones por ciclo son
 funcionalidades distintas de estas pantallas y no se ejecutan desde este avance.
 
@@ -93,6 +97,7 @@ Para la prueba real, ejecutar el backend local en 8080 y Angular con `npm start`
 en 4200; comprobar con cuentas ADMIN y USUARIA de prueba.
 
 Se conservaron respaldos fuera del repositorio antes de modificar archivos.
-No se cambian backend, entidades, DTO, base de datos, dependencias, límites de
-compilación ni configuración local. Los archivos temporales y respaldos no se
+La integración inicial conservó el backend. El Centro de gestión posterior añade
+controller, service, consultas paginadas y un DTO administrativo, sin cambiar
+entidades, esquema, dependencias ni configuración de seguridad. Los archivos temporales y respaldos no se
 incluyen en los commits.

@@ -1,0 +1,103 @@
+.volver {
+  display: inline-block;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+.filtros {
+  align-items: flex-end;
+}
+.filtros label {
+  max-width: 540px;
+}
+.ficha,
+.editor {
+  margin-bottom: 24px;
+}
+.listado {
+  padding: 12px 0 20px;
+}
+.listado .pie {
+  padding: 0 20px;
+}
+caption {
+  text-align: left;
+  padding: 10px 14px 18px;
+}
+.acciones-fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  max-width: 300px;
+}
+.acciones-fila .boton {
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.peligro {
+  color: #9a284b;
+}
+.propietaria {
+  min-width: 180px;
+  max-width: 260px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.valor {
+  max-width: 290px;
+  min-width: 90px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.datos-registro {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.datos-registro dt {
+  font-weight: 600;
+  font-size: 12px;
+  color: #716573;
+}
+.datos-registro dd {
+  margin: 7px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+.casilla {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.casilla input {
+  width: 20px;
+  min-height: 20px;
+  accent-color: #c2457a;
+}
+input:disabled,
+select:disabled {
+  background: #faf7f9;
+  color: #665b68;
+}
+.error-campo {
+  color: #a3264c;
+}
+[aria-invalid='true'] {
+  border-color: #a3264c;
+}
+@media (max-width: 600px) {
+  .datos-registro {
+    grid-template-columns: 1fr;
+  }
+  .filtros label {
+    min-width: 0;
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .acciones-fila {
+    max-width: 230px;
+  }
+}

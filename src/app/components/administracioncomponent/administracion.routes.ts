@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
 
 export const ADMINISTRACION_ROUTES: Routes = [
-  { path: '', redirectTo: 'metricas', pathMatch: 'full' },
+  {
+    path: 'modulos/:modulo',
+    loadComponent: () =>
+      import('./gestionadmincomponent/gestionadmincomponent').then((m) => m.Gestionadmincomponent),
+  },
+  { path: '', redirectTo: 'modulos', pathMatch: 'full' },
   {
     path: 'metricas',
     loadComponent: () =>
