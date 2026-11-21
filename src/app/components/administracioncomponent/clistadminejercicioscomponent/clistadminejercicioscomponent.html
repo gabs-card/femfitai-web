@@ -1,0 +1,97 @@
+<main class="pagina-admin" [attr.aria-busy]="cargando || eliminandoId !== null">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">CONTENIDO PARA ENTRENAR</p>
+      <h1>Catálogo de ejercicios</h1>
+      <p>Organiza, crea y mantén el contenido de FemFitAI.</p>
+    </div>
+    <a class="boton principal" routerLink="/administracion/ejercicios/insertar"
+      >+ Nuevo ejercicio</a
+    >
+  </header>
+  <form class="filtros" [formGroup]="filtros" aria-label="Buscar ejercicios">
+    <label
+      >Buscar ejercicio<input
+        formControlName="query"
+        type="search"
+        placeholder="Escribe un nombre" /></label
+    ><label
+      >Tipo<select formControlName="tipo">
+        <option value="">Todos los tipos</option>
+        @for (tipo of tipos; track tipo) {
+          <option [value]="tipo">{{ tipo }}</option>
+        }
+      </select></label
+    >
+  </form>
+  @if (cargando) {
+    <p class="estado" role="status">Cargando ejercicios...</p>
+  }
+  @if (errorCarga) {
+    <p class="aviso" role="alert">{{ errorCarga }}</p>
+    <button class="boton" type="button" (click)="volverACargar()">Volver a intentar</button>
+  }
+  @if (mensaje) {
+    <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">
+      {{ mensaje }}
+    </p>
+  }
+  <section class="tres-columnas" aria-label="Ejercicios del catálogo">
+    @for (ejercicio of ejercicios; track ejercicio.idEjercicio) {
+      <article class="tarjeta">
+        <div class="visual-ejercicio" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+            <path d="m6 6 12 12M3 8l5-5m8 18 5-5M2 5l3-3m14 20 3-3M6 11l5-5m2 12 5-5" />
+          </svg>
+        </div>
+        <span class="etiqueta">{{ ejercicio.tipo || 'Sin tipo' }}</span>
+        <h2>{{ ejercicio.nombre }}</h2>
+        <p class="nota">{{ descripcion(ejercicio) }}</p>
+        <div class="pie">
+          <span>{{ ejercicio.grupoMuscular || 'Grupo no indicado' }}</span>
+          <div class="acciones">
+            <a
+              class="enlace"
+              [routerLink]="['/administracion/ejercicios/editar', ejercicio.idEjercicio]"
+              [attr.aria-label]="'Editar ' + ejercicio.nombre"
+              >Editar</a
+            ><button
+              class="boton"
+              type="button"
+              (click)="eliminar(ejercicio)"
+              [disabled]="cargando || eliminandoId !== null"
+              [attr.aria-label]="'Eliminar ' + ejercicio.nombre"
+            >
+              {{ eliminandoId === ejercicio.idEjercicio ? 'Eliminando...' : 'Eliminar' }}
+            </button>
+          </div>
+        </div>
+      </article>
+    }
+  </section>
+  @if (!cargando && !errorCarga && ejercicios.length === 0) {
+    <p class="estado">No se encontraron ejercicios con los filtros actuales.</p>
+  }
+  @if (!errorCarga) {
+    <nav class="pie" aria-label="Páginas del catálogo">
+      <span role="status">Página {{ pagina + 1 }} de {{ totalPaginas }}</span>
+      <div class="acciones">
+        <button
+          class="boton"
+          type="button"
+          (click)="cambiarPagina(-1)"
+          [disabled]="pagina === 0 || cargando || eliminandoId !== null"
+        >
+          Anterior</button
+        ><button
+          class="boton"
+          type="button"
+          (click)="cambiarPagina(1)"
+          [disabled]="pagina + 1 >= totalPaginas || cargando || eliminandoId !== null"
+        >
+          Siguiente
+        </button>
+      </div>
+    </nav>
+  }
+</main>

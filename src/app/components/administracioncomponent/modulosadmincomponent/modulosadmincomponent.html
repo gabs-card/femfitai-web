@@ -1,0 +1,34 @@
+<main class="pagina-admin">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">UNA ARQUITECTURA, VARIOS MÓDULOS</p>
+      <h1>Cada registro, conectado.</h1>
+      <p>Mapa de módulos y responsabilidades de FemFitAI.</p>
+    </div>
+  </header>
+  <section class="dos-iguales">
+    <a class="tarjeta enlace" routerLink="/usuarios/listar"
+      ><h2>Gestión de usuarios</h2>
+      <p>Crear cuentas, editar sus datos y administrar su estado.</p>
+      Administrar usuarios →</a
+    ><a class="tarjeta enlace" routerLink="/administracion/ejercicios"
+      ><h2>Catálogo de ejercicios</h2>
+      <p>Crear, consultar, editar y eliminar ejercicios del catálogo.</p>
+      Administrar ejercicios →</a
+    >
+  </section>
+  <p class="aviso-suave">
+    Los siguientes módulos contienen información personal. ADMIN puede consultar este mapa, pero no
+    accede a los registros de las usuarias.
+  </p>
+  <section class="tres-columnas">
+    @for (modulo of modulos; track modulo.nombre) {
+      <article class="tarjeta">
+        <span class="etiqueta">USUARIA</span>
+        <h2 style="margin-top: 18px">{{ modulo.nombre }}</h2>
+        <p class="nota">{{ modulo.relacion }}</p>
+        <p>{{ modulo.detalle }}</p>
+      </article>
+    }
+  </section>
+</main>

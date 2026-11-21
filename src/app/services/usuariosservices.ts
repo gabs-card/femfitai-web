@@ -20,34 +20,31 @@ export class UsuariosService {
     this.error.set('');
 
     if (!this.authService.isAuthenticated()) {
-
       this.error.set('Inicia sesión para consultar los usuarios de FemFitAI.');
       return;
     }
 
     this.cargando.set(true);
-    this.http
-      .get<UsuarioDTO[]>(`${environment.apiUrl}/usuarios`)
-      .subscribe({
-        next: (usuarios) => {
-          this.usuarios.set(usuarios);
-          this.cargando.set(false);
-        },
-        error: (respuesta: HttpErrorResponse) => {
-          if (respuesta.status === 401) {
-            this.error.set('Tu sesión no es válida o ha vencido. Inicia sesión nuevamente.');
-          } else if (respuesta.status === 403) {
-            this.error.set('No tienes permiso para consultar el listado de usuarios.');
-          } else if (respuesta.status === 0) {
-            this.error.set(
-              'No se pudo conectar con FemFitAI. Revisa que el servidor esté disponible.',
-            );
-          } else {
-            this.error.set('No se pudo cargar el listado de usuarios.');
-          }
-          this.cargando.set(false);
-        },
-      });
+    this.http.get<UsuarioDTO[]>(`${environment.apiUrl}/usuarios`).subscribe({
+      next: (usuarios) => {
+        this.usuarios.set(usuarios);
+        this.cargando.set(false);
+      },
+      error: (respuesta: HttpErrorResponse) => {
+        if (respuesta.status === 401) {
+          this.error.set('Tu sesión no es válida o ha vencido. Inicia sesión nuevamente.');
+        } else if (respuesta.status === 403) {
+          this.error.set('No tienes permiso para consultar el listado de usuarios.');
+        } else if (respuesta.status === 0) {
+          this.error.set(
+            'No se pudo conectar con FemFitAI. Revisa que el servidor esté disponible.',
+          );
+        } else {
+          this.error.set('No se pudo cargar el listado de usuarios.');
+        }
+        this.cargando.set(false);
+      },
+    });
   }
 
   registrar(datos: {
@@ -55,6 +52,8 @@ export class UsuariosService {
     apellidos: string;
     correo: string;
     passwordHash: string;
+    rol?: string;
+    estado?: boolean;
   }): Observable<UsuarioDTO> {
     return this.http.post<UsuarioDTO>(`${environment.apiUrl}/usuarios`, datos);
   }

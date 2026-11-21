@@ -1,0 +1,180 @@
+<main class="pagina-admin">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">{{ resumen ? 'UNA VISIÓN MÁS CLARA' : 'DATOS QUE AYUDAN A DECIDIR' }}</p>
+      <h1>{{ resumen ? 'Un espacio para acompañar.' : 'Una mirada a la plataforma.' }}</h1>
+      <p>
+        {{
+          resumen
+            ? 'Gestiona FemFitAI y encuentra lo importante, de un vistazo.'
+            : 'Usuarios y catálogo, a partir de los registros disponibles.'
+        }}
+      </p>
+    </div>
+    <a class="boton principal" routerLink="/usuarios/listar">Gestionar usuarios →</a>
+  </header>
+  @if (resumen) {
+    <section class="bienvenida">
+      <p class="ceja">EL BIENESTAR TAMBIÉN SE ORGANIZA</p>
+      <h2>Cada detalle cuenta.</h2>
+      <p>Un panel pensado para cuidar la experiencia de quienes entrenan con FemFitAI.</p>
+      <a class="enlace" routerLink="/administracion/metricas">Explorar métricas →</a>
+    </section>
+  }
+  <section class="resumen" aria-label="Resumen administrativo">
+    <article class="tarjeta kpi">
+      <p>Cuentas registradas</p>
+      <strong>{{ usuariosDisponibles ? us.usuarios().length : '—' }}</strong
+      ><small>Total de cuentas consultadas</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Cuentas activas</p>
+      <strong>{{ usuariosDisponibles ? activas() : '—' }}</strong
+      ><small>Estado activo confirmado</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Cuentas inactivas</p>
+      <strong>{{ usuariosDisponibles ? inactivas() : '—' }}</strong
+      ><small>Sus datos se conservan</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Ejercicios del catálogo</p>
+      <strong>{{ ejercicios() === null ? '—' : ejercicios()!.length }}</strong
+      ><small>Catálogo completo consultado</small>
+    </article>
+  </section>
+  @if (us.cargando()) {
+    <p class="estado" role="status">Cargando métricas de usuarios...</p>
+  }
+  @if (us.error()) {
+    <p class="aviso" role="alert">{{ us.error() }}</p>
+    <button class="boton" type="button" (click)="us.listar()">Volver a cargar usuarios</button>
+  }
+  @if (usuariosDisponibles) {
+    <section class="dos-columnas">
+      <article class="tarjeta">
+        <h2>Crecimiento de la comunidad</h2>
+        <p class="nota">Registros agrupados por mes. Las cuentas sin fecha no se incluyen.</p>
+        <app-graficobarrascomponent
+          [datos]="meses()"
+          titulo="Cuentas nuevas por mes"
+        ></app-graficobarrascomponent>
+      </article>
+      <article class="tarjeta">
+        <h2>Estado de las cuentas</h2>
+        <p class="nota">Distribución de las cuentas consultadas.</p>
+        @if (us.usuarios().length > 0) {
+          <svg
+            viewBox="0 0 180 180"
+            style="display: block; width: 178px; margin: 14px auto"
+            role="img"
+            [attr.aria-label]="activas() + ' cuentas activas de ' + us.usuarios().length"
+          >
+            <circle cx="90" cy="90" r="65" fill="none" stroke="#f1e9ee" stroke-width="19" />
+            <circle
+              cx="90"
+              cy="90"
+              r="65"
+              fill="none"
+              stroke="#c2457a"
+              stroke-width="19"
+              pathLength="100"
+              [attr.stroke-dasharray]="(activas() / us.usuarios().length) * 100 + ' 100'"
+              transform="rotate(-90 90 90)"
+            />
+            <text x="90" y="97" text-anchor="middle" style="font: 600 30px Arial; fill: #302733">
+              {{ us.usuarios().length }}
+            </text>
+          </svg>
+        }
+        @for (estado of estados(); track estado.etiqueta) {
+          <div class="pie">
+            <span>{{ estado.etiqueta }}</span
+            ><strong>{{ estado.valor }}</strong>
+          </div>
+        }
+        @if (us.usuarios().length === 0) {
+          <p class="estado">Aún no hay cuentas registradas.</p>
+        }
+      </article>
+    </section>
+  }
+  @if (resumen && usuariosDisponibles) {
+    <section class="tarjeta">
+      <header class="cabecera">
+        <div>
+          <h2>Una comunidad que crece</h2>
+          <p class="nota">Últimas cuentas del listado consultado.</p>
+        </div>
+        <a class="enlace" routerLink="/usuarios/listar">Ver todas →</a>
+      </header>
+      <div class="tabla-contenedor" tabindex="0" role="region" aria-label="Últimas cuentas">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Registro</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of recientes(); track u.idUsuario) {
+              <tr>
+                <td>{{ u.nombres }} {{ u.apellidos }}</td>
+                <td>{{ u.rol }}</td>
+                <td>
+                  {{
+                    u.estado === true ? 'Activa' : u.estado === false ? 'Inactiva' : 'Sin estado'
+                  }}
+                </td>
+                <td>
+                  {{ u.fechaRegistro ? (u.fechaRegistro | date: 'dd/MM/yyyy') : 'Sin fecha' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <h2 style="margin-top: 30px">Todo en su lugar</h2>
+    <section class="tres-columnas">
+      <a class="tarjeta enlace" routerLink="/usuarios/listar">Gestionar usuarios →</a
+      ><a class="tarjeta enlace" routerLink="/administracion/ejercicios">Catálogo de ejercicios →</a
+      ><a class="tarjeta enlace" routerLink="/administracion/modulos">Explorar módulos →</a>
+    </section>
+  }
+  @if (!resumen) {
+    @if (cargandoEjercicios()) {
+      <p class="estado" role="status">Cargando métricas del catálogo...</p>
+    }
+    @if (errorEjercicios()) {
+      <p class="aviso" role="alert">{{ errorEjercicios() }}</p>
+      <button class="boton" type="button" (click)="cargarEjercicios()">
+        Volver a cargar catálogo
+      </button>
+    }
+    @if (ejercicios() !== null) {
+      <section class="dos-iguales">
+        <article class="tarjeta">
+          <h2>Ejercicios por tipo</h2>
+          <app-graficobarrascomponent
+            [datos]="tipos()"
+            titulo="Ejercicios por tipo"
+          ></app-graficobarrascomponent>
+        </article>
+        <article class="tarjeta">
+          <h2>Grupos musculares</h2>
+          <app-graficobarrascomponent
+            [datos]="grupos()"
+            titulo="Ejercicios por grupo muscular"
+          ></app-graficobarrascomponent>
+        </article>
+      </section>
+    }
+  }
+  <p class="aviso-suave">
+    ADMIN administra cuentas y catálogo. Los registros personales de ciclos, rutinas, sesiones y
+    progreso permanecen disponibles únicamente para USUARIA.
+  </p>
+</main>

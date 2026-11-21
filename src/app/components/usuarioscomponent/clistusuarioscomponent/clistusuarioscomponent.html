@@ -1,69 +1,152 @@
-<div class="contenedor-usuarios">
-  <h2>{{ verInactivos() ? 'Usuarios inactivos' : 'Usuarios' }}</h2>
-  <button matButton type="button" (click)="alternarVista()">
-    {{ verInactivos() ? 'Ver usuarios activos' : 'Ver usuarios inactivos' }}
-  </button>
-
-  @if (us.cargando()) {
-    <p>Cargando usuarios...</p>
-  }
-  @if (us.error()) {
-    <p class="aviso" role="alert">{{ us.error() }}</p>
-  }
-  @if (mensaje()) {
-    <p class="aviso" [class.aviso-ok]="mensaje().endsWith('correctamente.')" role="alert">{{ mensaje() }}</p>
-  }
-
-  @if (usuariosVisibles().length > 0) {
-    <table mat-table [dataSource]="usuariosVisibles()">
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>ID</th>
-        <td mat-cell *matCellDef="let u">{{ u.idUsuario }}</td>
-      </ng-container>
-      <ng-container matColumnDef="nombres">
-        <th mat-header-cell *matHeaderCellDef>Nombres</th>
-        <td mat-cell *matCellDef="let u">{{ u.nombres }}</td>
-      </ng-container>
-      <ng-container matColumnDef="apellidos">
-        <th mat-header-cell *matHeaderCellDef>Apellidos</th>
-        <td mat-cell *matCellDef="let u">{{ u.apellidos }}</td>
-      </ng-container>
-      <ng-container matColumnDef="correo">
-        <th mat-header-cell *matHeaderCellDef>Correo</th>
-        <td mat-cell *matCellDef="let u">{{ u.correo }}</td>
-      </ng-container>
-      <ng-container matColumnDef="rol">
-        <th mat-header-cell *matHeaderCellDef>Rol</th>
-        <td mat-cell *matCellDef="let u">{{ u.rol }}</td>
-      </ng-container>
-      <ng-container matColumnDef="fecha">
-        <th mat-header-cell *matHeaderCellDef>Registro</th>
-        <td mat-cell *matCellDef="let u">
-          {{ u.fechaRegistro ? (u.fechaRegistro | date: 'dd/MM/yyyy HH:mm') : '—' }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let u">
-          @if (!verInactivos()) {
-            <a matIconButton [routerLink]="['/usuarios/editar', u.idUsuario]" aria-label="Editar">
-              <mat-icon>edit</mat-icon>
-            </a>
-            <button matIconButton type="button" (click)="desactivar(u)" aria-label="Desactivar">
-              <mat-icon>person_off</mat-icon>
-            </button>
-          } @else {
-            <button matIconButton type="button" (click)="reactivar(u)" aria-label="Reactivar">
-              <mat-icon>restore</mat-icon>
-            </button>
-          }
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnas"></tr>
-    </table>
-  } @else if (!us.cargando() && !us.error()) {
-    <p>{{ verInactivos() ? 'No hay usuarios inactivos.' : 'No hay usuarios activos.' }}</p>
-  }
-</div>
+<main class="pagina-admin" [attr.aria-busy]="us.cargando() || procesandoId() !== null">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">COMUNIDAD FEMFITAI</p>
+      <h1>Gestión de usuarios</h1>
+      <p>Personas, permisos y estados, en un solo lugar.</p>
+    </div>
+    <a class="boton principal" routerLink="/usuarios/insertar">+ Crear usuario</a>
+  </header>
+  <section class="resumen" aria-label="Resumen de cuentas">
+    <article class="tarjeta kpi">
+      <p>Total de cuentas</p>
+      <strong>{{ us.cargando() || us.error() ? '—' : us.usuarios().length }}</strong
+      ><small>Cuentas registradas</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Activas</p>
+      <strong>{{ us.cargando() || us.error() ? '—' : activas() }}</strong
+      ><small>Acceso habilitado</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Inactivas</p>
+      <strong>{{ us.cargando() || us.error() ? '—' : inactivas() }}</strong
+      ><small>Sus datos se conservan</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Administración</p>
+      <strong>{{ us.cargando() || us.error() ? '—' : administradores() }}</strong
+      ><small>Cuentas con rol ADMIN</small>
+    </article>
+  </section>
+  <section class="tarjeta">
+    <h2>Todas las cuentas</h2>
+    <p class="nota">Busca una cuenta o revisa su estado.</p>
+    <div class="filtros">
+      <label
+        >Buscar<input
+          #consulta
+          type="search"
+          placeholder="Nombre o correo"
+          [value]="busqueda()"
+          (input)="busqueda.set(consulta.value)" /></label
+      ><label
+        >Rol<select #rolFiltro (change)="rol.set(rolFiltro.value)">
+          <option value="">Todos los roles</option>
+          <option>ADMIN</option>
+          <option>USUARIA</option>
+        </select></label
+      ><label
+        >Estado<select #estadoFiltro (change)="alternarVista(estadoFiltro.value)">
+          <option value="todos">Todos los estados</option>
+          <option value="activas">Activas</option>
+          <option value="inactivas">Inactivas</option>
+        </select></label
+      >
+    </div>
+    @if (us.cargando()) {
+      <p class="estado" role="status">Cargando usuarios...</p>
+    }
+    @if (us.error()) {
+      <p class="aviso" role="alert">{{ us.error() }}</p>
+      <button class="boton" type="button" (click)="us.listar()">Volver a intentar</button>
+    }
+    @if (mensaje()) {
+      <p class="aviso" [class.aviso-ok]="mensaje().endsWith('correctamente.')" role="alert">
+        {{ mensaje() }}
+      </p>
+    }
+    @if (usuariosVisibles().length > 0) {
+      <div
+        class="tabla-contenedor"
+        tabindex="0"
+        role="region"
+        aria-label="Listado de usuarios; desplázate para ver todas las columnas"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Correo</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Registro</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of usuariosVisibles(); track u.idUsuario) {
+              <tr>
+                <td>
+                  <strong>{{ u.nombres }} {{ u.apellidos }}</strong
+                  ><br /><span class="nota">ID {{ u.idUsuario }}</span>
+                </td>
+                <td>{{ u.correo }}</td>
+                <td>
+                  <span class="etiqueta">{{ u.rol }}</span>
+                </td>
+                <td>
+                  <span
+                    class="etiqueta"
+                    [class.verde]="u.estado === true"
+                    [class.gris]="u.estado !== true"
+                    >{{
+                      u.estado === true ? 'Activa' : u.estado === false ? 'Inactiva' : 'Sin estado'
+                    }}</span
+                  >
+                </td>
+                <td>
+                  {{ u.fechaRegistro ? (u.fechaRegistro | date: 'dd/MM/yyyy') : 'Sin fecha' }}
+                </td>
+                <td>
+                  <div class="acciones">
+                    <a
+                      class="enlace"
+                      [routerLink]="['/usuarios/editar', u.idUsuario]"
+                      [attr.aria-label]="'Editar a ' + u.nombres"
+                      >Editar</a
+                    >
+                    @if (u.estado === false) {
+                      <button
+                        class="boton"
+                        type="button"
+                        (click)="reactivar(u)"
+                        [disabled]="us.cargando() || procesandoId() !== null"
+                      >
+                        Reactivar
+                      </button>
+                    } @else {
+                      <button
+                        class="boton"
+                        type="button"
+                        (click)="desactivar(u)"
+                        [disabled]="us.cargando() || procesandoId() !== null"
+                      >
+                        Desactivar
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="nota" role="status">
+        Mostrando {{ usuariosVisibles().length }} de {{ us.usuarios().length }} cuentas.
+      </p>
+    } @else if (!us.cargando() && !us.error()) {
+      <p class="estado">No hay cuentas que coincidan con los filtros actuales.</p>
+    }
+  </section>
+</main>

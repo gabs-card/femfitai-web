@@ -1,63 +1,127 @@
-<header class="menu">
-  <div class="menu-contenido">
-
-    <div class="menu-logo">
-        <a routerLink="/inicio">FemFitAI</a>
+@if (esAdmin) {
+  <aside class="menu-admin">
+    <a class="marca-admin" routerLink="/inicio"
+      ><span aria-hidden="true">♡</span> FemFit<b>AI</b></a
+    >
+    <p class="ambito-admin">ESPACIO DE ADMINISTRACIÓN</p>
+    <p class="grupo-admin">GENERAL</p>
+    <nav class="navegacion-admin" aria-label="Navegación administrativa">
+      <a
+        routerLink="/inicio"
+        routerLinkActive="activo"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ariaCurrentWhenActive="page"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          aria-hidden="true"
+        >
+          <rect x="3" y="3" width="7" height="7" rx="2" />
+          <rect x="14" y="3" width="7" height="7" rx="2" />
+          <rect x="3" y="14" width="7" height="7" rx="2" />
+          <rect x="14" y="14" width="7" height="7" rx="2" />
+        </svg>
+        Inicio ADMIN</a
+      >
+      <a routerLink="/usuarios" routerLinkActive="activo" ariaCurrentWhenActive="page"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          aria-hidden="true"
+        >
+          <circle cx="9" cy="7" r="4" />
+          <path
+            d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+          />
+        </svg>
+        Usuarios</a
+      >
+      <a
+        routerLink="/administracion/ejercicios"
+        routerLinkActive="activo"
+        ariaCurrentWhenActive="page"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          aria-hidden="true"
+        >
+          <path d="m6 6 12 12M3 8l5-5m8 18 5-5M2 5l3-3m14 20 3-3M6 11l5-5m2 12 5-5" />
+        </svg>
+        Ejercicios</a
+      >
+      <a routerLink="/administracion/modulos" routerLinkActive="activo" ariaCurrentWhenActive="page"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          aria-hidden="true"
+        >
+          <rect x="3" y="3" width="18" height="18" rx="4" />
+          <path d="M3 9h18M9 9v12" />
+        </svg>
+        Otros módulos</a
+      >
+      <a
+        routerLink="/administracion/metricas"
+        routerLinkActive="activo"
+        ariaCurrentWhenActive="page"
+        ><svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          aria-hidden="true"
+        >
+          <path d="M4 3v17h17M8 15v-4m5 4V7m5 8v-6" />
+        </svg>
+        Métricas</a
+      >
+    </nav>
+    <div class="pie-admin">
+      <p>El mismo cuidado.<br />Una nueva perspectiva.</p>
+      <span class="etiqueta-admin">ADMINISTRACIÓN</span
+      ><button type="button" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
+  </aside>
+} @else {
+  <header class="menu">
+    <div class="menu-contenido">
+      <div class="menu-logo">
+        <a routerLink="/inicio">FemFitAI</a>
+      </div>
 
-    <nav class="menu-navegacion" aria-label="Navegación principal">
-        <a routerLink="/inicio"
-           routerLinkActive="activo"
-           [routerLinkActiveOptions]="{ exact: true }">
-            Inicio
+      <nav class="menu-navegacion" aria-label="Navegación principal">
+        <a
+          routerLink="/inicio"
+          routerLinkActive="activo"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          Inicio
         </a>
 
         @if (esAdmin) {
-            <a routerLink="/usuarios/listar"
-               routerLinkActive="activo">
-                Usuarios
-            </a>
+          <a routerLink="/usuarios/listar" routerLinkActive="activo"> Usuarios </a>
         } @else if (esUsuaria) {
-            <a routerLink="/ciclos/listar"
-               routerLinkActive="activo">
-                Listar ciclos
-            </a>
-            <a routerLink="/ciclos/insertar"
-               routerLinkActive="activo">
-                Registrar ciclo
-            </a>
-            <a routerLink="/ejercicios"
-               routerLinkActive="activo">
-                Ejercicios
-            </a>
-            <a routerLink="/rutinas"
-               routerLinkActive="activo">
-                Rutinas
-            </a>
-            <a routerLink="/sesiones"
-               routerLinkActive="activo">
-                Sesiones
-            </a>
-            <a routerLink="/progreso"
-               routerLinkActive="activo">
-                Progreso
-            </a>
-            <a routerLink="/perfil"
-               routerLinkActive="activo">
-                Mi perfil
-            </a>
-            <a routerLink="/chat"
-            routerLinkActive="activo">
-                Asistente IA
-            </a>
-            <a routerLink="/recomendaciones"
-                routerLinkActive="activo">
-                    Recomendaciones
-                </a>
+          <a routerLink="/ciclos/listar" routerLinkActive="activo"> Listar ciclos </a>
+          <a routerLink="/ciclos/insertar" routerLinkActive="activo"> Registrar ciclo </a>
+          <a routerLink="/ejercicios" routerLinkActive="activo"> Ejercicios </a>
+          <a routerLink="/rutinas" routerLinkActive="activo"> Rutinas </a>
+          <a routerLink="/sesiones" routerLinkActive="activo"> Sesiones </a>
+          <a routerLink="/progreso" routerLinkActive="activo"> Progreso </a>
+          <a routerLink="/estadisticas" routerLinkActive="activo">Mis estadísticas</a>
+          <a routerLink="/perfil" routerLinkActive="activo"> Mi perfil </a>
+          <a routerLink="/chat" routerLinkActive="activo"> Asistente IA </a>
+          <a routerLink="/recomendaciones" routerLinkActive="activo"> Recomendaciones </a>
         }
-    </nav>
-  <button type="button" class="btn-cerrar" (click)="cerrarSesion()">
-    Cerrar sesión
-</button>
-  </div>
-</header>
+      </nav>
+      <button type="button" class="btn-cerrar" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+}

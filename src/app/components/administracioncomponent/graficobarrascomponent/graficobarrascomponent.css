@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+.grafico-contenedor {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.grafico-contenedor:focus-visible {
+  outline: 3px solid #9c315f;
+  outline-offset: 3px;
+}
+svg {
+  display: block;
+  width: 100%;
+  max-height: 290px;
+}
+.guia {
+  stroke: #eee5eb;
+  stroke-dasharray: 3 5;
+}
+.barra {
+  fill: #d78cad;
+}
+.barra:hover {
+  fill: #c2457a;
+}
+text {
+  fill: #716573;
+  font:
+    12px Arial,
+    sans-serif;
+}
+details,
+.vacio {
+  font-size: 12px;
+  color: #716573;
+  line-height: 1.7;
+  margin-top: 14px;
+}
+summary {
+  cursor: pointer;
+  padding: 8px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+td,
+th {
+  padding: 9px;
+  border-bottom: 1px solid #eee5eb;
+}

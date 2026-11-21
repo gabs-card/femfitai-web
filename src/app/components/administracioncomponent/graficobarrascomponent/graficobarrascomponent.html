@@ -1,0 +1,74 @@
+@if (datos.length > 0) {
+  <div
+    class="grafico-contenedor"
+    tabindex="0"
+    role="region"
+    [attr.aria-label]="titulo + '; desplázate para consultar todas las categorías'"
+  >
+    <svg
+      [attr.viewBox]="'0 0 ' + ancho + ' 245'"
+      [style.min-width.px]="ancho"
+      role="img"
+      [attr.aria-label]="titulo + '. Valores exactos en el detalle de datos.'"
+    >
+      <title>{{ titulo }}</title>
+      @for (fraccion of [0, 0.5, 1]; track fraccion) {
+        <line
+          x1="42"
+          [attr.x2]="ancho - 12"
+          [attr.y1]="200 - fraccion * 170"
+          [attr.y2]="200 - fraccion * 170"
+          class="guia"
+        />
+      }
+      @for (dato of datos; track $index) {
+        <rect
+          [attr.x]="centro($index) - anchoBarra / 2"
+          [attr.y]="200 - (dato.valor / maximo) * 160"
+          [attr.width]="anchoBarra"
+          [attr.height]="(dato.valor / maximo) * 160"
+          rx="6"
+          class="barra"
+        >
+          <title>{{ dato.etiqueta }}: {{ dato.valor }}</title>
+        </rect>
+        <text
+          [attr.x]="centro($index)"
+          [attr.y]="190 - (dato.valor / maximo) * 160"
+          text-anchor="middle"
+        >
+          {{ dato.valor }}
+        </text>
+        <text [attr.x]="centro($index)" y="227" text-anchor="middle">
+          {{ dato.etiqueta.length > 13 ? dato.etiqueta.slice(0, 12) + '…' : dato.etiqueta }}
+        </text>
+      }
+    </svg>
+  </div>
+  <details>
+    <summary>Ver datos del gráfico</summary>
+    <table>
+      <caption>
+        {{
+          titulo
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th>Categoría</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (dato of datos; track $index) {
+          <tr>
+            <td>{{ dato.etiqueta }}</td>
+            <td>{{ dato.valor }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </details>
+} @else {
+  <p class="vacio">No hay datos disponibles para este gráfico.</p>
+}

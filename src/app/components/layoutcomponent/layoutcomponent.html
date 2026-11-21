@@ -1,2 +1,12 @@
-<app-menucomponent></app-menucomponent>
-<router-outlet></router-outlet>
+<div [class.layout-admin]="esAdmin">
+  <app-menucomponent></app-menucomponent>
+  <div class="contenido-layout">
+    @if (esAdmin) {
+      <header class="cabecera-admin">
+        <span>FemFitAI <span aria-hidden="true">/</span> Administración</span
+        ><span class="rol-admin">ADMIN</span>
+      </header>
+    }
+    <router-outlet></router-outlet>
+  </div>
+</div>
