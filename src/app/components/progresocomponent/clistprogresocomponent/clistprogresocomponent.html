@@ -1,4 +1,4 @@
-<section class="historial" aria-labelledby="titulo-historial" [attr.aria-busy]="cargando">
+<section class="historial" aria-labelledby="titulo-historial" [attr.aria-busy]="cargando || eliminandoId !== null">
 <header class="encabezado-historial">
   <div><h2 id="titulo-historial">Historial de progreso</h2><p>Tus mediciones y anotaciones, a tu ritmo.</p></div>
   <a class="boton-registrar" routerLink="/progreso/insertar"><span aria-hidden="true">+</span> Registrar medición</a>
@@ -10,7 +10,11 @@
   <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
 }
 
+@if (cargaFallida) {
+  <button matButton type="button" (click)="obtenerProgreso()">Volver a intentar</button>
+}
 @if (dataSource.length > 0) {
+  @if (!cargando) { <app-graficoprogresocomponent [registros]="dataSource"></app-graficoprogresocomponent> }
   <div class="tabla-contenedor" role="region" aria-label="Historial de progreso, desplaza para ver todas las columnas" tabindex="0">
   <table mat-table [dataSource]="dataSource" aria-label="Mediciones de progreso">
     <ng-container matColumnDef="C1">
@@ -32,10 +36,10 @@
     <ng-container matColumnDef="C5">
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let element">
-        <a matIconButton [routerLink]="['/progreso/editar', element.idProgreso]" aria-label="Editar">
+        <a matIconButton [routerLink]="['/progreso/editar', element.idProgreso]" [attr.aria-label]="'Editar registro del ' + (element.fecha | date: 'dd/MM/yyyy')">
           <mat-icon>edit</mat-icon>
         </a>
-        <button matIconButton type="button" (click)="eliminarProgreso(element)" aria-label="Eliminar">
+        <button matIconButton type="button" (click)="eliminarProgreso(element)" [disabled]="cargando || eliminandoId !== null" [attr.aria-busy]="eliminandoId === element.idProgreso" [attr.aria-label]="(eliminandoId === element.idProgreso ? 'Eliminando registro del ' : 'Eliminar registro del ') + (element.fecha | date: 'dd/MM/yyyy')">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -48,8 +52,8 @@
   <nav class="paginacion" aria-label="Páginas del historial">
   <p role="status">Página {{ pagina + 1 }} de {{ totalPaginas }}</p>
   <div class="acciones-pagina">
-  <button matButton type="button" [disabled]="pagina === 0" (click)="cambiarPagina(-1)">Anterior</button>
-  <button matButton type="button" [disabled]="pagina + 1 >= totalPaginas" (click)="cambiarPagina(1)">Siguiente</button>
+  <button matButton type="button" [disabled]="pagina === 0 || cargando || eliminandoId !== null" (click)="cambiarPagina(-1)">Anterior</button>
+  <button matButton type="button" [disabled]="pagina + 1 >= totalPaginas || cargando || eliminandoId !== null" (click)="cambiarPagina(1)">Siguiente</button>
   </div>
   </nav>
 } @else if (!cargando && !mensaje) {

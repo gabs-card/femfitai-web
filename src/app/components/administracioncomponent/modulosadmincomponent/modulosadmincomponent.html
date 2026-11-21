@@ -1,0 +1,41 @@
+<main class="pagina-admin">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">ESPACIO DE ADMINISTRACIÓN</p>
+      <h1>Todo FemFitAI, conectado.</h1>
+      <p>Elige un módulo para consultar y gestionar sus registros reales.</p>
+    </div>
+  </header>
+  <section class="tres-columnas" aria-label="Centro de gestión">
+    <a class="tarjeta modulo" routerLink="/usuarios/listar"
+      ><span class="etiqueta">CUENTAS</span>
+      <h2>Usuarios</h2>
+      <p>Crear cuentas, editar sus datos, desactivar y reactivar.</p>
+      <span class="abrir">Gestionar usuarios <span aria-hidden="true">→</span></span></a
+    >
+    <a class="tarjeta modulo" routerLink="/administracion/ejercicios"
+      ><span class="etiqueta">CATÁLOGO</span>
+      <h2>Ejercicios</h2>
+      <p>Consultar, crear, editar y eliminar ejercicios del catálogo.</p>
+      <span class="abrir">Gestionar ejercicios <span aria-hidden="true">→</span></span></a
+    >
+    <a class="tarjeta modulo" routerLink="/administracion/metricas"
+      ><span class="etiqueta">ESTADÍSTICAS</span>
+      <h2>Métricas</h2>
+      <p>Distribución de cuentas y ejercicios con datos de la plataforma.</p>
+      <span class="abrir">Consultar métricas <span aria-hidden="true">→</span></span></a
+    >
+    @for (modulo of modulos; track modulo.clave) {
+      <a class="tarjeta modulo" [routerLink]="['/administracion/modulos', modulo.clave]">
+        <span class="etiqueta">GESTIÓN ADMIN</span>
+        <h2>{{ modulo.nombre }}</h2>
+        <p>{{ modulo.descripcion }}</p>
+        <span class="abrir">Abrir módulo <span aria-hidden="true">→</span></span>
+      </a>
+    }
+  </section>
+  <p class="aviso-suave">
+    Las acciones de cada módulo respetan sus relaciones y reglas. Las sesiones finalizadas se
+    conservan como historial.
+  </p>
+</main>

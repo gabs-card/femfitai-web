@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { NIVELES, OBJETIVOS } from '../../models/catalogos';
-import { Authservice } from '../../services/loginservice';
+import { Loginservice } from '../../services/loginservice';
 import { aISO } from '../../utils/fechas';
 import { PerfilUpdateDTO } from '../../models/PerfilUpdateDTO';
 import { DisponibilidadDTO } from '../../models/DisponibilidadDTO';
@@ -39,7 +39,7 @@ export class Perfilcomponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   private fb = inject(FormBuilder);
-  private auth = inject(Authservice);
+  private auth = inject(Loginservice);
   
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -88,7 +88,7 @@ export class Perfilcomponent implements OnInit {
       this.mensaje = 'Completa correctamente todos los campos.';
       return;
     }
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario) {
       this.mensaje = 'No se encontró el usuario. Inicia sesión nuevamente.';
       return;

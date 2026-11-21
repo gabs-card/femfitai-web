@@ -1,0 +1,25 @@
+:host { display: block; margin-bottom: 24px; }
+.panel-grafico { padding: 22px; border: 1px solid #eee5eb; border-radius: 16px; background: #fff; }
+.cabecera-grafico { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap; }
+h3 { margin: 0; color: #2a1c25; font: 500 23px/1.25 Georgia, serif; }
+.cabecera-grafico p, .nota-grafico { color: #6c5d67; font-size: 12px; line-height: 1.65; }
+.cabecera-grafico p { margin: 7px 0 0; }
+.selector-medicion { display: flex; gap: 4px; flex-wrap: wrap; padding: 4px; border: 1px solid #eee5eb; border-radius: 12px; background: #faf7f9; }
+button { min-height: 38px; padding: 8px 12px; border: 1px solid transparent; border-radius: 8px; color: #6c5d67; background: transparent; font: inherit; font-size: 12px; cursor: pointer; }
+button[aria-pressed="true"] { background: #fff; border-color: #ead0dd; color: #a82f64; font-weight: 700; }
+button:hover { background: #fce8ef; color: #a82f64; }
+button:focus-visible, .contenedor-grafico:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
+.resumen-grafico { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: #6c5d67; font-size: 12px; margin-top: 24px; }
+.resumen-grafico span:first-child { display: inline-flex; align-items: center; gap: 8px; }
+.resumen-grafico i { width: 8px; height: 8px; border-radius: 50%; background: #c2457a; }
+.contenedor-grafico { max-width: 100%; overflow-x: auto; margin-top: 12px; }
+.grafico { display: block; width: 100%; min-width: 760px; max-height: 340px; height: auto; }
+.ayuda-desplazamiento { display: none; margin: 14px 0 0; color: #6c5d67; font-size: 12px; }
+.grafico text { font: 12px Arial, sans-serif; fill: #6c5d67; }
+.linea-guia { stroke: #eee5eb; stroke-dasharray: 4 5; }
+.linea-datos { fill: none; stroke: #c2457a; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.punto-dato { fill: #fff; stroke: #a82f64; stroke-width: 2; }
+.nota-grafico { margin: 8px 0 0; }
+.estado-grafico { margin: 20px 0 0; padding: 20px; border-radius: 12px; background: #faf7f9; color: #6c5d67; line-height: 1.6; }
+@media (max-width: 900px) { .ayuda-desplazamiento { display: block; } }
+@media (max-width: 650px) { .panel-grafico { padding: 16px; } .cabecera-grafico { flex-direction: column; } h3 { font-size: 21px; } }

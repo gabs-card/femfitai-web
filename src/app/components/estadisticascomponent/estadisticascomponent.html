@@ -1,0 +1,121 @@
+<main class="pagina-admin personal">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">TU PROCESO, A TU RITMO</p>
+      <h1>Cada avance tiene su historia.</h1>
+      <p>Un espacio para observar tu constancia y conocer tus registros.</p>
+    </div>
+    <a class="boton principal" routerLink="/progreso/insertar">+ Registrar medición</a>
+  </header>
+  <div class="cabecera">
+    <label class="campo"
+      >Periodo de sesiones<input
+        #mes
+        type="month"
+        [value]="periodo()"
+        (change)="periodo.set(mes.value)" /></label
+    ><button class="boton" type="button" (click)="cargar()" [disabled]="cargando()">
+      Actualizar datos
+    </button>
+  </div>
+  @if (cargando()) {
+  <p class="estado" role="status">Cargando tus estadísticas...</p>
+  } @if (errores().sesiones) {
+  <p class="aviso" role="alert">{{ errores().sesiones }}</p>
+  } @if (errores().rutinas) {
+  <p class="aviso" role="alert">{{ errores().rutinas }}</p>
+  } @if (errores().progreso) {
+  <p class="aviso" role="alert">{{ errores().progreso }}</p>
+  }
+  <section class="resumen" aria-label="Resumen personal">
+    <article class="tarjeta kpi">
+      <p>Sesiones del periodo</p>
+      <strong>{{ sesiones() === null ? '—' : sesionesPeriodo().length }}</strong
+      ><small>Sesiones registradas en el mes elegido</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Tiempo registrado</p>
+      <strong>{{ sesiones() === null ? '—' : minutos() }} <small>min</small></strong
+      ><small>Suma de duraciones disponibles</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Rutinas activas</p>
+      <strong>{{ rutinas() === null ? '—' : activas() }}</strong
+      ><small>Estado actual de tus planes</small>
+    </article>
+    <article class="tarjeta kpi">
+      <p>Mediciones consultadas</p>
+      <strong>{{ progreso() === null ? '—' : progreso()!.length }}</strong
+      ><small>Hasta 10 registros recientes</small>
+    </article>
+  </section>
+  @if (sinDuracion() > 0) {
+  <p class="nota">
+    {{ sinDuracion() }} sesiones del periodo no tienen una duración válida registrada y no se
+    incluyen en los minutos.
+  </p>
+  } @if (progreso() !== null) {
+  <section class="tarjeta">
+    <h2>Mis mediciones recientes</h2>
+    <p class="nota">
+      Primera página del historial. Las mediciones no se filtran por el periodo de sesiones.
+    </p>
+    @if (progreso()!.length > 0) {
+    <app-graficoprogresocomponent [registros]="progreso()!"></app-graficoprogresocomponent>
+    } @else {
+    <p class="estado">Aún no tienes mediciones registradas.</p>
+    }
+    <a class="enlace" routerLink="/progreso">Consultar historial completo →</a>
+  </section>
+  } @if (sesiones() !== null) {
+  <section class="dos-iguales" style="margin-top: 24px">
+    <article class="tarjeta">
+      <h2>Tu constancia, día a día</h2>
+      <p class="nota">Cantidad de sesiones por fecha en el periodo elegido.</p>
+      <app-graficobarrascomponent
+        [datos]="porFecha()"
+        titulo="Sesiones por fecha"
+      ></app-graficobarrascomponent>
+    </article>
+    <article class="tarjeta">
+      <h2>El detalle de tu esfuerzo</h2>
+      <p class="nota">Hasta cinco sesiones recientes del periodo.</p>
+      <div class="tabla-contenedor" tabindex="0" role="region" aria-label="Últimas sesiones">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Duración</th>
+              <th>Estado</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (sesion of recientes(); track sesion.idSesion) {
+            <tr>
+              <td>{{ sesion.fecha | date: 'dd/MM/yyyy' }}</td>
+              <td>
+                {{ sesion.duracionMin === null ? 'Sin registrar' : sesion.duracionMin + ' min' }}
+              </td>
+              <td>{{ sesion.estado || 'Sin estado' }}</td>
+              <td>
+                <a class="enlace" [routerLink]="['/sesiones/detalle', sesion.idSesion]"
+                  >Ver sesión</a
+                >
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      @if (recientes().length === 0) {
+      <p class="estado">No hay sesiones en este periodo.</p>
+      }
+    </article>
+  </section>
+  }
+  <app-reportescomponent></app-reportescomponent>
+  <p class="aviso-suave">
+    Estos gráficos reflejan tus registros. No establecen metas médicas ni interpretan tu salud.
+  </p>
+</main>

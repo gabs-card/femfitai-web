@@ -1,52 +1,76 @@
-<main class="pagina-inicio" aria-labelledby="titulo-inicio">
-  <header class="encabezado-inicio">
-    <p class="etiqueta">MI ESPACIO</p>
-    <h1 id="titulo-inicio">Bienvenida a FemFitAI <span aria-hidden="true">♡</span></h1>
-    <p class="subtitulo">Tu entrenamiento, a tu ritmo. Un espacio para cuidarte y seguir avanzando.</p>
-  </header>
-  @if (esAdmin) {
-    <nav class="panel-inicio" aria-label="Administración">
-      <article class="tarjeta tarjeta-rosada">
-        <p class="etiqueta">ADMINISTRACIÓN</p>
-        <h2>Gestiona las cuentas de la plataforma</h2>
-        <p>Consulta los usuarios y administra sus cuentas desde un solo lugar.</p>
-        <a class="boton boton-principal" routerLink="/usuarios/listar">Usuarios <span aria-hidden="true">→</span></a>
-      </article>
-    </nav>
-  } @else if (esUsuaria) {
-    <nav class="panel-inicio" aria-label="Elige a dónde quieres ir">
-      <article class="tarjeta tarjeta-ciclo">
-        <div class="titulo-tarjeta"><h2>Tu ciclo hoy</h2><span class="distintivo">Mi ciclo</span></div>
-        <div class="simbolo-ciclo" aria-hidden="true">♡</div>
-        <h3>Conoce tu ritmo</h3>
-        <p>Consulta las fechas de tus ciclos y administra tus registros.</p>
-        <p class="nota">El resumen de tu ciclo aún no está conectado en Inicio.</p>
-        <a class="boton boton-principal" routerLink="/ciclos">Mi ciclo <span aria-hidden="true">→</span></a>
-      </article>
-      <article class="tarjeta tarjeta-rutinas">
-        <div class="titulo-tarjeta"><h2>Mis rutinas</h2><span class="marca" aria-hidden="true">↗</span></div>
-        <p>Organiza tus entrenamientos según tus objetivos y tu nivel.</p>
-        <div class="recuadro"><h3>Un plan a tu medida</h3><p>Consulta, crea o edita tus rutinas desde el listado.</p></div>
-        <p class="nota">Las rutinas y sus estados se consultan en su pantalla.</p>
-        <a class="boton boton-secundario" routerLink="/rutinas">Rutinas <span aria-hidden="true">→</span></a>
-      </article>
-      <article class="tarjeta tarjeta-rosada">
-        <p class="etiqueta">MIS AVANCES</p>
-        <h2>Cada progreso cuenta</h2>
-        <p>Consulta tu historial y registra tus mediciones y notas personales.</p>
-        <a class="boton boton-secundario" routerLink="/progreso">Progreso <span aria-hidden="true">→</span></a>
-      </article>
-      <article class="tarjeta">
-        <p class="etiqueta">MI ENTRENAMIENTO</p>
-        <h2>Encuentra tu movimiento</h2>
-        <p>Explora el catálogo y busca ejercicios por nombre o tipo.</p>
-        <a class="enlace" routerLink="/ejercicios">Ejercicios <span aria-hidden="true">→</span></a>
-      </article>
-      <article class="tarjeta tarjeta-perfil">
-        <div><p class="etiqueta">A TU MEDIDA</p><h2>Tu espacio personal</h2><p>Revisa tu nivel, tus objetivos y el tiempo que tienes disponible para entrenar.</p></div>
-        <a class="boton boton-secundario" routerLink="/perfil">Mi perfil <span aria-hidden="true">→</span></a>
-      </article>
-    </nav>
-    <p class="pie-inicio">Escuchar tu cuerpo también es parte de tu progreso.</p>
+@if (esAdmin) {
+  @defer (on immediate) {
+    <app-paneladmincomponent [resumen]="true"></app-paneladmincomponent>
+  } @placeholder {
+    <p role="status">Cargando administración...</p>
   }
-</main>
+} @else {
+  <main class="pagina-inicio" aria-labelledby="titulo-inicio">
+    <header class="encabezado-inicio">
+      <p class="etiqueta">MI ESPACIO</p>
+      <h1 id="titulo-inicio">Bienvenida a FemFitAI <span aria-hidden="true">♡</span></h1>
+      <p class="subtitulo">
+        Tu entrenamiento, a tu ritmo. Un espacio para cuidarte y seguir avanzando.
+      </p>
+    </header>
+    @if (esUsuaria) {
+      <nav class="panel-inicio" aria-label="Elige a dónde quieres ir">
+        <article class="tarjeta tarjeta-ciclo">
+          <div class="titulo-tarjeta">
+            <h2>Tu ciclo hoy</h2>
+            <span class="distintivo">Mi ciclo</span>
+          </div>
+          <div class="simbolo-ciclo" aria-hidden="true">♡</div>
+          <h3>Conoce tu ritmo</h3>
+          <p>Consulta las fechas de tus ciclos y administra tus registros.</p>
+          <p class="nota">El resumen de tu ciclo aún no está conectado en Inicio.</p>
+          <a class="boton boton-principal" routerLink="/ciclos"
+            >Mi ciclo <span aria-hidden="true">→</span></a
+          >
+        </article>
+        <article class="tarjeta tarjeta-rutinas">
+          <div class="titulo-tarjeta">
+            <h2>Mis rutinas</h2>
+            <span class="marca" aria-hidden="true">↗</span>
+          </div>
+          <p>Organiza tus entrenamientos según tus objetivos y tu nivel.</p>
+          <div class="recuadro">
+            <h3>Un plan a tu medida</h3>
+            <p>Consulta, crea o edita tus rutinas desde el listado.</p>
+          </div>
+          <p class="nota">Las rutinas y sus estados se consultan en su pantalla.</p>
+          <a class="boton boton-secundario" routerLink="/rutinas"
+            >Rutinas <span aria-hidden="true">→</span></a
+          >
+        </article>
+        <article class="tarjeta tarjeta-rosada">
+          <p class="etiqueta">MIS AVANCES</p>
+          <h2>Cada progreso cuenta</h2>
+          <p>Consulta tu historial y registra tus mediciones y notas personales.</p>
+          <a class="boton boton-secundario" routerLink="/progreso"
+            >Progreso <span aria-hidden="true">→</span></a
+          >
+        </article>
+        <article class="tarjeta">
+          <p class="etiqueta">MI ENTRENAMIENTO</p>
+          <h2>Encuentra tu movimiento</h2>
+          <p>Explora el catálogo y busca ejercicios por nombre o tipo.</p>
+          <a class="enlace" routerLink="/ejercicios"
+            >Ejercicios <span aria-hidden="true">→</span></a
+          >
+        </article>
+        <article class="tarjeta tarjeta-perfil">
+          <div>
+            <p class="etiqueta">A TU MEDIDA</p>
+            <h2>Tu espacio personal</h2>
+            <p>Revisa tu nivel, tus objetivos y el tiempo que tienes disponible para entrenar.</p>
+          </div>
+          <a class="boton boton-secundario" routerLink="/perfil"
+            >Mi perfil <span aria-hidden="true">→</span></a
+          >
+        </article>
+      </nav>
+      <p class="pie-inicio">Escuchar tu cuerpo también es parte de tu progreso.</p>
+    }
+  </main>
+}

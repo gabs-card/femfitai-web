@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { RutinasUsuarioDTO } from '../models/ConsultasDTO';
 import { RutinaDTO } from '../models/RutinaDTO';
 
 @Injectable({
@@ -22,5 +23,13 @@ export class Rutinasservice {
 
   updateRutina(id: number, dto: RutinaDTO): Observable<RutinaDTO> {
     return this.http.put<RutinaDTO>(`${this.apiURL}/${id}`, dto);
+  }
+
+  deleteRutina(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
+
+  getDetalleRutina(id: number): Observable<RutinasUsuarioDTO> {
+    return this.http.get<RutinasUsuarioDTO>(`${this.apiURL}/detalle/${id}`);
   }
 }

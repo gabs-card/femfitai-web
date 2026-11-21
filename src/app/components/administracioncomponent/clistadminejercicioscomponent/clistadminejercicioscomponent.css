@@ -1,0 +1,25 @@
+.visual-ejercicio {
+  display: grid;
+  place-items: center;
+  height: 105px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: linear-gradient(130deg, #fff4f8, #f5eaf0);
+  color: #bc7695;
+}
+.visual-ejercicio svg {
+  width: 60px;
+  height: 60px;
+}
+h2 {
+  font-size: 21px;
+  margin-top: 14px;
+  overflow-wrap: anywhere;
+}
+.nota {
+  overflow-wrap: anywhere;
+}
+.pie {
+  border-top: 1px solid #eee5eb;
+  padding-top: 16px;
+}

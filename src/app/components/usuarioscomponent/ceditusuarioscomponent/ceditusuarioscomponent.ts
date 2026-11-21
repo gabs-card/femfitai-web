@@ -15,7 +15,7 @@ type Campo = 'nombres' | 'apellidos' | 'correo' | 'passwordHash';
   selector: 'app-ceditusuarioscomponent',
   imports: [MatInputModule, MatCheckboxModule, MatButtonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './ceditusuarioscomponent.html',
-  styleUrl: './ceditusuarioscomponent.css',
+  styleUrls: ['../../administracioncomponent/administracion.css', './ceditusuarioscomponent.css'],
 })
 export class Ceditusuarioscomponent implements OnInit {
   private route = inject(ActivatedRoute);
@@ -29,7 +29,12 @@ export class Ceditusuarioscomponent implements OnInit {
   errorCarga = '';
   mensaje = '';
   guardando = false;
-  editando: Record<Campo, boolean> = { nombres: false, apellidos: false, correo: false, passwordHash: false };
+  editando: Record<Campo, boolean> = {
+    nombres: false,
+    apellidos: false,
+    correo: false,
+    passwordHash: false,
+  };
 
   // todos los campos empiezan deshabilitados; una casilla habilita cada uno
   form = this.fb.nonNullable.group({
@@ -49,7 +54,9 @@ export class Ceditusuarioscomponent implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.errorCarga =
-          err.status === 404 ? 'El usuario no existe.' : mensajeDeError(err, 'No se pudo cargar el usuario.');
+          err.status === 404
+            ? 'El usuario no existe.'
+            : mensajeDeError(err, 'No se pudo cargar el usuario.');
         this.cdr.detectChanges();
       },
     });
@@ -72,7 +79,7 @@ export class Ceditusuarioscomponent implements OnInit {
   }
 
   guardar(): void {
-    if (!this.usuario) return;
+    if (!this.usuario || this.guardando) return;
     if (!this.hayCambios) {
       this.mensaje = 'Activa al menos una casilla para editar.';
       return;
@@ -92,9 +99,15 @@ export class Ceditusuarioscomponent implements OnInit {
     this.guardando = true;
     this.us.actualizar(this.id, datos).subscribe({
       next: () =>
-        this.router.navigate(['/usuarios/listar'], { state: { mensaje: 'Usuario actualizado correctamente.' } }),
+        this.router.navigate(['/usuarios/listar'], {
+          state: { mensaje: 'Usuario actualizado correctamente.' },
+        }),
       error: (err: HttpErrorResponse) => {
-        this.mensaje = mensajeDeError(err, 'No se pudieron guardar los cambios.', 'El correo ya está registrado por otro usuario.');
+        this.mensaje = mensajeDeError(
+          err,
+          'No se pudieron guardar los cambios.',
+          'El correo ya está registrado por otro usuario.',
+        );
         this.guardando = false;
         this.cdr.detectChanges();
       },
