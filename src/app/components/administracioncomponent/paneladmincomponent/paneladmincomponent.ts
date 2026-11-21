@@ -1,3 +1,4 @@
+import { Reportescomponent } from '../../reportescomponent/reportescomponent';
 import { Component, Input, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -14,7 +15,7 @@ import { Graficobarrascomponent } from '../graficobarrascomponent/graficobarrasc
 
 @Component({
   selector: 'app-paneladmincomponent',
-  imports: [RouterLink, DatePipe, Graficobarrascomponent],
+  imports: [Reportescomponent, RouterLink, DatePipe, Graficobarrascomponent],
   templateUrl: './paneladmincomponent.html',
   styleUrl: '../administracion.css',
 })

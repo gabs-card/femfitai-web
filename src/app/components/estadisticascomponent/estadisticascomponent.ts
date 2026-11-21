@@ -1,3 +1,4 @@
+import { Reportescomponent } from '../reportescomponent/reportescomponent';
 import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -16,7 +17,13 @@ import { Graficoprogresocomponent } from '../progresocomponent/graficoprogresoco
 
 @Component({
   selector: 'app-estadisticascomponent',
-  imports: [DatePipe, RouterLink, Graficobarrascomponent, Graficoprogresocomponent],
+  imports: [
+    Reportescomponent,
+    DatePipe,
+    RouterLink,
+    Graficobarrascomponent,
+    Graficoprogresocomponent,
+  ],
   templateUrl: './estadisticascomponent.html',
   styleUrls: ['../administracioncomponent/administracion.css', './estadisticascomponent.css'],
 })

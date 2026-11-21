@@ -9,6 +9,7 @@ import { DatoGrafico } from '../../../utils/estadisticas';
 export class Graficobarrascomponent {
   @Input() datos: DatoGrafico[] = [];
   @Input() titulo = '';
+  @Input() unidad = 'Cantidad';
   get maximo(): number {
     return Math.max(1, ...this.datos.map((dato) => dato.valor));
   }

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+// Consultas propias utilizadas por los reportes.
 import { DetalleDiarioCicloDTO } from '../models/DetalleDiarioCicloDTO';
 
 @Injectable({
@@ -25,5 +26,9 @@ export class Detallediariocicloservice {
 
   eliminar(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
+
+  listar(): Observable<DetalleDiarioCicloDTO[]> {
+    return this.http.get<DetalleDiarioCicloDTO[]>(this.apiURL);
   }
 }

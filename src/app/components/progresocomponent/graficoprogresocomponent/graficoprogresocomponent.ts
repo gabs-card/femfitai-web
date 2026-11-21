@@ -11,11 +11,18 @@ import { crearGraficoProgreso, MedicionProgreso } from '../../../utils/graficos-
 })
 export class Graficoprogresocomponent implements OnChanges {
   @Input() registros: ProgresoDTO[] = [];
+  @Input() descripcion = 'Mediciones de la página actual, ordenadas por fecha.';
+  @Input() alcance = 'página actual';
+  @Input() idTitulo = 'titulo-grafico-progreso';
   medicion: MedicionProgreso = 'pesoKg';
   grafico = crearGraficoProgreso([], this.medicion);
 
-  get unidad(): string { return this.medicion === 'pesoKg' ? 'kg' : 'cm'; }
-  get etiqueta(): string { return this.medicion === 'pesoKg' ? 'Peso' : 'Medida opcional'; }
+  get unidad(): string {
+    return this.medicion === 'pesoKg' ? 'kg' : 'cm';
+  }
+  get etiqueta(): string {
+    return this.medicion === 'pesoKg' ? 'Peso' : 'Medida opcional';
+  }
 
   ngOnChanges(): void {
     this.grafico = crearGraficoProgreso(this.registros, this.medicion);

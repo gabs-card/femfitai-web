@@ -114,3 +114,60 @@ No se hacen commits, push ni cambios en `main`.
 - `src/main/java/pe/edu/upc/femfitai/services/implementations/AdministracionService.java`
 - `src/main/java/pe/edu/upc/femfitai/services/interfaces/IAdministracionService.java`
 - `src/test/java/pe/edu/upc/femfitai/AdministracionIntegrationTest.java`
+
+## Reportes y aislamiento de consultas — 21 de noviembre de 2026
+
+Se incorpora `Reportescomponent`, standalone con HTML/CSS separados, en
+`/administracion/metricas` y `/estadisticas`. Conserva los gráficos anteriores,
+los guards y las operaciones de cada rol. El explorador ofrece once módulos:
+ciclos, diario, rutinas, ejercicios de rutina, sesiones, ejercicios de sesión,
+series realizadas, progreso, perfiles, recomendaciones y catálogo.
+
+- Cada reporte consulta sus datos al seleccionarlo. Los listados paginados se
+  recorren completos; si una página falla, no se publica un total parcial.
+- ADMIN filtra por cuenta; USUARIA utiliza únicamente su ID de sesión. Ciclos y
+  rutinas admiten selección propia; ejercicios de sesión y series requieren una
+  sesión real. El catálogo admite el filtro exacto por grupo muscular.
+- El filtro opcional de mes utiliza la fecha propia del módulo: inicio de ciclo,
+  creación de rutina o fecha de registro. No afecta a módulos sin fecha propia.
+- Las barras identifican sus unidades y ofrecen una tabla de valores. Las fechas
+  inválidas, duraciones ausentes y otras medidas incompletas no se convierten en
+  cero. La duración del ciclo utiliza exclusivamente inicio y cierre real.
+- Progreso permite consultar el historial completo y sus filtros. ADMIN debe
+  seleccionar una cuenta para ver una curva; no se mezclan mediciones personales.
+- Los JOIN de ciclos, rutinas, ejercicios por usuaria y asignaciones se conectan
+  desde los servicios existentes. La agregación es local en Angular; no se crean
+  endpoints de reportes ni se cambian entidades o esquemas.
+- Los errores permiten reintentar. Cambiar de reporte cancela la petición anterior
+  para evitar mostrar respuestas desactualizadas. Diseño revisado a 1440, 768,
+  390 y 320 px.
+
+El backend corrige cuatro accesos de lectura que omitían la propiedad:
+`GET /detalle-diario`, `GET /detalle-diario/ciclo/{idCiclo}`,
+`GET /sesiones/detalle/{id}` y `GET /ejercicios/usuario/{idUsuario}`.
+El listado de diario se filtra por la cuenta autenticada. Los otros tres
+comprueban la propiedad mediante `UsuarioActualService` antes de consultar.
+No se modifica autenticación, `SecurityConfig`, DTO del backend ni reglas CRUD.
+
+Validación final del avance:
+
+- `npm run build`: correcto, con los tres avisos de tamaño ya conocidos.
+- `node --test scripts/progreso.test.mjs scripts/rutinas.test.mjs scripts/administracion.test.mjs scripts/centro-gestion.test.mjs scripts/reportes.test.mjs`: 60 pruebas correctas.
+- `mvnw.cmd -Dtest=AdministracionIntegrationTest test`: 16 pruebas correctas con
+  HTTP y H2, incluidas cuatro regresiones nuevas de aislamiento.
+- 80 comprobaciones GET sobre PostgreSQL con una instancia de QA de solo lectura:
+  ninguna exposición de registros ajenos en las consultas probadas.
+- 48 comprobaciones de navegador sobre Spring Boot real: once reportes por rol,
+  filtros, estado vacío, error/reintento, cambio de cuenta y responsive. Sin
+  errores JavaScript ni mutaciones de registros.
+
+Para usar los cambios: reiniciar el backend actualizado y ejecutar `npm start`
+en Angular. Entrar con ADMIN en Métricas o con USUARIA en Mis estadísticas y
+bajar hasta **Explorar reportes**. No es necesario ejecutar SQL ni alterar datos.
+La instancia temporal 8082 y el proxy del navegador pertenecen solo al QA;
+la aplicación conserva `environment.apiUrl` y su configuración de despliegue.
+
+Límites conservados: las sesiones no se eliminan; el perfil personal no tiene
+DELETE; las recomendaciones personales se consultan, generan por ciclo y
+aceptan. Su generación externa no se invoca durante estas pruebas. El repository
+de historial diario no expuesto como endpoint sigue siendo una consulta interna.

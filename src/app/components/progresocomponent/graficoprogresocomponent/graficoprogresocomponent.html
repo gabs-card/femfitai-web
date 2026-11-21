@@ -1,38 +1,88 @@
-<section class="panel-grafico" aria-labelledby="titulo-grafico-progreso">
+<section class="panel-grafico" [attr.aria-labelledby]="idTitulo">
   <header class="cabecera-grafico">
-    <div><h3 id="titulo-grafico-progreso">Tus registros, en perspectiva</h3><p>Mediciones de la página actual, ordenadas por fecha.</p></div>
+    <div>
+      <h3 [id]="idTitulo">Tus registros, en perspectiva</h3>
+      <p>{{ descripcion }}</p>
+    </div>
     <div class="selector-medicion" role="group" aria-label="Medición del gráfico">
-      <button type="button" [attr.aria-pressed]="medicion === 'pesoKg'" (click)="cambiarMedicion('pesoKg')">Peso (kg)</button>
-      <button type="button" [attr.aria-pressed]="medicion === 'medidaOpcional'" (click)="cambiarMedicion('medidaOpcional')">Medida (cm)</button>
+      <button
+        type="button"
+        [attr.aria-pressed]="medicion === 'pesoKg'"
+        (click)="cambiarMedicion('pesoKg')"
+      >
+        Peso (kg)
+      </button>
+      <button
+        type="button"
+        [attr.aria-pressed]="medicion === 'medidaOpcional'"
+        (click)="cambiarMedicion('medidaOpcional')"
+      >
+        Medida (cm)
+      </button>
     </div>
   </header>
 
   @if (grafico.puntos.length > 0) {
-    <div class="resumen-grafico"><span><i aria-hidden="true"></i>{{ etiqueta }} ({{ unidad }})</span><span>{{ grafico.puntos.length }} {{ grafico.puntos.length === 1 ? 'registro' : 'registros' }}</span></div>
-    <p class="ayuda-desplazamiento">Desliza el gráfico para ver todas las fechas.</p>
-    <div class="contenedor-grafico" role="region" tabindex="0" aria-label="Gráfico de mediciones; desplázate horizontalmente si no cabe en la pantalla">
-    <svg class="grafico" viewBox="0 0 760 280" role="img" [attr.aria-label]="etiqueta + ' en ' + unidad + ', registros de la página actual. Consulta los valores exactos en la tabla del historial.'">
+  <div class="resumen-grafico">
+    <span><i aria-hidden="true"></i>{{ etiqueta }} ({{ unidad }})</span
+    ><span
+      >{{ grafico.puntos.length }} {{ grafico.puntos.length === 1 ? 'registro' : 'registros'
+      }}</span
+    >
+  </div>
+  <p class="ayuda-desplazamiento">Desliza el gráfico para ver todas las fechas.</p>
+  <div
+    class="contenedor-grafico"
+    role="region"
+    tabindex="0"
+    aria-label="Gráfico de mediciones; desplázate horizontalmente si no cabe en la pantalla"
+  >
+    <svg
+      class="grafico"
+      viewBox="0 0 760 280"
+      role="img"
+      [attr.aria-label]="etiqueta + ' en ' + unidad + ', registros del ' + alcance + '. Consulta cada valor en el punto correspondiente.'"
+    >
       <title>{{ etiqueta }} registrada ({{ unidad }})</title>
-      <desc>La escala vertical se ajusta a los registros de esta página. Cada punto corresponde a una medición guardada; no se interpreta como una meta de salud.</desc>
+      <desc>
+        La escala vertical se ajusta a los registros del {{ alcance }}. Cada punto corresponde a una
+        medición guardada; no se interpreta como una meta de salud.
+      </desc>
       @for (marca of grafico.ejeVertical; track $index) {
-        <line x1="60" x2="736" [attr.y1]="marca.y" [attr.y2]="marca.y" class="linea-guia" />
-        <text x="48" [attr.y]="marca.y + 4" text-anchor="end">{{ marca.valor | number: '1.0-2' }}</text>
-      }
-      @if (grafico.puntos.length > 1) { <polyline [attr.points]="grafico.linea" class="linea-datos" /> }
-      @for (punto of grafico.puntos; track punto.id) {
-        <circle [attr.cx]="punto.x" [attr.cy]="punto.y" r="5" class="punto-dato">
-          <title>{{ punto.fecha | date: 'dd/MM/yyyy' }}: {{ punto.valor | number: '1.0-2' }} {{ unidad }}</title>
-        </circle>
-      }
-      @for (marca of grafico.ejeHorizontal; track $index) {
-        <text [attr.x]="marca.x" y="258" text-anchor="middle">{{ marca.etiqueta }}</text>
+      <line x1="60" x2="736" [attr.y1]="marca.y" [attr.y2]="marca.y" class="linea-guia" />
+      <text x="48" [attr.y]="marca.y + 4" text-anchor="end">
+        {{ marca.valor | number: '1.0-2' }}
+      </text>
+      } @if (grafico.puntos.length > 1) {
+      <polyline [attr.points]="grafico.linea" class="linea-datos" />
+      } @for (punto of grafico.puntos; track punto.id) {
+      <circle [attr.cx]="punto.x" [attr.cy]="punto.y" r="5" class="punto-dato">
+        <title>
+          {{ punto.fecha | date: 'dd/MM/yyyy' }}: {{ punto.valor | number: '1.0-2' }} {{ unidad }}
+        </title>
+      </circle>
+      } @for (marca of grafico.ejeHorizontal; track $index) {
+      <text [attr.x]="marca.x" y="258" text-anchor="middle">{{ marca.etiqueta }}</text>
       }
     </svg>
-    </div>
-    <p class="nota-grafico">La escala vertical se ajusta a estos valores. Consulta las mediciones exactas en la tabla del historial.</p>
-    @if (grafico.puntos.length === 1) { <p class="nota-grafico">Con una sola medición se muestra un punto. Al registrar más mediciones podrás ver su evolución.</p> }
-    @if (grafico.omitidos > 0) { <p class="nota-grafico">{{ grafico.omitidos }} {{ grafico.omitidos === 1 ? 'registro de esta página no tiene' : 'registros de esta página no tienen' }} una fecha y {{ etiqueta.toLowerCase() }} válidos para el gráfico.</p> }
-  } @else {
-    <p class="estado-grafico" role="status">No hay {{ medicion === 'pesoKg' ? 'pesos' : 'medidas opcionales' }} con fecha válida en esta página para representar.</p>
+  </div>
+  <p class="nota-grafico">
+    La escala vertical se ajusta a estos valores. Cada punto conserva la fecha y el valor de la
+    medición.
+  </p>
+  @if (grafico.puntos.length === 1) {
+  <p class="nota-grafico">
+    Con una sola medición se muestra un punto. Al registrar más mediciones podrás ver su evolución.
+  </p>
+  } @if (grafico.omitidos > 0) {
+  <p class="nota-grafico">
+    {{ grafico.omitidos }} {{ grafico.omitidos === 1 ? 'registro no tiene' : 'registros no tienen'
+    }} una fecha y {{ etiqueta.toLowerCase() }} válidos para el gráfico.
+  </p>
+  } } @else {
+  <p class="estado-grafico" role="status">
+    No hay {{ medicion === 'pesoKg' ? 'pesos' : 'medidas opcionales' }} con fecha válida en el {{
+    alcance }} para representar.
+  </p>
   }
 </section>
