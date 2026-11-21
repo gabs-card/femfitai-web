@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { Ciclosservice } from '../../../services/ciclosservice';
 import { Detallediariocicloservice } from '../../../services/detallediariocicloservice';
 import { DetalleDiarioCicloDTO } from '../../../models/DetalleDiarioCicloDTO';
@@ -47,7 +47,7 @@ export class Detallediariocomponent implements OnInit {
   private route = inject(ActivatedRoute);
   private ciclos = inject(Ciclosservice);
   private servicio = inject(Detallediariocicloservice);
-  private auth = inject(Authservice);
+  private auth = inject(Loginservice);
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
@@ -60,7 +60,7 @@ export class Detallediariocomponent implements OnInit {
     });
 
     this.idCiclo = Number(this.route.snapshot.paramMap.get('id'));
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!Number.isInteger(this.idCiclo) || this.idCiclo <= 0 || !idUsuario) {
       this.errorCarga = 'No se pudo identificar el ciclo o la sesión actual.';
       this.cargando = false;

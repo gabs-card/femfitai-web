@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { Rutinasservice } from '../../../services/rutinasservice';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeError } from '../../../utils/errores';
 import { Router, RouterLink } from '@angular/router';
@@ -26,7 +26,7 @@ export class Clistrutinascomponent implements OnInit {
   private rs = inject(Rutinasservice);
   private sesiones = inject(Sesionesservice);
   private router = inject(Router);
-  private auth = inject(Authservice);
+  private auth = inject(Loginservice);
   private cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class Clistrutinascomponent implements OnInit {
   }
 
   obtenerRutinas() {
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario) {
       this.mensaje = 'No se encontró el usuario. Inicia sesión nuevamente.';
       return;

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { SesionEntrenamientoDTO } from '../../../models/SesionEntrenamientoDTO';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
@@ -26,7 +26,7 @@ export class Cformsesionescomponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly auth = inject(Authservice);
+  private readonly auth = inject(Loginservice);
   private readonly rutinasService = inject(Rutinasservice);
   private readonly sesionesService = inject(Sesionesservice);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -45,7 +45,7 @@ export class Cformsesionescomponent implements OnInit {
   get editando(): boolean { return this.idSesion !== null; }
 
   ngOnInit(): void {
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     this.idSesion = this.route.snapshot.paramMap.has('id') ? Number(this.route.snapshot.paramMap.get('id')) : null;
     if (!idUsuario || (this.idSesion !== null && (!Number.isInteger(this.idSesion) || this.idSesion <= 0))) {
       this.mensaje = 'No se pudo identificar la cuenta o la sesiÃ³n solicitada.';
@@ -115,7 +115,7 @@ export class Cformsesionescomponent implements OnInit {
 
   guardar(): void {
     this.mensaje = '';
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario || this.form.invalid) {
       this.form.markAllAsTouched();
       this.mensaje = 'Revisa los campos obligatorios y sus rangos permitidos.';

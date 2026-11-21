@@ -11,7 +11,7 @@ import { DetalleSerieDTO } from '../../../models/DetalleSerieDTO';
 import { Page } from '../../../models/Page';
 import { RutinaEjercicioDetalleDTO } from '../../../models/RutinaEjerciciosDTO';
 import { SesionEntrenamientoDTO } from '../../../models/SesionEntrenamientoDTO';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { Detallesesionservice } from '../../../services/detallesesionservice';
 import { Detalleserieservice } from '../../../services/detalleserieservice';
 import { Ejerciciosservice } from '../../../services/ejerciciosservice';
@@ -65,7 +65,7 @@ export class Cdetallessesioncomponent implements OnInit {
   serieForm: any;
   evaluacionForm: any;
   private readonly route = inject(ActivatedRoute);
-  private readonly auth = inject(Authservice);
+  private readonly auth = inject(Loginservice);
   private readonly sesionesService = inject(Sesionesservice);
   private readonly rutinasService = inject(Rutinasservice);
   private readonly rutinaEjerciciosService = inject(Rutinaejerciciosservice);
@@ -88,7 +88,7 @@ export class Cdetallessesioncomponent implements OnInit {
 
   ngOnInit(): void {
     this.idSesion = Number(this.route.snapshot.paramMap.get('id'));
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario || !Number.isInteger(this.idSesion) || this.idSesion <= 0) {
       this.mensaje = 'No se pudo identificar la sesiÃ³n o la cuenta.'; this.cargando = false; return;
     }

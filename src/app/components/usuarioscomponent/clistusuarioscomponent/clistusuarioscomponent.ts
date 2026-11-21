@@ -6,7 +6,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UsuariosService } from '../../../services/usuariosservices';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { UsuarioDTO } from '../../../models/UsuarioDTO';
 import { mensajeDeError } from '../../../utils/errores';
 
@@ -18,7 +18,7 @@ import { mensajeDeError } from '../../../utils/errores';
 })
 export class Clistusuarioscomponent implements OnInit {
   us = inject(UsuariosService);
-  private auth = inject(Authservice);
+  private auth = inject(Loginservice);
 
   columnas = ['id', 'nombres', 'apellidos', 'correo', 'rol', 'fecha', 'acciones'];
   mensaje = signal('');
@@ -38,7 +38,7 @@ export class Clistusuarioscomponent implements OnInit {
   }
 
   desactivar(u: UsuarioDTO): void {
-    if (u.idUsuario === this.auth.idUsuario()) {
+    if (u.idUsuario === this.auth.getIdUsuario()) {
       this.mensaje.set('No puedes desactivar tu propia cuenta.');
       return;
     }
