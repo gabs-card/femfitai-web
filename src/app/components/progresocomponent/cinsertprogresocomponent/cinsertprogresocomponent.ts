@@ -38,6 +38,7 @@ export class Cinsertprogresocomponent {
   }
 
   registrarProgreso() {
+    if (this.guardando) return;
     if (this.formulario.invalid) {
       this.mensaje = 'Completa correctamente los campos.';
       return;

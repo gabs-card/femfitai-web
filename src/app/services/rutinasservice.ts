@@ -23,4 +23,8 @@ export class Rutinasservice {
   updateRutina(id: number, dto: RutinaDTO): Observable<RutinaDTO> {
     return this.http.put<RutinaDTO>(`${this.apiURL}/${id}`, dto);
   }
+
+  deleteRutina(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiURL}/${id}`);
+  }
 }
