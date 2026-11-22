@@ -1,0 +1,120 @@
+<section class="reportes" aria-labelledby="titulo-reportes">
+  <header>
+    <p class="ceja">REGISTROS QUE SE PUEDEN COMPROBAR</p>
+    <h2 id="titulo-reportes">Explorar reportes</h2>
+    <p>
+      Elige un módulo para ver sus datos como gráficos. Cada reporte consulta su historial completo
+      disponible.
+    </p>
+  </header>
+  <div class="filtros">
+    <label
+      >Reporte<select id="reporte-tipo" [(ngModel)]="tipo" (ngModelChange)="cambiarReporte()">
+        @for (opcion of tipos; track opcion.clave) {
+        <option [ngValue]="opcion.clave">{{ opcion.nombre }}</option>
+        }
+      </select></label
+    >
+    @if (administracion && tipo !== 'catalogo') {
+    <label
+      >Cuenta<select id="reporte-cuenta" [(ngModel)]="cuenta" (ngModelChange)="cambiarCuenta()">
+        <option [ngValue]="null">Todas las cuentas</option>
+        @for (usuaria of cuentas(); track usuaria.idUsuario) {
+        <option [ngValue]="usuaria.idUsuario">
+          {{ usuaria.nombres }} {{ usuaria.apellidos }} · #{{ usuaria.idUsuario }}
+        </option>
+        }
+      </select></label
+    >
+    } @if (resultado()?.referencias?.length) {
+    <label
+      >{{ tipo === 'detalle-sesion' || tipo === 'detalle-serie' ? 'Sesión' : tipo === 'ciclos' ||
+      tipo === 'detalle-diario' ? 'Ciclo' : 'Rutina' }}
+      <select id="reporte-referencia" [(ngModel)]="referencia" (ngModelChange)="cargar()">
+        @if (tipo !== 'detalle-sesion' && tipo !== 'detalle-serie') {
+        <option [ngValue]="null">Todos los registros propios</option>
+        } @for (opcion of resultado()!.referencias; track opcion.id) {
+        <option [ngValue]="opcion.id">{{ opcion.etiqueta }}</option>
+        }
+      </select></label
+    >
+    } @if (tipo === 'catalogo' && resultado()) {
+    <label
+      >Grupo muscular<select id="reporte-grupo" [(ngModel)]="grupo" (ngModelChange)="cargar()">
+        <option value="">Todos los grupos</option>
+        @for (opcion of resultado()!.grupos; track opcion) {
+        <option [value]="opcion">{{ opcion }}</option>
+        }
+      </select></label
+    >
+    } @if (permiteMes) {
+    <label
+      >Mes (opcional)<input
+        id="reporte-mes"
+        type="month"
+        [ngModel]="mes()"
+        (ngModelChange)="mes.set($event)"
+    /></label>
+    }
+    <button type="button" (click)="cargar()" [disabled]="cargando()">
+      {{ cargando() ? 'Consultando…' : 'Actualizar reporte' }}
+    </button>
+  </div>
+  @if (errorCuentas()) {
+  <p role="alert" class="aviso">
+    {{ errorCuentas() }} <button type="button" (click)="cargarCuentas()">Reintentar cuentas</button>
+  </p>
+  } @if (cargando()) {
+  <p role="status">Cargando todas las páginas del reporte…</p>
+  } @if (error()) {
+  <p role="alert" class="aviso">{{ error() }}</p>
+  } @if (resultado(); as datos) {
+  <p class="alcance">
+    <strong>{{ filtrados().length }} registros incluidos</strong> de {{ datos.registros.length }}
+    consultados. {{ mes() && permiteMes ? 'El mes filtra la fecha registrada del módulo.' : 'Sin
+    filtro de mes.' }} {{ administracion && tipo !== 'catalogo' ? (cuenta === null ? 'Todas las
+    cuentas.' : 'Solo la cuenta seleccionada.') : tipo === 'catalogo' ? 'Catálogo compartido.' :
+    'Solo tus registros.' }} {{ datos.detalle }}
+  </p>
+  @if (filtrados().length === 0) {
+  <p role="status">No hay registros para esta selección. No se generan datos de ejemplo.</p>
+  }
+  <div class="graficos">
+    @for (grafico of graficos(); track grafico.titulo) {
+    <article>
+      <h3>{{ grafico.titulo }}</h3>
+      <p class="nota">{{ grafico.nota }} Unidad: {{ grafico.unidad }}.</p>
+      <app-graficobarrascomponent
+        [datos]="grafico.datos"
+        [titulo]="grafico.titulo"
+        [unidad]="grafico.unidad"
+      ></app-graficobarrascomponent>
+      @if (grafico.omitidos > 0) {
+      <p class="nota">
+        {{ grafico.omitidos }} registros no tienen los valores o fechas necesarios para este
+        gráfico.
+      </p>
+      }
+    </article>
+    }
+  </div>
+  @if (mediciones().length > 0) {
+  <article class="mediciones">
+    <app-graficoprogresocomponent
+      [registros]="mediciones()"
+      idTitulo="titulo-reporte-progreso"
+      descripcion="Mediciones del historial completo consultado, con los filtros seleccionados."
+      alcance="historial consultado con los filtros seleccionados"
+    ></app-graficoprogresocomponent>
+  </article>
+  } @if (tipo === 'progreso' && administracion && cuenta === null) {
+  <p class="nota">
+    Selecciona una cuenta para ver su evolución de peso o medida. Las mediciones de distintas
+    personas no se mezclan en una curva.
+  </p>
+  } }
+  <p class="nota">
+    Los gráficos muestran registros guardados. No predicen fases, completan valores ausentes ni
+    interpretan tu salud.
+  </p>
+</section>

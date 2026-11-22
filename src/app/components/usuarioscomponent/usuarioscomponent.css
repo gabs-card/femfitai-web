@@ -1,33 +1,66 @@
-
 .container-registro {
-    max-width: 500px;
-    margin: 45px auto;
-    padding: 30px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+  max-width: 500px;
+  margin: 45px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
 }
 
 .container-registro h2 {
-    color: #ed1670;
-    font-size: 26px;
-    margin-bottom: 10px;
+  color: #ed1670;
+  font-size: 26px;
+  margin-bottom: 10px;
 }
 
 .container-registro p {
-    color: #666;
+  color: #666;
 }
 
 .example-full-width {
-    width: 100%;
+  width: 100%;
 }
 
 .container-registro form {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .container-registro button {
-    margin-top: 10px;
+  margin-top: 10px;
+}
+
+.container-registro.registro-admin {
+  max-width: none;
+  margin: 0;
+  padding: 26px;
+  border: 1px solid #eee5eb;
+  border-radius: 20px;
+  box-shadow: none;
+  --mat-button-filled-container-color: #c2457a;
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-text-label-text-color: #9c315f;
+}
+.registro-admin h2 {
+  font:
+    500 25px 'Fraunces',
+    Georgia,
+    serif;
+  color: #302733;
+}
+.registro-admin form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+}
+.registro-admin .ayuda-admin {
+  grid-column: 1/-1;
+  font-size: 12px;
+  line-height: 1.7;
+}
+@media (max-width: 650px) {
+  .registro-admin form {
+    grid-template-columns: 1fr;
+  }
 }

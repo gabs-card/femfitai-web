@@ -1,0 +1,18 @@
+<main class="pagina-admin">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">GESTIÓN DE USUARIOS</p>
+      <h1>Una nueva cuenta.</h1>
+      <p>Accesos claros desde el primer momento.</p>
+    </div>
+    <a class="boton" routerLink="/usuarios/listar">Volver al listado</a>
+  </header>
+  <app-usuarioscomponent
+    [administracion]="true"
+    (volverLogin)="volver()"
+    (cuentaCreada)="cuentaCreada()"
+  ></app-usuarioscomponent>
+  <p class="aviso-suave">
+    Crear una cuenta no inicia sesión con ella. Se conserva la sesión administrativa actual.
+  </p>
+</main>

@@ -7,8 +7,6 @@ import { Logincomponent } from './components/logincomponent/logincomponent';
 import { Homecomponent } from './components/homecomponent/homecomponent';
 import { Recomendacionescomponent } from './components/recomendacionescomponent/recomendacionescomponent';
 import { Chatcomponent } from './components/chatcomponent/chatcomponent';
-import { Ceditusuarioscomponent } from './components/usuarioscomponent/ceditusuarioscomponent/ceditusuarioscomponent';
-import { Clistusuarioscomponent } from './components/usuarioscomponent/clistusuarioscomponent/clistusuarioscomponent';
 import { Ceditprogresocomponent } from './components/progresocomponent/ceditprogresocomponent/ceditprogresocomponent';
 import { Cinsertprogresocomponent } from './components/progresocomponent/cinsertprogresocomponent/cinsertprogresocomponent';
 import { Clistprogresocomponent } from './components/progresocomponent/clistprogresocomponent/clistprogresocomponent';
@@ -33,6 +31,24 @@ export const routes: Routes = [
     children: [
       { path: 'inicio', component: Homecomponent },
       {
+        path: 'estadisticas',
+        canActivate: [roleGuard],
+        data: { roles: ['USUARIA'] },
+        loadComponent: () =>
+          import('./components/estadisticascomponent/estadisticascomponent').then(
+            (m) => m.Estadisticascomponent,
+          ),
+      },
+      {
+        path: 'administracion',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        loadChildren: () =>
+          import('./components/administracioncomponent/administracion.routes').then(
+            (m) => m.ADMINISTRACION_ROUTES,
+          ),
+      },
+      {
         path: 'ciclos',
         component: Cicloscomponent,
         canActivate: [roleGuard],
@@ -55,7 +71,12 @@ export const routes: Routes = [
           { path: 'listar', component: Clistejercicioscomponent },
         ],
       },
-      { path: 'perfil', component: Perfilcomponent, canActivate: [roleGuard], data: { roles: ['USUARIA'] } },
+      {
+        path: 'perfil',
+        component: Perfilcomponent,
+        canActivate: [roleGuard],
+        data: { roles: ['USUARIA'] },
+      },
       {
         path: 'rutinas',
         canActivate: [roleGuard],
@@ -81,12 +102,41 @@ export const routes: Routes = [
         data: { roles: ['ADMIN'] },
         children: [
           { path: '', redirectTo: 'listar', pathMatch: 'full' },
-          { path: 'listar', component: Clistusuarioscomponent },
-          { path: 'editar/:id', component: Ceditusuarioscomponent },
+          {
+            path: 'listar',
+            loadComponent: () =>
+              import('./components/usuarioscomponent/clistusuarioscomponent/clistusuarioscomponent').then(
+                (m) => m.Clistusuarioscomponent,
+              ),
+          },
+          {
+            path: 'insertar',
+            loadComponent: () =>
+              import('./components/usuarioscomponent/cinsertusuarioscomponent/cinsertusuarioscomponent').then(
+                (m) => m.Cinsertusuarioscomponent,
+              ),
+          },
+          {
+            path: 'editar/:id',
+            loadComponent: () =>
+              import('./components/usuarioscomponent/ceditusuarioscomponent/ceditusuarioscomponent').then(
+                (m) => m.Ceditusuarioscomponent,
+              ),
+          },
         ],
       },
-      { path: 'chat', component: Chatcomponent, canActivate: [roleGuard], data: { roles: ['USUARIA'] } },
-      { path: 'recomendaciones', component: Recomendacionescomponent, canActivate: [roleGuard], data: { roles: ['USUARIA'] } },
+      {
+        path: 'chat',
+        component: Chatcomponent,
+        canActivate: [roleGuard],
+        data: { roles: ['USUARIA'] },
+      },
+      {
+        path: 'recomendaciones',
+        component: Recomendacionescomponent,
+        canActivate: [roleGuard],
+        data: { roles: ['USUARIA'] },
+      },
       {
         path: 'sesiones',
         canActivate: [roleGuard],

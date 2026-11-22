@@ -1,0 +1,38 @@
+ABRE PRIMERO ABRIR.html para ver el índice completo de pantallas.
+
+FEMFITAI — PROPUESTAS HTML PARA REVISIÓN
+
+Cómo abrir:
+1. Abre esta carpeta en el Explorador de Windows.
+2. Haz doble clic en index.html. Se abrirá en tu navegador.
+3. Usa el menú lateral para recorrer las pantallas.
+4. El botón "Ver USUARIA" permite revisar sus gráficos.
+
+Pantallas:
+- index.html: Inicio ADMIN.
+- usuarios.html: listado, búsqueda, filtros, edición y cambio de estado demo.
+- usuario-formulario.html: propuesta de alta administrativa.
+- ejercicios.html: catálogo con acciones de demostración.
+- modulos.html: propuestas de CRUD con selectores para relaciones.
+- metricas-admin.html: propuestas de gráficos administrativos.
+- metricas-usuaria.html: propuestas de gráficos personales.
+
+Archivos compartidos:
+- estilos.css: diseño responsive blanco cálido y rosa.
+- interacciones.js: navegación de tablas, filtros y formularios de demostración.
+
+No necesitas Angular, npm, iniciar sesión ni tener el backend encendido.
+Los datos son ficticios y están señalados. No hay llamadas a la API.
+Las modificaciones de ejemplo se guardan solo en memoria y se pierden al
+recargar o navegar a otra página. No ingreses datos personales reales.
+
+Las tipografías Fraunces y Hanken Grotesk se solicitan a Google Fonts.
+Sin conexión se utilizan Georgia y Arial. No hay imágenes remotas.
+
+ALCANCE:
+Es una propuesta de diseño, no una implementación de Angular ni un Figma.
+Crear usuarios ADMIN, modificar catálogos, acceder a tablas relacionadas y
+mostrar métricas requiere validar primero los endpoints y permisos reales.
+Los gráficos no confirman que existan las consultas propuestas en el backend.
+Esta carpeta no modifica rutas, guards, servicios, configuraciones ni código
+de la aplicación. No se han realizado commits ni push.

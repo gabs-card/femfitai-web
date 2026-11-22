@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { Rutinasservice } from '../../../services/rutinasservice';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { RutinaDTO } from '../../../models/RutinaDTO';
 import { NIVELES, OBJETIVOS } from '../../../models/catalogos';
 import { mensajeDeError } from '../../../utils/errores';
@@ -24,7 +24,7 @@ export class Cinsertrutinascomponent {
   guardando = false;
 
   private rs = inject(Rutinasservice);
-  private auth = inject(Authservice);
+  private auth = inject(Loginservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private router = inject(Router);
@@ -41,7 +41,7 @@ export class Cinsertrutinascomponent {
       this.mensaje = 'Completa correctamente los campos obligatorios.';
       return;
     }
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario) {
       this.mensaje = 'No se encontró el usuario. Inicia sesión nuevamente.';
       return;

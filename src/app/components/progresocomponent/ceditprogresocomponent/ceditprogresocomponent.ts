@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { Progresoservice } from '../../../services/progresoservice';
+import { Loginservice } from '../../../services/loginservice';
 import { ProgresoDTO } from '../../../models/ProgresoDTO';
 import { aISO, deISO } from '../../../utils/fechas';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
@@ -26,6 +27,7 @@ export class Ceditprogresocomponent implements OnInit {
   errorCarga = '';
 
   private ps = inject(Progresoservice);
+  private auth = inject(Loginservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
@@ -39,8 +41,17 @@ export class Ceditprogresocomponent implements OnInit {
       nota: ['', Validators.maxLength(255)],
     });
     this.id = Number(this.route.snapshot.paramMap.get('id'));
+    if (!Number.isSafeInteger(this.id) || this.id <= 0) {
+      this.errorCarga = 'El identificador del registro no es válido.';
+      return;
+    }
     this.ps.getProgresoPorId(this.id).subscribe({
       next: (p) => {
+        if (p.idUsuario !== this.auth.getIdUsuario()) {
+          this.errorCarga = 'Este registro pertenece a otra cuenta.';
+          this.cdr.detectChanges();
+          return;
+        }
         this.idUsuario = p.idUsuario;
         this.formulario.patchValue({
           fecha: p.fecha ? deISO(p.fecha) : null,
@@ -59,8 +70,13 @@ export class Ceditprogresocomponent implements OnInit {
   }
 
   guardarProgreso() {
+    if (this.guardando || !this.cargado) return;
     if (this.formulario.invalid) {
       this.mensaje = 'Completa correctamente los campos.';
+      return;
+    }
+    if (this.idUsuario !== this.auth.getIdUsuario()) {
+      this.mensaje = 'No se pudo identificar la cuenta del registro. Inicia sesión nuevamente.';
       return;
     }
     const v = this.formulario.value;

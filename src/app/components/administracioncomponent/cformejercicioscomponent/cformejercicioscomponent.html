@@ -1,0 +1,59 @@
+<main class="pagina-admin">
+  <header class="cabecera">
+    <div>
+      <p class="ceja">CATÁLOGO DE EJERCICIOS</p>
+      <h1>{{ id === null ? 'Un nuevo movimiento.' : 'Editar ejercicio' }}</h1>
+      <p>Información clara para organizar el catálogo.</p>
+    </div>
+    <a class="boton" routerLink="/administracion/ejercicios">Volver al catálogo</a>
+  </header>
+  @if (cargando) {
+    <p class="estado" role="status">Cargando ejercicio...</p>
+  }
+  @if (errorCarga) {
+    <p class="aviso" role="alert">{{ errorCarga }}</p>
+  }
+  @if (!cargando && !errorCarga) {
+    <section class="tarjeta">
+      <h2>Datos del ejercicio</h2>
+      <p class="nota">Los campos con * son obligatorios.</p>
+      <form [formGroup]="formulario" (ngSubmit)="guardar()">
+        <div class="formulario">
+          <label class="campo completo"
+            >Nombre *<input formControlName="nombre" maxlength="100" required />
+            @if (formulario.controls.nombre.touched && formulario.controls.nombre.invalid) {
+              <small role="alert">Escribe un nombre de hasta 100 caracteres.</small>
+            }</label
+          ><label class="campo"
+            >Grupo muscular<select formControlName="grupoMuscular">
+              <option value="">Sin especificar</option>
+              @for (grupo of grupos; track grupo) {
+                <option [value]="grupo">{{ grupo }}</option>
+              }
+            </select></label
+          ><label class="campo"
+            >Tipo<select formControlName="tipo">
+              <option value="">Sin especificar</option>
+              @for (tipo of tipos; track tipo) {
+                <option [value]="tipo">{{ tipo }}</option>
+              }
+            </select></label
+          ><label class="campo completo"
+            >Descripción<textarea formControlName="descripcion" rows="5"></textarea
+            ><small
+              >Escribe una descripción del ejercicio. El servidor valida el contenido.</small
+            ></label
+          >
+        </div>
+        <div class="acciones" style="margin-top: 24px">
+          <button class="boton principal" type="submit" [disabled]="guardando">
+            {{ guardando ? 'Guardando...' : 'Guardar ejercicio' }}</button
+          ><a class="boton" routerLink="/administracion/ejercicios">Cancelar</a>
+        </div>
+      </form>
+    </section>
+  }
+  @if (mensaje) {
+    <p class="aviso" role="alert">{{ mensaje }}</p>
+  }
+</main>

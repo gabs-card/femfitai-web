@@ -1,0 +1,38 @@
+.layout-admin .contenido-layout {
+  margin-left: 234px;
+  min-height: 100vh;
+  background: #faf7f9;
+  font-family: 'Hanken Grotesk', Arial, sans-serif;
+}
+.cabecera-admin {
+  box-sizing: border-box;
+  min-height: 76px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px clamp(18px, 3vw, 48px);
+  border-bottom: 1px solid #eee5eb;
+  background: white;
+  color: #716573;
+  font-size: 12px;
+}
+.cabecera-admin span span {
+  margin: 0 10px;
+  color: #bcaab5;
+}
+.rol-admin {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #9c315f;
+}
+@media (max-width: 720px) {
+  .layout-admin .contenido-layout {
+    margin: 0;
+  }
+  .cabecera-admin {
+    min-height: 56px;
+    padding: 16px;
+  }
+}

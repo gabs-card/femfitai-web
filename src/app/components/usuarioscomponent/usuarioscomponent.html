@@ -1,6 +1,12 @@
-<div class="container-registro">
-  <h2>Crear cuenta</h2>
-  <p>Completa tus datos para registrarte en FemFitAI.</p>
+<div class="container-registro" [class.registro-admin]="esAdministracion">
+  <h2>{{ esAdministracion ? 'Datos de la nueva cuenta' : 'Crear cuenta' }}</h2>
+  <p>
+    {{
+      esAdministracion
+        ? 'Completa la información de la cuenta. El servidor comprobará los permisos.'
+        : 'Completa tus datos para registrarte en FemFitAI.'
+    }}
+  </p>
 
   <form [formGroup]="form" (ngSubmit)="registrarUsuario()">
     <mat-form-field class="example-full-width">
@@ -27,11 +33,36 @@
       <mat-error>Mínimo 8 caracteres</mat-error>
     </mat-form-field>
 
-    <button matButton="filled" type="submit">Crear cuenta</button>
-    <button matButton type="button" (click)="regresar()">Volver al inicio de sesión</button>
+    @if (esAdministracion) {
+      <mat-form-field
+        ><mat-label>Rol</mat-label
+        ><mat-select formControlName="rol"
+          ><mat-option value="USUARIA">USUARIA</mat-option
+          ><mat-option value="ADMIN">ADMIN</mat-option></mat-select
+        ></mat-form-field
+      >
+      <mat-form-field
+        ><mat-label>Estado inicial</mat-label
+        ><mat-select formControlName="estado"
+          ><mat-option [value]="true">Activa</mat-option
+          ><mat-option [value]="false">Inactiva</mat-option></mat-select
+        ></mat-form-field
+      >
+      <p class="ayuda-admin">
+        La contraseña debe incluir mayúsculas, minúsculas y números, con un mínimo de 8 caracteres.
+      </p>
+    }
+    <button matButton="filled" type="submit" [disabled]="guardando">
+      {{ guardando ? 'Creando cuenta...' : 'Crear cuenta' }}
+    </button>
+    <button matButton type="button" (click)="regresar()" [disabled]="guardando">
+      {{ esAdministracion ? 'Volver a usuarios' : 'Volver al inicio de sesión' }}
+    </button>
   </form>
 
   @if (mensaje) {
-    <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">{{ mensaje }}</p>
+    <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">
+      {{ mensaje }}
+    </p>
   }
 </div>

@@ -1,0 +1,10 @@
+.personal {
+  width: 88%;
+  padding: 32px 0 40px;
+}
+@media (max-width: 650px) {
+  .personal {
+    width: calc(100% - 32px);
+    padding-top: 26px;
+  }
+}

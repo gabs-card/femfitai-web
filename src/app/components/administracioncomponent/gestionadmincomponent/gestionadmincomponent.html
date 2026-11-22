@@ -1,0 +1,319 @@
+<main class="pagina-admin">
+  <a class="enlace volver" routerLink="/administracion/modulos">← Centro de gestión</a>
+  @if (modulo; as m) {
+    <header class="cabecera">
+      <div>
+        <p class="ceja">GESTIÓN ADMINISTRATIVA</p>
+        <h1>{{ m.nombre }}</h1>
+        <p>{{ m.descripcion }}</p>
+      </div>
+      <button
+        class="boton principal"
+        type="button"
+        (click)="nuevo()"
+        [disabled]="cargando || guardando || eliminandoId !== null || !!errorCarga"
+      >
+        {{ m.clave === 'sesiones' ? 'Iniciar sesión de entrenamiento' : 'Crear ' + m.singular }}
+      </button>
+    </header>
+    <p class="aviso-suave">{{ m.nota }}</p>
+    <div class="filtros">
+      <label for="cuenta-filtro"
+        >Filtrar por cuenta<select id="cuenta-filtro" [formControl]="filtroUsuario">
+          <option value="">Todas las cuentas</option>
+          @for (usuario of usuarios; track usuario.idUsuario) {
+            <option [value]="usuario.idUsuario">
+              {{ usuario.nombres }} {{ usuario.apellidos }} · {{ usuario.correo }}
+            </option>
+          }
+        </select></label
+      ><button
+        class="boton"
+        type="button"
+        (click)="volverACargar()"
+        [disabled]="cargando || guardando || eliminandoId !== null"
+      >
+        Actualizar listado
+      </button>
+    </div>
+    @if (errorUsuarios) {
+      <p class="estado" role="alert">{{ errorUsuarios }} Puedes consultar el listado sin filtro.</p>
+    }
+    @if (mensaje) {
+      <p class="estado" role="status">{{ mensaje }}</p>
+    }
+    @if (cargandoDetalle) {
+      <p class="estado" role="status">Consultando registro...</p>
+    }
+    @if (detalle; as registro) {
+      <section class="tarjeta ficha" aria-labelledby="detalle-titulo">
+        <div class="cabecera">
+          <h2 id="detalle-titulo">{{ m.nombre }} #{{ id(registro) }}</h2>
+          <button class="boton" type="button" (click)="detalle = null">Cerrar detalle</button>
+        </div>
+        <p>Cuenta: {{ nombreUsuario(registro.idUsuario) }}</p>
+        <dl class="datos-registro">
+          @for (dato of camposDetalle(); track dato.clave) {
+            <div>
+              <dt>{{ dato.etiqueta }}</dt>
+              <dd>{{ mostrar(registro.datos[dato.clave]) }}</dd>
+            </div>
+          }
+        </dl>
+        @if (registro.modificable === false) {
+          <p class="nota">Registro de una sesión finalizada: se conserva como historial.</p>
+        }
+      </section>
+    }
+    @if (editorAbierto) {
+      <section class="tarjeta editor" aria-labelledby="editor-titulo">
+        <div class="cabecera">
+          <div>
+            <p class="ceja">
+              {{ idEdicion === null ? 'NUEVO REGISTRO' : 'EDITAR REGISTRO #' + idEdicion }}
+            </p>
+            <h2 id="editor-titulo">
+              {{
+                m.clave === 'sesiones'
+                  ? idEdicion === null
+                    ? 'Iniciar entrenamiento'
+                    : 'Finalizar entrenamiento'
+                  : (idEdicion === null ? 'Crear ' : 'Editar ') + m.singular
+              }}
+            </h2>
+          </div>
+          <button class="boton" type="button" (click)="cerrarEditor()" [disabled]="guardando">
+            Cancelar
+          </button>
+        </div>
+        @if (cargandoOpciones) {
+          <p class="estado" role="status">Cargando cuentas y registros relacionados...</p>
+        }
+        @if (errorOpciones) {
+          <p class="estado" role="alert">{{ errorOpciones }}</p>
+        }
+        <form [formGroup]="formulario" (ngSubmit)="guardar()" class="formulario">
+          @for (campo of camposVisibles(); track campo.clave) {
+            <div class="campo" [class.completo]="campo.tipo === 'textarea'">
+              <label [for]="'admin-' + campo.clave"
+                >{{ campo.etiqueta }}{{ campo.requerido ? ' *' : '' }}</label
+              >
+              @switch (campo.tipo) {
+                @case ('checkbox') {
+                  <div class="casilla">
+                    <input
+                      type="checkbox"
+                      [id]="'admin-' + campo.clave"
+                      [formControlName]="campo.clave"
+                    /><span>{{ formulario.controls[campo.clave].value ? 'Sí' : 'No' }}</span>
+                  </div>
+                }
+                @case ('select') {
+                  <select
+                    [id]="'admin-' + campo.clave"
+                    [formControlName]="campo.clave"
+                    [attr.aria-invalid]="
+                      formulario.controls[campo.clave].invalid &&
+                      formulario.controls[campo.clave].touched
+                    "
+                  >
+                    <option value="">
+                      {{ campo.requerido ? 'Selecciona una opción' : 'Sin asignar' }}
+                    </option>
+                    @if (campo.relacion) {
+                      @for (opcion of opcionesCampo(campo); track opcion.valor) {
+                        <option [ngValue]="opcion.valor">{{ opcion.etiqueta }}</option>
+                      }
+                    } @else {
+                      @for (opcion of campo.opciones; track opcion) {
+                        <option [value]="opcion">{{ opcion }}</option>
+                      }
+                    }
+                  </select>
+                }
+                @case ('textarea') {
+                  <textarea
+                    rows="3"
+                    [id]="'admin-' + campo.clave"
+                    [formControlName]="campo.clave"
+                    [attr.maxlength]="campo.maxLongitud ?? null"
+                    [attr.aria-invalid]="
+                      formulario.controls[campo.clave].invalid &&
+                      formulario.controls[campo.clave].touched
+                    "
+                  ></textarea>
+                }
+                @default {
+                  <input
+                    [type]="campo.tipo"
+                    [id]="'admin-' + campo.clave"
+                    [formControlName]="campo.clave"
+                    [attr.min]="campo.min ?? null"
+                    [attr.max]="campo.max ?? (campo.noFutura ? hoy : null)"
+                    [attr.step]="campo.paso ?? null"
+                    [attr.maxlength]="campo.maxLongitud ?? null"
+                    [attr.aria-invalid]="
+                      formulario.controls[campo.clave].invalid &&
+                      formulario.controls[campo.clave].touched
+                    "
+                  />
+                }
+              }
+              @if (campo.referencia && idEdicion !== null) {
+                <small>Referencia conservada para mantener la relación del registro.</small>
+              }
+              @if (
+                campo.relacion &&
+                !cargandoOpciones &&
+                !errorOpciones &&
+                opcionesCampo(campo).length === 0
+              ) {
+                <small
+                  >No hay registros relacionados disponibles. Créalo primero en su módulo.</small
+                >
+              }
+              @if (
+                formulario.controls[campo.clave].invalid && formulario.controls[campo.clave].touched
+              ) {
+                <small class="error-campo"
+                  >Revisa este campo: {{ campo.requerido ? 'es obligatorio; ' : '' }}respeta el
+                  formato y los límites indicados{{
+                    campo.min !== undefined ? ' (mínimo ' + campo.min + ')' : ''
+                  }}{{ campo.max !== undefined ? ' (máximo ' + campo.max + ')' : '' }}.</small
+                >
+              }
+            </div>
+          }
+          @if (mensajeEditor) {
+            <p class="estado completo" role="alert">{{ mensajeEditor }}</p>
+          }
+          <div class="acciones completo">
+            <button
+              class="boton principal"
+              type="submit"
+              [disabled]="guardando || cargandoOpciones || !!errorOpciones"
+            >
+              {{
+                guardando
+                  ? 'Guardando...'
+                  : m.clave === 'sesiones'
+                    ? idEdicion === null
+                      ? 'Iniciar entrenamiento'
+                      : 'Finalizar y conservar historial'
+                    : 'Guardar cambios'
+              }}</button
+            ><span class="nota"
+              >Los campos con * son obligatorios. Los cambios se guardan en datos reales.</span
+            >
+          </div>
+        </form>
+      </section>
+    }
+    @if (cargando) {
+      <p class="estado" role="status">Cargando registros...</p>
+    } @else if (errorCarga) {
+      <p class="estado" role="alert">{{ errorCarga }}</p>
+    } @else {
+      <section class="tarjeta listado" aria-label="Listado de registros">
+        <div class="tabla-contenedor">
+          <table>
+            <caption class="nota">
+              {{
+                totalRegistros
+              }}
+              registros{{
+                idUsuarioFiltro() === null ? ' de todas las cuentas' : ' de la cuenta seleccionada'
+              }}
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Cuenta propietaria</th>
+                @for (columna of m.columnas; track columna.clave) {
+                  <th scope="col">{{ columna.etiqueta }}</th>
+                }
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (registro of registros; track id(registro)) {
+                <tr>
+                  <td>#{{ id(registro) }}</td>
+                  <td class="propietaria">{{ nombreUsuario(registro.idUsuario) }}</td>
+                  @for (columna of m.columnas; track columna.clave) {
+                    <td class="valor">{{ mostrar(registro.datos[columna.clave]) }}</td>
+                  }
+                  <td>
+                    <div class="acciones-fila">
+                      <button
+                        class="boton"
+                        type="button"
+                        (click)="ver(registro)"
+                        [disabled]="guardando || eliminandoId !== null || cargandoDetalle"
+                      >
+                        Ver
+                      </button>
+                      @if (registro.modificable !== false) {
+                        <button
+                          class="boton"
+                          type="button"
+                          (click)="editar(registro)"
+                          [disabled]="guardando || eliminandoId !== null || cargandoDetalle"
+                        >
+                          {{ m.clave === 'sesiones' ? 'Finalizar' : 'Editar' }}
+                        </button>
+                        @if (m.eliminar !== false) {
+                          <button
+                            class="boton peligro"
+                            type="button"
+                            (click)="eliminar(registro)"
+                            [disabled]="guardando || eliminandoId !== null"
+                          >
+                            {{ eliminandoId === id(registro) ? 'Eliminando...' : 'Eliminar' }}
+                          </button>
+                        }
+                      } @else {
+                        <span class="etiqueta gris">Historial conservado</span>
+                      }
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td [attr.colspan]="m.columnas.length + 3">
+                    <p class="estado">No hay registros para esta selección.</p>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="pie">
+          <span>Página {{ pagina + 1 }} de {{ totalPaginas }}</span>
+          <div class="acciones">
+            <button
+              class="boton"
+              type="button"
+              (click)="cambiarPagina(-1)"
+              [disabled]="pagina === 0 || cargando || guardando || eliminandoId !== null"
+            >
+              Anterior</button
+            ><button
+              class="boton"
+              type="button"
+              (click)="cambiarPagina(1)"
+              [disabled]="
+                pagina + 1 >= totalPaginas || cargando || guardando || eliminandoId !== null
+              "
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+      </section>
+    }
+  } @else {
+    <h1>Módulo no encontrado</h1>
+    <p>Selecciona un módulo desde el Centro de gestión.</p>
+  }
+</main>

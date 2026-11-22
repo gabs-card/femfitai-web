@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButton } from '@angular/material/button';
 import { Ciclosservice } from '../../../services/ciclosservice';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { CicloDTO } from '../../../models/CicloDTO';
 import { aISO } from '../../../utils/fechas';
 import { mensajeDeError } from '../../../utils/errores';
@@ -24,7 +24,7 @@ export class Cinsertcicloscomponent {
   private cs = inject(Ciclosservice);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
-  private auth = inject(Authservice);
+  private auth = inject(Loginservice);
   private router = inject(Router);
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class Cinsertcicloscomponent {
       this.mensaje = 'Selecciona la fecha de inicio.';
       return;
     }
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario) {
       this.mensaje = 'No se encontró el usuario. Inicia sesión nuevamente.';
       return;

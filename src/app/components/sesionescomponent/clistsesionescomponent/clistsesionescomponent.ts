@@ -7,7 +7,7 @@ import { RutinaDTO } from '../../../models/RutinaDTO';
 import { SesionEntrenamientoDTO } from '../../../models/SesionEntrenamientoDTO';
 import { Detallesesionservice } from '../../../services/detallesesionservice';
 import { Detalleserieservice } from '../../../services/detalleserieservice';
-import { Authservice } from '../../../services/loginservice';
+import { Loginservice } from '../../../services/loginservice';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeError } from '../../../utils/errores';
@@ -24,7 +24,7 @@ export class Clistsesionescomponent implements OnInit {
   cargando = true;
   eliminando = false;
   mensaje = '';
-  private readonly auth = inject(Authservice);
+  private readonly auth = inject(Loginservice);
   private readonly sesionesService = inject(Sesionesservice);
   private readonly rutinasService = inject(Rutinasservice);
   private readonly detallesService = inject(Detallesesionservice);
@@ -42,7 +42,7 @@ export class Clistsesionescomponent implements OnInit {
   }
 
   cargar(): void {
-    const idUsuario = this.auth.idUsuario();
+    const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario) {
       this.mensaje = 'No se pudo identificar la cuenta. Inicia sesiÃ³n nuevamente.';
       this.cargando = false;
@@ -72,7 +72,7 @@ export class Clistsesionescomponent implements OnInit {
   }
 
   eliminar(sesion: SesionEntrenamientoDTO): void {
-    if (this.eliminando || sesion.idUsuario !== this.auth.idUsuario()) return;
+    if (this.eliminando || sesion.idUsuario !== this.auth.getIdUsuario()) return;
     if (!confirm('Â¿Eliminar esta sesiÃ³n, sus ejercicios y todas las series registradas?')) return;
     this.eliminando = true;
     this.mensaje = '';

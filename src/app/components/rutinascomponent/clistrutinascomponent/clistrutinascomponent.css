@@ -27,6 +27,8 @@ dd { margin: 0; color: #342b34; font-weight: 500; text-align: right; overflow-wr
 .secundario { border-color: #e6d5df; background: #fff; color: #a82f64; }
 .secundario:hover, .boton-estado:hover { background: #fce8ef; }
 .boton-estado { background: transparent; color: #a82f64; }
+.boton-eliminar { border-color: #ead3dc; color: #913c57; background: #fff; }
+.boton-eliminar:not(:disabled):hover { background: #fff0f5; border-color: #c87896; }
 a:focus-visible, button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
 .estado { padding: 18px; background: #faf7f9; border-radius: 14px; color: #6c5d67; line-height: 1.6; }
 .estado-vacio { text-align: center; border: 1px dashed #e8cdd9; padding: 30px 20px; }
