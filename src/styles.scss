@@ -48,6 +48,35 @@ body {
 }
 .aviso-ok {
   border-left-color: #2e7d32;
-  background: #e8f5e9;
+ background: #e8f5e9;
   color: #1b5e20;
 }
+
+/* ===== Acciones de fila/tarjeta: íconos minimalistas (editar / eliminar) ===== */
+.acciones-icono {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.accion-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #8c7b86;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.accion-icono:hover { color: #a82f64; background: #fbeef3; }
+.accion-icono.accion-eliminar:hover { color: #b3261e; background: #fdeceb; }
+.accion-icono:active { transform: scale(0.9); }
+.accion-icono:focus-visible { outline: 2px solid #a82f64; outline-offset: 2px; }
+.accion-icono:disabled,
+.accion-icono[aria-busy='true'] { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
