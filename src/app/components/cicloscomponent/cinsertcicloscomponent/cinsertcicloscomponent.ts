@@ -18,6 +18,7 @@ import { mensajeDeError } from '../../../utils/errores';
 })
 export class Cinsertcicloscomponent {
   mensaje: string = '';
+  guardando = false;
   hoy = new Date();
   form: any;
 
@@ -43,6 +44,7 @@ export class Cinsertcicloscomponent {
       this.mensaje = 'No se encontró el usuario. Inicia sesión nuevamente.';
       return;
     }
+    if (this.guardando) return;
     const ciclo: CicloDTO = {
       idCiclo: 0,
       idUsuario: idUsuario,
@@ -50,11 +52,13 @@ export class Cinsertcicloscomponent {
       fechaFinEstimada: null,
       fechaReal: null,
     };
+    this.guardando = true;
     this.cs.insertCiclos(ciclo).subscribe({
-      next: () => 
+      next: () =>
         this.router.navigate(['/ciclos/listar'], 
         { state: { mensaje: 'Ciclo registrado correctamente.' } }),
       error: (err) => {
+        this.guardando = false;
         this.mensaje = mensajeDeError(err, 'No se pudo registrar el ciclo.', 'Ya tienes un ciclo activo.');
         this.cdr.detectChanges();
       },

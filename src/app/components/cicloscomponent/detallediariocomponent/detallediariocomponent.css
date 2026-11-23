@@ -24,3 +24,10 @@ tr:last-child td { border-bottom: 0; }
 tr:hover td { background: #fdf9fb; }
 button:focus-visible, a:focus-visible, .tabla-contenedor:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
 @media (max-width: 650px) { .campos { grid-template-columns: 1fr; } .observaciones { grid-column: auto; } .encabezado, .formulario, .historial { padding: 18px; } }
+/* Botón principal: letra blanca sobre fondo rosa (también deshabilitado) */
+.boton-principal {
+  --mat-button-filled-container-color: #c2457a;
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-disabled-container-color: #eee5eb;
+  --mat-button-filled-disabled-label-text-color: #6c5d67;
+}

@@ -56,9 +56,9 @@
       <mat-label>Minutos por sesión</mat-label>
       <input matInput type="number" formControlName="tiempo" />
       <mat-hint>Entre 10 y 180</mat-hint>
-      <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
+          <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
     </mat-form-field>
-    <div class="acciones"><button matButton class="boton-principal" type="submit" [disabled]="guardando">Registrar perfil</button></div>
+    <div class="acciones"><button matButton="filled" class="boton-principal" type="submit" [disabled]="guardando">Registrar perfil</button></div>
   </form>
   </section>
 }
@@ -85,9 +85,9 @@
               <mat-option [value]="o">{{ o }}</mat-option>
             }
           </mat-select>
-          <mat-error>Selecciona tu objetivo</mat-error>
+                  <mat-error>Selecciona tu objetivo</mat-error>
         </mat-form-field>
-        <div class="acciones"><button matButton class="boton-principal" type="submit">Guardar</button>
+        <div class="acciones"><button matButton="filled" class="boton-principal" type="submit">Guardar</button>
         <button matButton type="button" (click)="editandoEntrenamiento = false">Cancelar</button>
         </div>
       </form>
@@ -122,9 +122,9 @@
           <mat-label>Minutos por sesión</mat-label>
           <input matInput type="number" formControlName="tiempo" />
           <mat-hint>Entre 10 y 180</mat-hint>
-          <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
+                 <mat-error>Ingresa un número entero entre 10 y 180</mat-error>
         </mat-form-field>
-        <div class="acciones"><button matButton class="boton-principal" type="submit">Guardar</button>
+        <div class="acciones"><button matButton="filled" class="boton-principal" type="submit">Guardar</button>
         <button matButton type="button" (click)="editandoDisponibilidad = false">Cancelar</button>
         </div>
       </form>

@@ -20,9 +20,9 @@
                 </mat-datepicker-toggle>
                 <mat-datepicker #picker1></mat-datepicker>
             </mat-form-field>
-            <p class="ayuda">El fin estimado (28 días después) lo calcula el sistema.</p>
+                     <p class="ayuda">El fin estimado (28 días después) lo calcula el sistema.</p>
 
-            <button matButton class="boton-principal" type="submit">Registrar</button>
+            <button matButton="filled" class="boton-principal" type="submit" [disabled]="guardando">{{ guardando ? 'Guardando…' : 'Registrar' }}</button>
 
         </form>
 

@@ -64,8 +64,9 @@
         </mat-form-field>
       </div>
 
+    
       <div class="acciones">
-        <button matButton class="boton-principal" type="submit" [disabled]="guardando">
+        <button matButton="filled" class="boton-principal" type="submit" [disabled]="guardando">
           {{ guardando ? 'Guardando…' : (detalleEditando ? 'Guardar cambios' : 'Registrar día') }}
         </button>
         @if (detalleEditando) {

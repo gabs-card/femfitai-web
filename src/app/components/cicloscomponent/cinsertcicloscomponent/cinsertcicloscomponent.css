@@ -12,3 +12,10 @@ mat-form-field { width: 100%; }
 .estado { color: #6c5d67; padding: 16px; background: #faf7f9; border-radius: 12px; }
 a:focus-visible, button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
 @media (max-width: 650px) { .container, .edicion { padding: 20px; max-width: 100%; } }
+/* Botón principal: letra blanca sobre fondo rosa (también deshabilitado) */
+.boton-principal {
+  --mat-button-filled-container-color: #c2457a;
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-disabled-container-color: #eee5eb;
+  --mat-button-filled-disabled-label-text-color: #6c5d67;
+}

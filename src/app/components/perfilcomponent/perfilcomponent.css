@@ -34,3 +34,10 @@ button:focus-visible { outline: 3px solid #a82f64; outline-offset: 3px; }
 .estado { padding: 18px; border-radius: 14px; background: #faf7f9; }
 @media (max-width: 850px) { .perfil-grid { grid-template-columns: 1fr; } }
 @media (max-width: 650px) { .pagina-perfil { width: calc(100% - 32px); padding: 24px 0 32px; } .tarjeta { padding: 20px; } .formulario-registro { grid-template-columns: 1fr; } .cabecera-tarjeta { gap: 10px; } dl { padding: 16px; } }
+/* Botón principal: letra blanca sobre fondo rosa (también deshabilitado) */
+.boton-principal {
+  --mat-button-filled-container-color: #c2457a;
+  --mat-button-filled-label-text-color: #fff;
+  --mat-button-filled-disabled-container-color: #eee5eb;
+  --mat-button-filled-disabled-label-text-color: #6c5d67;
+}
