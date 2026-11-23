@@ -44,7 +44,7 @@ export class Clistsesionescomponent implements OnInit {
   cargar(): void {
     const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario) {
-      this.mensaje = 'No se pudo identificar la cuenta. Inicia sesiÃ³n nuevamente.';
+      this.mensaje = 'No se pudo identificar la cuenta. Inicia sesión nuevamente.';
       this.cargando = false;
       return;
     }
@@ -73,7 +73,7 @@ export class Clistsesionescomponent implements OnInit {
 
   eliminar(sesion: SesionEntrenamientoDTO): void {
     if (this.eliminando || sesion.idUsuario !== this.auth.getIdUsuario()) return;
-    if (!confirm('Â¿Eliminar esta sesiÃ³n, sus ejercicios y todas las series registradas?')) return;
+    if (!confirm('Â¿Eliminar esta sesión, sus ejercicios y todas las series registradas?')) return;
     this.eliminando = true;
     this.mensaje = '';
     this.detallesService.listarPorSesion(sesion.idSesion).pipe(
@@ -91,12 +91,12 @@ export class Clistsesionescomponent implements OnInit {
     ).subscribe({
       next: () => {
         this.eliminando = false;
-        this.mensaje = 'SesiÃ³n y sus ejercicios eliminados correctamente.';
+        this.mensaje = 'Sesión y sus ejercicios eliminados correctamente.';
         this.cargar();
       },
       error: (err) => {
         this.eliminando = false;
-        this.mensaje = mensajeDeError(err, 'No se pudo completar la eliminaciÃ³n. Si fallÃ³ a mitad, revisa la sesiÃ³n y vuelve a intentarlo.');
+        this.mensaje = mensajeDeError(err, 'No se pudo completar la eliminación. Si falla a mitad, revisa la sesión y vuelve a intentarlo.');
         this.cdr.detectChanges();
       },
     });

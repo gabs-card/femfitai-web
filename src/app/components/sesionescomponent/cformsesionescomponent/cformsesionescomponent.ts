@@ -48,7 +48,7 @@ export class Cformsesionescomponent implements OnInit {
     const idUsuario = this.auth.getIdUsuario();
     this.idSesion = this.route.snapshot.paramMap.has('id') ? Number(this.route.snapshot.paramMap.get('id')) : null;
     if (!idUsuario || (this.idSesion !== null && (!Number.isInteger(this.idSesion) || this.idSesion <= 0))) {
-      this.mensaje = 'No se pudo identificar la cuenta o la sesiÃ³n solicitada.';
+      this.mensaje = 'No se pudo identificar la cuenta o la sesión solicitada.';
       this.cargando = false;
       return;
     }
@@ -89,9 +89,9 @@ export class Cformsesionescomponent implements OnInit {
     this.sesionesService.obtener(this.idSesion!).subscribe({
       next: (sesion) => {
         if (sesion.idUsuario !== idUsuario) {
-          this.mensaje = 'Esta sesiÃ³n pertenece a otra cuenta.';
+          this.mensaje = 'Esta sesión pertenece a otra cuenta.';
         } else if (!this.rutinas.some((r) => r.idRutina === sesion.idRutina)) {
-          this.mensaje = 'La rutina asociada no estÃ¡ disponible en tu cuenta.';
+          this.mensaje = 'La rutina asociada no está disponible en tu cuenta.';
         } else {
           this.form.patchValue({
             idRutina: sesion.idRutina,
@@ -124,12 +124,12 @@ export class Cformsesionescomponent implements OnInit {
     const valores = this.form.getRawValue();
     const rutina = this.rutinas.find((r) => r.idRutina === Number(valores.idRutina));
     if (!rutina || rutina.idUsuario !== idUsuario) {
-      this.mensaje = 'Selecciona una rutina propia para asociarla a la sesiÃ³n.';
+      this.mensaje = 'Selecciona una rutina propia para asociarla a la sesión.';
       return;
     }
     const fecha = String(valores.fecha ?? '');
     if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(fecha) || Number.isNaN(new Date(fecha).getTime())) {
-      this.mensaje = 'Ingresa una fecha y hora vÃ¡lidas.';
+      this.mensaje = 'Ingresa una fecha y hora válidas.';
       return;
     }
     const dto: SesionEntrenamientoDTO = {
@@ -152,12 +152,12 @@ export class Cformsesionescomponent implements OnInit {
         if (!this.editando && sesion?.idSesion) {
           this.router.navigate(['/sesiones/detalle', sesion.idSesion]);
         } else {
-          this.router.navigate(['/sesiones/listar'], { state: { mensaje: 'SesiÃ³n actualizada correctamente.' } });
+          this.router.navigate(['/sesiones/listar'], { state: { mensaje: 'Sesión actualizada correctamente.' } });
         }
       },
       error: (err) => {
         this.guardando = false;
-        this.mensaje = mensajeDeError(err, 'No se pudo guardar la sesiÃ³n.');
+        this.mensaje = mensajeDeError(err, 'No se pudo guardar la sesión.');
         this.cdr.detectChanges();
       },
     });

@@ -90,7 +90,7 @@ export class Cdetallessesioncomponent implements OnInit {
     this.idSesion = Number(this.route.snapshot.paramMap.get('id'));
     const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario || !Number.isInteger(this.idSesion) || this.idSesion <= 0) {
-      this.mensaje = 'No se pudo identificar la sesiÃ³n o la cuenta.'; this.cargando = false; return;
+      this.mensaje = 'No se pudo identificar la sesión o la cuenta.'; this.cargando = false; return;
     }
     this.sesionesService.listarUsuario(idUsuario).subscribe({
       next: (sesiones) => {
@@ -110,7 +110,7 @@ export class Cdetallessesioncomponent implements OnInit {
     this.sesionesService.obtenerDetalle(this.idSesion).subscribe({
       next: (sesion) => {
         if (sesion.idUsuario !== idUsuario) {
-          this.mensaje = 'Esta sesiÃ³n pertenece a otra cuenta.'; this.cargando = false; this.cdr.detectChanges(); return;
+          this.mensaje = 'Esta sesión pertenece a otra cuenta.'; this.cargando = false; this.cdr.detectChanges(); return;
         }
         this.sesion = sesion;
         this.cargarNombreRutina(sesion.idRutina, idUsuario);
@@ -342,7 +342,7 @@ export class Cdetallessesioncomponent implements OnInit {
           error: (err) => { this.mensaje = mensajeDeError(err, 'No se pudieron cargar las series.'); this.cargando = false; this.cdr.detectChanges(); },
         });
       },
-      error: (err) => { this.mensaje = mensajeDeError(err, 'No se pudieron cargar los ejercicios de la sesiÃ³n.'); this.cargando = false; this.cdr.detectChanges(); },
+      error: (err) => { this.mensaje = mensajeDeError(err, 'No se pudieron cargar los ejercicios de la sesión.'); this.cargando = false; this.cdr.detectChanges(); },
     });
   }
 
@@ -361,7 +361,7 @@ export class Cdetallessesioncomponent implements OnInit {
       ? this.detallesService.actualizarObservacion(this.detalleEditando, observacion)
       : this.detallesService.insertar({ idDetalle: null, idSesion: this.idSesion, idEjercicio: this.ejercicioSeleccionado!.idEjercicio, observacion });
     solicitud.subscribe({
-      next: () => { this.guardandoDetalle = false; this.cancelarEdicionDetalle(); this.mensaje = estabaEditando ? 'ObservaciÃ³n actualizada.' : 'Ejercicio agregado.'; this.cargarDetalles(); },
+      next: () => { this.guardandoDetalle = false; this.cancelarEdicionDetalle(); this.mensaje = estabaEditando ? 'Observación actualizada.' : 'Ejercicio agregado.'; this.cargarDetalles(); },
       error: (err) => { this.guardandoDetalle = false; this.mensaje = mensajeDeError(err, 'No se pudo guardar el ejercicio.'); this.cdr.detectChanges(); },
     });
   }
@@ -393,7 +393,7 @@ export class Cdetallessesioncomponent implements OnInit {
   eliminarDetalle(detalle: DetalleConSeries): void {
     if (this.sesionSoloLectura) return;
     if (this.eliminandoId !== null) return;
-    if (!confirm(`Â¿Eliminar ${detalle.nombre} y sus ${detalle.series.length} series?`)) return;
+    if (!confirm(`¿Eliminar ${detalle.nombre} y sus ${detalle.series.length} series?`)) return;
     const idDetalle = detalle.idDetalle!; this.eliminandoId = idDetalle; this.mensaje = '';
     this.seriesService.listarPorDetalle(idDetalle).pipe(
       switchMap((series) => from(series).pipe(concatMap((serie) => this.seriesService.eliminar(serie.idSerie)), toArray())),
@@ -427,7 +427,7 @@ export class Cdetallessesioncomponent implements OnInit {
   guardarSerie(): void {
     if (this.sesionSoloLectura) return;
     this.mensaje = '';
-    if (this.serieForm.invalid || this.serieParaDetalle === null) { this.serieForm.markAllAsTouched(); this.mensaje = 'Indica nÃºmero de serie, repeticiones y un peso vÃ¡lido.'; return; }
+    if (this.serieForm.invalid || this.serieParaDetalle === null) { this.serieForm.markAllAsTouched(); this.mensaje = 'Indica número de serie, repeticiones y un peso válido.'; return; }
     const valor = this.serieForm.getRawValue();
     const dto: DetalleSerieDTO = { idSerie: this.serieEditando ?? 0, idDetalle: this.serieParaDetalle, numeroSerie: Number(valor.numeroSerie), repeticiones: Number(valor.repeticiones), pesoKg: Number(valor.pesoKg) };
     this.guardandoSerie = true;
@@ -436,13 +436,13 @@ export class Cdetallessesioncomponent implements OnInit {
       : this.seriesService.insertar(dto);
     solicitud.subscribe({
       next: () => { this.guardandoSerie = false; this.cancelarSerie(); this.mensaje = 'Serie guardada correctamente.'; this.cargarDetalles(); },
-      error: (err) => { this.guardandoSerie = false; this.mensaje = mensajeDeError(err, 'No se pudo guardar la serie. Comprueba que su nÃºmero no estÃ© repetido.'); this.cdr.detectChanges(); },
+      error: (err) => { this.guardandoSerie = false; this.mensaje = mensajeDeError(err, 'No se pudo guardar la serie. Comprueba que su número no está repetido.'); this.cdr.detectChanges(); },
     });
   }
 
   eliminarSerie(serie: DetalleSerieDTO): void {
     if (this.sesionSoloLectura) return;
-    if (!confirm(`Â¿Eliminar la serie ${serie.numeroSerie}?`)) return;
+    if (!confirm(`¿Eliminar la serie ${serie.numeroSerie}?`)) return;
     this.seriesService.eliminar(serie.idSerie).subscribe({
       next: () => { this.mensaje = 'Serie eliminada correctamente.'; this.cargarDetalles(); },
       error: (err) => { this.mensaje = mensajeDeError(err, 'No se pudo eliminar la serie.'); this.cdr.detectChanges(); },
