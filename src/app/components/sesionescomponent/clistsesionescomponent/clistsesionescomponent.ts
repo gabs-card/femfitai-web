@@ -11,10 +11,11 @@ import { Loginservice } from '../../../services/loginservice';
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeError } from '../../../utils/errores';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-clistsesionescomponent',
-  imports: [DatePipe, RouterLink],
+  imports: [Iconoaccioncomponent, DatePipe, RouterLink],
   templateUrl: './clistsesionescomponent.html',
   styleUrl: './clistsesionescomponent.css',
 })
@@ -22,7 +23,7 @@ export class Clistsesionescomponent implements OnInit {
   sesiones: SesionEntrenamientoDTO[] = [];
   rutinas: RutinaDTO[] = [];
   cargando = true;
-  eliminando = false;
+  eliminandoId: number | null = null;
   mensaje = '';
   private readonly auth = inject(Loginservice);
   private readonly sesionesService = inject(Sesionesservice);
@@ -39,9 +40,9 @@ export class Clistsesionescomponent implements OnInit {
 
   nombreRutina(idRutina: number): string {
     return this.rutinas.find((r) => r.idRutina === idRutina)?.nombre ?? `Rutina #${idRutina}`;
-  }
+    }
 
-  cargar(): void {
+  cargar(mensajeExito = ''): void {
     const idUsuario = this.auth.getIdUsuario();
     if (!idUsuario) {
       this.mensaje = 'No se pudo identificar la cuenta. Inicia sesión nuevamente.';
@@ -49,7 +50,7 @@ export class Clistsesionescomponent implements OnInit {
       return;
     }
     this.cargando = true;
-    this.mensaje = '';
+    this.mensaje = mensajeExito;
     this.rutinasService.getRutinasUsuario(idUsuario).pipe(
       switchMap((rutinas) => {
         this.rutinas = rutinas;
@@ -71,10 +72,11 @@ export class Clistsesionescomponent implements OnInit {
     });
   }
 
+  
   eliminar(sesion: SesionEntrenamientoDTO): void {
-    if (this.eliminando || sesion.idUsuario !== this.auth.getIdUsuario()) return;
-    if (!confirm('Â¿Eliminar esta sesión, sus ejercicios y todas las series registradas?')) return;
-    this.eliminando = true;
+    if (this.eliminandoId !== null || sesion.idUsuario !== this.auth.getIdUsuario()) return;
+    if (!confirm('¿Eliminar esta sesión, sus ejercicios y todas las series registradas?')) return;
+    this.eliminandoId = sesion.idSesion;
     this.mensaje = '';
     this.detallesService.listarPorSesion(sesion.idSesion).pipe(
       switchMap((detalles) => from(detalles).pipe(
@@ -88,15 +90,14 @@ export class Clistsesionescomponent implements OnInit {
         toArray(),
       )),
       switchMap(() => this.sesionesService.eliminar(sesion.idSesion)),
-    ).subscribe({
+      ).subscribe({
       next: () => {
-        this.eliminando = false;
-        this.mensaje = 'Sesión y sus ejercicios eliminados correctamente.';
-        this.cargar();
+        this.eliminandoId = null;
+        this.cargar('Sesión y sus ejercicios eliminados correctamente.');
       },
       error: (err) => {
-        this.eliminando = false;
-        this.mensaje = mensajeDeError(err, 'No se pudo completar la eliminación. Si falla a mitad, revisa la sesión y vuelve a intentarlo.');
+        this.eliminandoId = null;
+        this.mensaje = mensajeDeError(err, 'No se pudo completar la eliminación. Si falló a mitad, revisa la sesión y vuelve a intentarlo.');
         this.cdr.detectChanges();
       },
     });

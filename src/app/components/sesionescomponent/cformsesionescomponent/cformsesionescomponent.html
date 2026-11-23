@@ -23,9 +23,14 @@
       @if (form.controls.nivelEnergia.touched && form.controls.nivelEnergia.invalid) { <small>Selecciona un valor entre 1 y 5.</small> }
       <label>Esfuerzo percibido
         <select formControlName="esfuerzoPercibido"><option [ngValue]="null">Selecciona (1–10)</option>@for (nivel of esfuerzos; track nivel) { <option [ngValue]="nivel">{{ nivel }}</option> }</select>
-      </label>
+           </label>
       @if (form.controls.esfuerzoPercibido.touched && form.controls.esfuerzoPercibido.invalid) { <small>Selecciona un valor entre 1 y 10.</small> }
-      <label>Estado (opcional)<input type="text" maxlength="30" formControlName="estado" placeholder="Completada, pausada…" /></label>
+      <label>Estado
+        <select formControlName="estado">
+          <option value="EN_CURSO">En curso</option>
+          <option value="FINALIZADA">Finalizada</option>
+        </select>
+      </label>
       <div class="acciones"><button class="primario" type="submit" [disabled]="guardando">{{ guardando ? 'Guardando…' : 'Guardar sesión' }}</button><a routerLink="/sesiones/listar">Cancelar</a></div>
     </form>
   }

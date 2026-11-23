@@ -2,6 +2,7 @@
   <div><h1>Historial de entrenamientos</h1><p>Consulta tus entrenamientos y sus ejercicios, series y evaluaciones.</p></div>
 </header>
 @if (cargando) { <p role="status">Cargando sesiones…</p> }
+@if (eliminandoId !== null) { <p role="status">Eliminando la sesión…</p> }
 @if (mensaje) { <p class="mensaje" role="alert">{{ mensaje }}</p> }
 @if (!cargando && sesiones.length === 0 && !mensaje) {
   <section class="vacio"><h2>Aún no hay entrenamientos</h2><p>Inicia tu primer entrenamiento desde una rutina activa.</p><a class="boton secundario" routerLink="/rutinas/listar">Ver rutinas</a></section>
@@ -19,6 +20,14 @@
         <a class="boton secundario" [routerLink]="['/sesiones/detalle', sesion.idSesion]">
           {{ sesion.estado?.trim().toUpperCase() === 'EN_CURSO' ? 'Continuar entrenamiento' : 'Ver entrenamiento' }}
         </a>
+        <div class="acciones-icono">
+          <a class="accion-icono" title="Editar" [routerLink]="['/sesiones/editar', sesion.idSesion]" [attr.aria-label]="'Editar la sesión del ' + (sesion.fecha | date: 'dd/MM/yyyy')">
+            <app-iconoaccion tipo="editar" />
+          </a>
+          <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminar(sesion)" [disabled]="eliminandoId !== null" [attr.aria-busy]="eliminandoId === sesion.idSesion" [attr.aria-label]="'Eliminar la sesión del ' + (sesion.fecha | date: 'dd/MM/yyyy')">
+            <app-iconoaccion tipo="eliminar" />
+          </button>
+        </div>
       </div>
     </article>
   }

@@ -38,7 +38,7 @@ export class Cformsesionescomponent implements OnInit {
       duracionMin: [null, [Validators.required, Validators.min(1), Validators.pattern(/^\d+$/)]],
       nivelEnergia: [null, [Validators.required, Validators.min(1), Validators.max(5), Validators.pattern(/^[1-5]$/)]],
       esfuerzoPercibido: [null, [Validators.required, Validators.min(1), Validators.max(10), Validators.pattern(/^(10|[1-9])$/)]],
-      estado: ['', Validators.maxLength(30)],
+      estado: ['EN_CURSO', Validators.required],
     });
   }
 
@@ -99,7 +99,7 @@ export class Cformsesionescomponent implements OnInit {
             duracionMin: sesion.duracionMin,
             nivelEnergia: sesion.nivelEnergia,
             esfuerzoPercibido: sesion.esfuerzoPercibido,
-            estado: sesion.estado ?? '',
+            estado: (sesion.estado ?? 'EN_CURSO').trim().toUpperCase(),
           });
         }
         this.cargando = false;
@@ -138,9 +138,9 @@ export class Cformsesionescomponent implements OnInit {
       idUsuario,
       fecha: `${fecha}:00`,
       duracionMin: Number(valores.duracionMin),
-      nivelEnergia: Number(valores.nivelEnergia),
+       nivelEnergia: Number(valores.nivelEnergia),
       esfuerzoPercibido: Number(valores.esfuerzoPercibido),
-      estado: String(valores.estado ?? '').trim() || null,
+      estado: String(valores.estado ?? '').trim().toUpperCase() || null,
     };
     this.guardando = true;
     const solicitud = this.editando
