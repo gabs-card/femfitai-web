@@ -89,6 +89,7 @@ function listado() {
     '@angular/material/table': {MatTableModule:class {}},
     '@angular/material/button': {MatButtonModule:class {}},
     '@angular/material/icon': {MatIconModule:class {}},
+    '../../iconoaccioncomponent/iconoaccioncomponent': {Iconoaccioncomponent:class {}},
     '@angular/router': {RouterLink:class {}},
     '../../../services/progresoservice': {Progresoservice:Servicio},
     '../../../services/loginservice': {Loginservice:Auth},

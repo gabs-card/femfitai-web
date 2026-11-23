@@ -34,14 +34,16 @@
       <td mat-cell *matCellDef="let element" class="nota-personal">{{ element.notaPersonal || '—' }}</td>
     </ng-container>
     <ng-container matColumnDef="C5">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+           <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let element">
-        <a matIconButton [routerLink]="['/progreso/editar', element.idProgreso]" [attr.aria-label]="'Editar registro del ' + (element.fecha | date: 'dd/MM/yyyy')">
-          <mat-icon>edit</mat-icon>
-        </a>
-        <button matIconButton type="button" (click)="eliminarProgreso(element)" [disabled]="cargando || eliminandoId !== null" [attr.aria-busy]="eliminandoId === element.idProgreso" [attr.aria-label]="(eliminandoId === element.idProgreso ? 'Eliminando registro del ' : 'Eliminar registro del ') + (element.fecha | date: 'dd/MM/yyyy')">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <div class="acciones-icono">
+          <a class="accion-icono" title="Editar" [routerLink]="['/progreso/editar', element.idProgreso]" [attr.aria-label]="'Editar registro del ' + (element.fecha | date: 'dd/MM/yyyy')">
+            <app-iconoaccion tipo="editar" />
+          </a>
+          <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminarProgreso(element)" [disabled]="cargando || eliminandoId !== null" [attr.aria-busy]="eliminandoId === element.idProgreso" [attr.aria-label]="(eliminandoId === element.idProgreso ? 'Eliminando registro del ' : 'Eliminar registro del ') + (element.fecha | date: 'dd/MM/yyyy')">
+            <app-iconoaccion tipo="eliminar" />
+          </button>
+        </div>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

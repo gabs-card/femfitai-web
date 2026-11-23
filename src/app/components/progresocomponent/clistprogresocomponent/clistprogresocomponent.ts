@@ -8,12 +8,12 @@ import { Progresoservice } from '../../../services/progresoservice';
 import { Loginservice } from '../../../services/loginservice';
 import { mensajeDeError } from '../../../utils/errores';
 import { RouterLink } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
 import { Graficoprogresocomponent } from '../graficoprogresocomponent/graficoprogresocomponent';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-clistprogresocomponent',
-  imports: [MatTableModule, MatButtonModule, DatePipe, RouterLink, MatIconModule, Graficoprogresocomponent],
+  imports: [Iconoaccioncomponent, MatTableModule, MatButtonModule, DatePipe, RouterLink, Graficoprogresocomponent],
   templateUrl: './clistprogresocomponent.html',
   styleUrl: './clistprogresocomponent.css',
 })

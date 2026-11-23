@@ -36,14 +36,16 @@
       <th mat-header-cell *matHeaderCellDef>Acciones</th>
       <td mat-cell *matCellDef="let element">
         <a matButton [routerLink]="['/ciclos/diario', element.idCiclo]" aria-label="Abrir bitácora diaria del ciclo">
-          Bitácora
+        Bitácora
         </a>
-        <a matIconButton [routerLink]="['/ciclos/editar', element.idCiclo]" aria-label="Editar">
-          <mat-icon>edit</mat-icon>
-        </a>
-          <button matIconButton type="button" (click)="eliminarCiclo(element)" aria-label="Eliminar">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <div class="acciones-icono">
+          <a class="accion-icono" title="Editar" [routerLink]="['/ciclos/editar', element.idCiclo]" aria-label="Editar ciclo">
+            <app-iconoaccion tipo="editar" />
+          </a>
+          <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminarCiclo(element)" aria-label="Eliminar ciclo">
+            <app-iconoaccion tipo="eliminar" />
+          </button>
+        </div>
       </td>
     </ng-container>
 

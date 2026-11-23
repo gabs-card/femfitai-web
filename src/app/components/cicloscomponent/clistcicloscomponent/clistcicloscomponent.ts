@@ -5,12 +5,12 @@ import { CicloDTO } from '../../../models/CicloDTO';
 import { Ciclosservice } from '../../../services/ciclosservice';
 import { mensajeDeError } from '../../../utils/errores';
 import { RouterLink } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-clistcicloscomponent',
-  imports: [MatTableModule, DatePipe,RouterLink, MatIconModule, MatButtonModule],
+  imports: [Iconoaccioncomponent, MatTableModule, DatePipe,RouterLink, MatButtonModule],
   templateUrl: './clistcicloscomponent.html',
   styleUrl: './clistcicloscomponent.css',
 })
