@@ -158,6 +158,7 @@ function pantalla(admin = true) {
         Validators: {},
       },
       '@angular/router': { ActivatedRoute: Route, RouterLink: class {} },
+      '../../iconoaccioncomponent/iconoaccioncomponent': { Iconoaccioncomponent: class {} },
       '@angular/core/rxjs-interop': { takeUntilDestroyed: () => (observable) => observable },
       rxjs: rx,
       '../../../services/administracionservice': { Administracionservice: Admin },

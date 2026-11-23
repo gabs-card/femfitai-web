@@ -94,12 +94,16 @@
                   <td>{{ detalle.fecha | date: 'dd/MM/yyyy' }}</td>
                   <td>{{ detalle.faseRegistrada || '—' }}</td>
                   <td>{{ detalle.nivelEnergia ?? '—' }}</td>
-                  <td>{{ detalle.observaciones || '—' }}</td>
+                             <td>{{ detalle.observaciones || '—' }}</td>
                   <td class="acciones-fila">
-                    <button matButton type="button" (click)="editar(detalle)" [disabled]="guardando || eliminandoId !== null">Editar</button>
-                    <button matButton type="button" (click)="eliminar(detalle)" [disabled]="eliminandoId !== null || guardando">
-                      {{ eliminandoId === detalle.idDetalleDiarioCiclo ? 'Eliminando…' : 'Eliminar' }}
-                    </button>
+                    <div class="acciones-icono">
+                      <button class="accion-icono" title="Editar" type="button" (click)="editar(detalle)" [disabled]="guardando || eliminandoId !== null" [attr.aria-label]="'Editar el registro del ' + (detalle.fecha | date: 'dd/MM/yyyy')">
+                        <app-iconoaccion tipo="editar" />
+                      </button>
+                      <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminar(detalle)" [disabled]="eliminandoId !== null || guardando" [attr.aria-busy]="eliminandoId === detalle.idDetalleDiarioCiclo" [attr.aria-label]="'Eliminar el registro del ' + (detalle.fecha | date: 'dd/MM/yyyy')">
+                        <app-iconoaccion tipo="eliminar" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               }

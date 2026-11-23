@@ -98,10 +98,16 @@
                 <div><dt>Repeticiones</dt><dd>{{ asignacion.repeticiones ?? '—' }}</dd></div>
                 <div><dt>Descanso</dt><dd>{{ asignacion.descansoSeg === null ? '—' : asignacion.descansoSeg + ' s' }}</dd></div>
               </dl>
-            </div>
+                    </div>
             <div class="acciones-asignacion">
-              <button matButton type="button" (click)="editarAsignacion(asignacion)" [disabled]="guardandoAsignacion || eliminandoAsignacion !== null">Editar parámetros</button>
-              <button matButton type="button" class="boton-eliminar" (click)="eliminarAsignacion(asignacion)" [disabled]="guardandoAsignacion || eliminandoAsignacion !== null" [attr.aria-label]="'Quitar ' + asignacion.nombre + ' de la rutina'">{{ eliminandoAsignacion === asignacion.idRutinaEjercicio ? 'Quitando...' : 'Quitar' }}</button>
+              <div class="acciones-icono">
+                <button class="accion-icono" title="Editar parámetros" type="button" (click)="editarAsignacion(asignacion)" [disabled]="guardandoAsignacion || eliminandoAsignacion !== null" [attr.aria-label]="'Editar parámetros de ' + asignacion.nombre">
+                  <app-iconoaccion tipo="editar" />
+                </button>
+                <button class="accion-icono accion-eliminar" title="Quitar de la rutina" type="button" (click)="eliminarAsignacion(asignacion)" [disabled]="guardandoAsignacion || eliminandoAsignacion !== null" [attr.aria-busy]="eliminandoAsignacion === asignacion.idRutinaEjercicio" [attr.aria-label]="'Quitar ' + asignacion.nombre + ' de la rutina'">
+                  <app-iconoaccion tipo="eliminar" />
+                </button>
+              </div>
             </div>
           </article>
         }

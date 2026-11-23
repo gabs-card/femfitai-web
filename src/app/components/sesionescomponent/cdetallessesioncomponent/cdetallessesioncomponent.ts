@@ -19,6 +19,7 @@ import { Rutinaejerciciosservice } from '../../../services/rutinaejerciciosservi
 import { Rutinasservice } from '../../../services/rutinasservice';
 import { Sesionesservice } from '../../../services/sesionesservice';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 interface DetalleConSeries extends DetalleSesionEjercicioDTO {
   series: DetalleSerieDTO[];
@@ -29,7 +30,7 @@ interface DetalleConSeries extends DetalleSesionEjercicioDTO {
 
 @Component({
   selector: 'app-cdetallessesioncomponent',
-  imports: [DatePipe, ReactiveFormsModule, RouterLink],
+  imports: [Iconoaccioncomponent, DatePipe, ReactiveFormsModule, RouterLink],
   templateUrl: './cdetallessesioncomponent.html',
   styleUrl: './cdetallessesioncomponent.css',
 })

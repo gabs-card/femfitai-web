@@ -19,10 +19,11 @@ import { EjercicioDTO } from '../../../models/EjercicioDTO';
 import { TIPOS_EJERCICIO } from '../../../models/catalogos';
 import { mensajeDeError } from '../../../utils/errores';
 import { decodificarHtml } from '../../../utils/texto';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-clistadminejercicioscomponent',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [Iconoaccioncomponent, RouterLink, ReactiveFormsModule],
   templateUrl: './clistadminejercicioscomponent.html',
   styleUrls: ['../administracion.css', './clistadminejercicioscomponent.css'],
 })

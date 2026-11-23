@@ -6,10 +6,11 @@ import { UsuariosService } from '../../../services/usuariosservices';
 import { Loginservice } from '../../../services/loginservice';
 import { UsuarioDTO } from '../../../models/UsuarioDTO';
 import { mensajeDeError } from '../../../utils/errores';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-clistusuarioscomponent',
-  imports: [RouterLink, DatePipe],
+  imports: [Iconoaccioncomponent, RouterLink, DatePipe],
   templateUrl: './clistusuarioscomponent.html',
   styleUrl: '../../administracioncomponent/administracion.css',
 })

@@ -33,13 +33,17 @@
               @if (iniciandoRutinaId === element.idRutina) { <span class="indicador-carga" aria-hidden="true"></span> Iniciando... } @else { Iniciar entrenamiento }
             </button>
           }
-          <a class="boton secundario" [routerLink]="['/rutinas/editar', element.idRutina]" [attr.aria-label]="'Editar rutina ' + element.nombre">Editar <span aria-hidden="true">→</span></a>
+          <a class="accion-icono" title="Editar" [routerLink]="['/rutinas/editar', element.idRutina]" [attr.aria-label]="'Editar rutina ' + element.nombre">
+  <app-iconoaccion tipo="editar" />
+</a>
           @if (element.estado) {
             <button class="boton boton-estado" type="button" (click)="cambiarEstado(element)" [disabled]="operacionPendiente" [attr.aria-label]="'Desactivar rutina ' + element.nombre">Desactivar</button>
           } @else {
-            <button class="boton boton-estado" type="button" (click)="cambiarEstado(element)" [disabled]="operacionPendiente" [attr.aria-label]="'Reactivar rutina ' + element.nombre">Reactivar</button>
+                    <button class="boton boton-estado" type="button" (click)="cambiarEstado(element)" [disabled]="operacionPendiente" [attr.aria-label]="'Reactivar rutina ' + element.nombre">Reactivar</button>
           }
-          <button class="boton boton-eliminar" type="button" (click)="eliminarRutina(element)" [disabled]="operacionPendiente" [attr.aria-busy]="eliminandoRutinaId === element.idRutina" [attr.aria-label]="'Eliminar permanentemente la rutina ' + element.nombre">{{ eliminandoRutinaId === element.idRutina ? 'Eliminando...' : 'Eliminar' }}</button>
+          <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminarRutina(element)" [disabled]="operacionPendiente" [attr.aria-busy]="eliminandoRutinaId === element.idRutina" [attr.aria-label]="'Eliminar permanentemente la rutina ' + element.nombre">
+  <app-iconoaccion tipo="eliminar" />
+</button>
         </div>
       </article>
     }

@@ -15,8 +15,9 @@ import { mensajeDeError } from '../../../utils/errores';
 import {
   CampoAdministracion,
   ModuloAdministracion,
-  MODULOS_ADMINISTRACION,
+    MODULOS_ADMINISTRACION,
 } from './modulos-administracion';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 interface OpcionAdministracion {
   valor: number | string;
@@ -26,7 +27,7 @@ interface OpcionAdministracion {
 
 @Component({
   selector: 'app-gestionadmincomponent',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [Iconoaccioncomponent, ReactiveFormsModule, RouterLink],
   templateUrl: './gestionadmincomponent.html',
   styleUrls: ['../administracion.css', './gestionadmincomponent.css'],
 })

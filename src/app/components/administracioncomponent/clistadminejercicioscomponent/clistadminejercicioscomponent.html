@@ -44,28 +44,21 @@
             <path d="m6 6 12 12M3 8l5-5m8 18 5-5M2 5l3-3m14 20 3-3M6 11l5-5m2 12 5-5" />
           </svg>
         </div>
-        <span class="etiqueta">{{ ejercicio.tipo || 'Sin tipo' }}</span>
-        <h2>{{ ejercicio.nombre }}</h2>
-        <p class="nota">{{ descripcion(ejercicio) }}</p>
-        <div class="pie">
-          <span>{{ ejercicio.grupoMuscular || 'Grupo no indicado' }}</span>
+                <span>{{ ejercicio.grupoMuscular || 'Grupo no indicado' }}</span>
           <div class="acciones">
-            <a
-              class="enlace"
-              [routerLink]="['/administracion/ejercicios/editar', ejercicio.idEjercicio]"
-              [attr.aria-label]="'Editar ' + ejercicio.nombre"
-              >Editar</a
-            ><button
-              class="boton"
-              type="button"
-              (click)="eliminar(ejercicio)"
+            <div class="acciones-icono">
+              <a class="accion-icono" title="Editar" [routerLink]="['/administracion/ejercicios/editar', ejercicio.idEjercicio]"
+              [attr.aria-label]="'Editar ' + ejercicio.nombre">
+  <app-iconoaccion tipo="editar" />
+</a>
+              <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminar(ejercicio)"
               [disabled]="cargando || eliminandoId !== null"
-              [attr.aria-label]="'Eliminar ' + ejercicio.nombre"
-            >
-              {{ eliminandoId === ejercicio.idEjercicio ? 'Eliminando...' : 'Eliminar' }}
-            </button>
+              [attr.aria-label]="'Eliminar ' + ejercicio.nombre" [attr.aria-busy]="eliminandoId === ejercicio.idEjercicio">
+  <app-iconoaccion tipo="eliminar" />
+</button>
+            </div>
           </div>
-        </div>
+       
       </article>
     }
   </section>

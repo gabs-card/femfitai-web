@@ -17,10 +17,11 @@ import { Page } from '../../../models/Page';
 import { RutinaEjercicioDetalleDTO, RutinaEjerciciosDTO } from '../../../models/RutinaEjerciciosDTO';
 import { NIVELES, OBJETIVOS } from '../../../models/catalogos';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-ceditrutinascomponent',
-  imports: [MatInputModule, MatSelectModule, MatButtonModule, RouterLink, ReactiveFormsModule],
+  imports: [Iconoaccioncomponent, MatInputModule, MatSelectModule, MatButtonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './ceditrutinascomponent.html',
   styleUrl: './ceditrutinascomponent.css',
 })

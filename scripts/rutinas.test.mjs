@@ -44,6 +44,7 @@ function listado(confirmar = true) {
     '@angular/material/table':{MatTableModule:class {}},
     '@angular/material/button':{MatButtonModule:class {}},
     '@angular/material/icon':{MatIconModule:class {}},
+    '../../iconoaccioncomponent/iconoaccioncomponent':{Iconoaccioncomponent:class {}},
     '@angular/router':{Router,RouterLink:class {}},
     '../../../services/rutinasservice':{Rutinasservice:Servicio},
     '../../../services/loginservice':{Loginservice:Auth},

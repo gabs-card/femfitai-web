@@ -137,9 +137,9 @@
   @for (detalle of detalles; track detalle.idDetalle) {
     <article class="detalle">
       <header class="encabezado-detalle">
-        <div><h2>{{ detalle.nombre }}</h2><p>{{ detalle.grupoMuscular || 'Grupo muscular no indicado' }}</p></div>
+            <div><h2>{{ detalle.nombre }}</h2><p>{{ detalle.grupoMuscular || 'Grupo muscular no indicado' }}</p></div>
         @if (!sesionSoloLectura) {
-        <div class="acciones"><button class="secundario" type="button" (click)="editarDetalle(detalle)">Editar observación</button><button class="peligro" type="button" [disabled]="eliminandoId !== null" (click)="eliminarDetalle(detalle)">Eliminar ejercicio</button></div>
+        <div class="acciones"><div class="acciones-icono"><button class="accion-icono" title="Editar observación" type="button" (click)="editarDetalle(detalle)" aria-label="Editar observación"><app-iconoaccion tipo="editar" /></button><button class="accion-icono accion-eliminar" title="Eliminar ejercicio" type="button" [disabled]="eliminandoId !== null" (click)="eliminarDetalle(detalle)" aria-label="Eliminar ejercicio"><app-iconoaccion tipo="eliminar" /></button></div></div>
         }
       </header>
       @if (detalle.observacion) { <p class="observacion">{{ detalle.observacion }}</p> }
@@ -169,7 +169,7 @@
       <section class="bloque-realizado" aria-label="Series realmente realizadas">
         <h3>Realizado</h3>
         <div class="tabla-wrap"><table><thead><tr><th>Número de serie</th><th>Repeticiones</th><th>Peso (kg)</th>@if (!sesionSoloLectura) { <th>Acciones</th> }</tr></thead><tbody>
-          @for (serie of detalle.series; track serie.idSerie) { <tr><td>{{ serie.numeroSerie }}</td><td>{{ serie.repeticiones }}</td><td>{{ serie.pesoKg }}</td>@if (!sesionSoloLectura) { <td><button class="texto" type="button" (click)="editarSerie(detalle, serie)">Editar</button><button class="texto peligro-texto" type="button" (click)="eliminarSerie(serie)">Eliminar</button></td> }</tr> }
+          @for (serie of detalle.series; track serie.idSerie) { <tr><td>{{ serie.numeroSerie }}</td><td>{{ serie.repeticiones }}</td><td>{{ serie.pesoKg }}</td>@if (!sesionSoloLectura) { <td><div class="acciones-icono"><button class="accion-icono" title="Editar serie" type="button" (click)="editarSerie(detalle, serie)" [attr.aria-label]="'Editar serie ' + serie.numeroSerie"><app-iconoaccion tipo="editar" /></button><button class="accion-icono accion-eliminar" title="Eliminar serie" type="button" (click)="eliminarSerie(serie)" [attr.aria-label]="'Eliminar serie ' + serie.numeroSerie"><app-iconoaccion tipo="eliminar" /></button></div></td> }</tr> }
         </tbody></table></div>
         @if (detalle.series.length === 0) { <p class="sin-series">Sin series registradas.</p> }
         @if (!sesionSoloLectura) {

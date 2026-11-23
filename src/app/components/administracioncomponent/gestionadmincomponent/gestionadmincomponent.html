@@ -252,24 +252,25 @@
                         [disabled]="guardando || eliminandoId !== null || cargandoDetalle"
                       >
                         Ver
-                      </button>
+                                          </button>
                       @if (registro.modificable !== false) {
-                        <button
+                        @if (m.clave === 'sesiones') {
+                          <button
                           class="boton"
                           type="button"
                           (click)="editar(registro)"
                           [disabled]="guardando || eliminandoId !== null || cargandoDetalle"
                         >
-                          {{ m.clave === 'sesiones' ? 'Finalizar' : 'Editar' }}
+                                                {{ m.clave === 'sesiones' ? 'Finalizar' : 'Editar' }}
                         </button>
+                        } @else {
+                          <button class="accion-icono" title="Editar" type="button" (click)="editar(registro)" [disabled]="guardando || eliminandoId !== null || cargandoDetalle" aria-label="Editar registro">
+                            <app-iconoaccion tipo="editar" />
+                          </button>
+                        }
                         @if (m.eliminar !== false) {
-                          <button
-                            class="boton peligro"
-                            type="button"
-                            (click)="eliminar(registro)"
-                            [disabled]="guardando || eliminandoId !== null"
-                          >
-                            {{ eliminandoId === id(registro) ? 'Eliminando...' : 'Eliminar' }}
+                          <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminar(registro)" [disabled]="guardando || eliminandoId !== null" [attr.aria-busy]="eliminandoId === id(registro)" aria-label="Eliminar registro">
+                            <app-iconoaccion tipo="eliminar" />
                           </button>
                         }
                       } @else {

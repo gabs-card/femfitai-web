@@ -9,10 +9,11 @@ import { mensajeDeError } from '../../../utils/errores';
 import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-clistrutinascomponent',
-  imports: [MatTableModule, DatePipe, RouterLink, MatButtonModule, MatIconModule],
+  imports: [Iconoaccioncomponent, MatTableModule, DatePipe, RouterLink, MatButtonModule, MatIconModule],
   templateUrl: './clistrutinascomponent.html',
   styleUrl: './clistrutinascomponent.css',
 })

@@ -12,10 +12,12 @@ import { Detallediariocicloservice } from '../../../services/detallediariociclos
 import { DetalleDiarioCicloDTO } from '../../../models/DetalleDiarioCicloDTO';
 import { aISO, deISO } from '../../../utils/fechas';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
+import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
 
 @Component({
   selector: 'app-detallediariocomponent',
   imports: [
+    Iconoaccioncomponent,
     DatePipe,
     RouterLink,
     ReactiveFormsModule,
