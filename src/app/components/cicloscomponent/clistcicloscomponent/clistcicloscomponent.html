@@ -53,6 +53,15 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   </div>
+  @if (totalPaginas > 1) {
+    <nav class="paginacion" aria-label="Páginas del historial de ciclos">
+      <p role="status">Página {{ pagina + 1 }} de {{ totalPaginas }} · {{ todos.length }} ciclos</p>
+      <div class="acciones-pagina">
+        <button matButton type="button" [disabled]="pagina === 0 || cargando" (click)="cambiarPagina(-1)">Anterior</button>
+        <button matButton type="button" [disabled]="pagina + 1 >= totalPaginas || cargando" (click)="cambiarPagina(1)">Siguiente</button>
+      </div>
+    </nav>
+  }
 } @else if (!cargando && !mensaje) {
   <div class="estado estado-vacio"><span aria-hidden="true">♡</span><h3>Tu seguimiento empieza aquí</h3><p>No tienes ciclos registrados.</p><p>Usa Registrar ciclo para guardar tu primera fecha de inicio.</p></div>
 }
