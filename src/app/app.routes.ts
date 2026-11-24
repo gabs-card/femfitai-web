@@ -122,6 +122,14 @@ export const routes: Routes = [
               import('./components/usuarioscomponent/ceditusuarioscomponent/ceditusuarioscomponent').then(
                 (m) => m.Ceditusuarioscomponent,
               ),
+            
+          },
+          {
+            path: 'detalle/:id',
+            loadComponent: () =>
+              import('./components/usuarioscomponent/cdetalleusuarioscomponent/cdetalleusuarioscomponent').then(
+                (m) => m.Cdetalleusuarioscomponent,
+              ),
           },
         ],
       },

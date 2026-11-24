@@ -1,3 +1,5 @@
+import { PerfilDTO } from './PerfilDTO';
+
 export class UsuarioDTO {
   idUsuario: number = 0;
   nombres: string = '';
@@ -14,4 +16,12 @@ export interface UsuarioEditDTO {
   correo: string;
   estado?: boolean;
   passwordHash?: string;
+}
+
+export interface UsuarioDetalleDTO extends UsuarioDTO {
+  perfil: PerfilDTO | null;
+  totalRutinas: number;
+  totalSesiones: number;
+  totalProgreso: number;
+  totalCiclos: number;
 }

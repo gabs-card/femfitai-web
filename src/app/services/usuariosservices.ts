@@ -1,9 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { UsuarioDTO, UsuarioEditDTO } from '../models/UsuarioDTO';
+import { UsuarioDTO, UsuarioDetalleDTO, UsuarioEditDTO } from '../models/UsuarioDTO';
 import { Loginservice } from './loginservice';
 import { Observable } from 'rxjs';
+
 @Injectable({ providedIn: 'root' })
 export class UsuariosService {
   usuarios = signal<UsuarioDTO[]>([]);
@@ -62,7 +63,9 @@ export class UsuariosService {
   buscarPorId(id: number): Observable<UsuarioDTO> {
     return this.http.get<UsuarioDTO>(`${this.api}/${id}`);
   }
-
+  detalle(id: number): Observable<UsuarioDetalleDTO> {
+    return this.http.get<UsuarioDetalleDTO>(`${this.api}/${id}/detalle`);
+  }
   actualizar(id: number, datos: UsuarioEditDTO): Observable<UsuarioDTO> {
     return this.http.put<UsuarioDTO>(`${this.api}/${id}`, datos);
   }

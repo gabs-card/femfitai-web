@@ -1,0 +1,71 @@
+<main class="pagina-admin" [attr.aria-busy]="cargando()">
+  <a class="enlace volver" routerLink="/usuarios/listar">← Volver a usuarios</a>
+
+  @if (cargando()) {
+    <p class="estado" role="status">Cargando usuario...</p>
+  }
+
+  @if (error()) {
+    <p class="aviso" role="alert">{{ error() }}</p>
+    <a class="boton" routerLink="/usuarios/listar">Volver a la lista</a>
+  }
+
+  @if (usuario(); as u) {
+    <header class="cabecera">
+      <div>
+        <p class="ceja">DETALLE DE USUARIO</p>
+        <h1>{{ u.nombres }} {{ u.apellidos }}</h1>
+        <p>{{ u.correo }}</p>
+      </div>
+      <a class="boton principal" [routerLink]="['/usuarios/editar', u.idUsuario]">Editar cuenta</a>
+    </header>
+
+    <section class="tarjeta seccion">
+      <h2>Datos de la cuenta</h2>
+      <dl class="datos">
+        <div><dt>ID</dt><dd>{{ u.idUsuario }}</dd></div>
+        <div><dt>Correo</dt><dd>{{ u.correo }}</dd></div>
+        <div><dt>Rol</dt><dd><span class="etiqueta">{{ u.rol }}</span></dd></div>
+        <div>
+          <dt>Estado</dt>
+          <dd>
+            <span class="etiqueta" [class.verde]="u.estado === true" [class.gris]="u.estado !== true">
+              {{ u.estado === true ? 'Activa' : u.estado === false ? 'Inactiva' : 'Sin estado' }}
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt>Fecha de registro</dt>
+          <dd>{{ u.fechaRegistro ? (u.fechaRegistro | date: 'dd/MM/yyyy HH:mm') : 'Sin fecha' }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    @if (u.rol === 'USUARIA') {
+      <section class="tarjeta seccion">
+        <h2>Perfil de entrenamiento</h2>
+        @if (u.perfil; as p) {
+          <dl class="datos">
+            <div><dt>Nivel</dt><dd>{{ p.nivelEntrenamiento }}</dd></div>
+            <div><dt>Objetivo principal</dt><dd>{{ p.objetivoPrincipal }}</dd></div>
+            <div><dt>Días disponibles</dt><dd>{{ p.diasDisponibles }} por semana</dd></div>
+            <div><dt>Tiempo disponible</dt><dd>{{ p.tiempoDisponible }} min por sesión</dd></div>
+            <div>
+              <dt>Fecha de nacimiento</dt>
+              <dd>{{ p.fechaNacimiento ? (p.fechaNacimiento | date: 'dd/MM/yyyy') : 'Sin registrar' }}</dd>
+            </div>
+          </dl>
+        } @else {
+          <p class="estado">Esta usuaria aún no completó su perfil de entrenamiento.</p>
+        }
+      </section>
+
+      <section class="resumen" aria-label="Actividad de la usuaria">
+        <article class="tarjeta kpi"><p>Rutinas</p><strong>{{ u.totalRutinas }}</strong><small>Planes creados</small></article>
+        <article class="tarjeta kpi"><p>Sesiones</p><strong>{{ u.totalSesiones }}</strong><small>Entrenamientos registrados</small></article>
+        <article class="tarjeta kpi"><p>Progreso</p><strong>{{ u.totalProgreso }}</strong><small>Mediciones guardadas</small></article>
+        <article class="tarjeta kpi"><p>Ciclos</p><strong>{{ u.totalCiclos }}</strong><small>Ciclos registrados</small></article>
+      </section>
+    }
+  }
+</main>
