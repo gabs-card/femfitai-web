@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { UsuariosService } from '../../../services/usuariosservices';
+import { AYUDA_PASSWORD, PATRON_PASSWORD } from '../../../utils/password';
 import { UsuarioDTO, UsuarioEditDTO } from '../../../models/UsuarioDTO';
 import { mensajeDeError } from '../../../utils/errores';
 
@@ -23,6 +24,7 @@ export class Ceditusuarioscomponent implements OnInit {
   private fb = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
   private us = inject(UsuariosService);
+  readonly ayudaPassword = AYUDA_PASSWORD;
 
   id = 0;
   usuario: UsuarioDTO | null = null;
@@ -41,7 +43,10 @@ export class Ceditusuarioscomponent implements OnInit {
     nombres: [{ value: '', disabled: true }, Validators.required],
     apellidos: [{ value: '', disabled: true }, Validators.required],
     correo: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-    passwordHash: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(8)]],
+    passwordHash: [
+      { value: '', disabled: true },
+      [Validators.required, Validators.pattern(PATRON_PASSWORD)],
+    ],
   });
 
   ngOnInit(): void {
@@ -79,6 +84,11 @@ export class Ceditusuarioscomponent implements OnInit {
   }
 
   guardar(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.mensaje = 'Revisa los campos marcados.';
+      return;
+    }
     if (!this.usuario || this.guardando) return;
     if (!this.hayCambios) {
       this.mensaje = 'Activa al menos una casilla para editar.';

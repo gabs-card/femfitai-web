@@ -30,7 +30,8 @@
     <mat-form-field class="example-full-width">
       <mat-label>Contraseña</mat-label>
       <input matInput type="password" formControlName="passwordHash" autocomplete="new-password" />
-      <mat-error>Mínimo 8 caracteres</mat-error>
+      <mat-hint>{{ ayudaPassword }}</mat-hint>
+      <mat-error>{{ ayudaPassword }}</mat-error>
     </mat-form-field>
 
     @if (esAdministracion) {
@@ -48,9 +49,6 @@
           ><mat-option [value]="false">Inactiva</mat-option></mat-select
         ></mat-form-field
       >
-      <p class="ayuda-admin">
-        La contraseña debe incluir mayúsculas, minúsculas y números, con un mínimo de 8 caracteres.
-      </p>
     }
     <button matButton="filled" type="submit" [disabled]="guardando">
       {{ guardando ? 'Creando cuenta...' : 'Crear cuenta' }}

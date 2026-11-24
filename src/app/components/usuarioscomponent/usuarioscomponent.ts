@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuariosService } from '../../services/usuariosservices';
+import { AYUDA_PASSWORD, PATRON_PASSWORD } from '../../utils/password';
 import { Loginservice } from '../../services/loginservice';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -18,6 +19,7 @@ export class Usuarioscomponent {
   @Output() volverLogin = new EventEmitter<void>();
   @Output() cuentaCreada = new EventEmitter<void>();
 
+  readonly ayudaPassword = AYUDA_PASSWORD;
   mensaje: string = '';
   guardando = false;
   private auth = inject(Loginservice);
@@ -33,7 +35,7 @@ export class Usuarioscomponent {
     nombres: ['', Validators.required],
     apellidos: ['', Validators.required],
     correo: ['', [Validators.required, Validators.email]],
-    passwordHash: ['', [Validators.required, Validators.minLength(8)]],
+    passwordHash: ['', [Validators.required, Validators.pattern(PATRON_PASSWORD)]],
     rol: ['USUARIA'],
     estado: [true],
   });
@@ -46,6 +48,11 @@ export class Usuarioscomponent {
       return;
     }
 
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.mensaje = 'Completa correctamente todos los campos';
+      return;
+    }
     const v = this.form.getRawValue();
     const datos = {
       nombres: v.nombres.trim(),
