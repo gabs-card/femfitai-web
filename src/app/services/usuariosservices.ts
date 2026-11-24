@@ -9,6 +9,7 @@ export class UsuariosService {
   usuarios = signal<UsuarioDTO[]>([]);
   cargando = signal(false);
   error = signal('');
+  private readonly api = `${environment.apiUrl}/usuarios`;
 
   constructor(
     private http: HttpClient,
@@ -25,7 +26,7 @@ export class UsuariosService {
     }
 
     this.cargando.set(true);
-    this.http.get<UsuarioDTO[]>(`${environment.apiUrl}/usuarios`).subscribe({
+    this.http.get<UsuarioDTO[]>(this.api).subscribe({
       next: (usuarios) => {
         this.usuarios.set(usuarios);
         this.cargando.set(false);
@@ -55,9 +56,8 @@ export class UsuariosService {
     rol?: string;
     estado?: boolean;
   }): Observable<UsuarioDTO> {
-    return this.http.post<UsuarioDTO>(`${environment.apiUrl}/usuarios`, datos);
+    return this.http.post<UsuarioDTO>(this.api, datos);
   }
-  private api = `${environment.apiUrl}/usuarios`;
 
   buscarPorId(id: number): Observable<UsuarioDTO> {
     return this.http.get<UsuarioDTO>(`${this.api}/${id}`);

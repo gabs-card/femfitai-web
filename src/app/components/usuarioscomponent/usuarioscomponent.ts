@@ -24,22 +24,19 @@ export class Usuarioscomponent {
   get esAdministracion(): boolean {
     return this.administracion && this.auth.hasAnyRole(['ADMIN']);
   }
-  form: any;
 
   private cs = inject(UsuariosService);
   private cdr = inject(ChangeDetectorRef);
   private fb = inject(FormBuilder);
 
-  ngOnInit() {
-    this.form = this.fb.group({
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      passwordHash: ['', [Validators.required, Validators.minLength(8)]],
-      rol: ['USUARIA'],
-      estado: [true],
-    });
-  }
+    form = this.fb.nonNullable.group({
+    nombres: ['', Validators.required],
+    apellidos: ['', Validators.required],
+    correo: ['', [Validators.required, Validators.email]],
+    passwordHash: ['', [Validators.required, Validators.minLength(8)]],
+    rol: ['USUARIA'],
+    estado: [true],
+  });
 
   registrarUsuario() {
     if (this.guardando) return;
@@ -49,14 +46,13 @@ export class Usuarioscomponent {
       return;
     }
 
+    const v = this.form.getRawValue();
     const datos = {
-      nombres: this.form.value.nombres.trim(),
-      apellidos: this.form.value.apellidos.trim(),
-      correo: this.form.value.correo.trim(),
-      passwordHash: this.form.value.passwordHash,
-      ...(this.esAdministracion
-        ? { rol: this.form.value.rol, estado: this.form.value.estado }
-        : {}),
+      nombres: v.nombres.trim(),
+      apellidos: v.apellidos.trim(),
+      correo: v.correo.trim(),
+      passwordHash: v.passwordHash,
+      ...(this.esAdministracion ? { rol: v.rol, estado: v.estado } : {}),
     };
 
     this.guardando = true;
@@ -67,8 +63,6 @@ export class Usuarioscomponent {
       },
       error: (err) => {
         this.guardando = false;
-        console.log('Ocurrió un error al registrar el usuario', err);
-
         if (err.status === 409) {
           this.mensaje = 'El correo ya se encuentra registrado';
         } else if (err.status === 0) {
