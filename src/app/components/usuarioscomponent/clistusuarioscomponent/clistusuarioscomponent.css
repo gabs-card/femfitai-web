@@ -1,3 +1,21 @@
-.contenedor-usuarios { max-width: 1200px; margin: 35px auto; padding: 0 30px; }
-.contenedor-usuarios h2 { color: #292938; font-size: 28px; font-weight: 700; margin-bottom: 16px; }
-table { width: 100%; }
+.contenedor-usuarios {
+  max-width: 1200px;
+  margin: 35px auto;
+  padding: 0 30px;
+}
+.contenedor-usuarios h2 {
+  color: #292938;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+table {
+  width: 100%;
+}
+.fila-clic {
+  cursor: pointer;
+}
+.fila-clic:hover td,
+.fila-clic:focus-visible td {
+  background: #fff7fa;
+}

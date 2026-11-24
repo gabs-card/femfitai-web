@@ -1,22 +1,24 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router} from '@angular/router';
 import { UsuariosService } from '../../../services/usuariosservices';
 import { Loginservice } from '../../../services/loginservice';
 import { UsuarioDTO } from '../../../models/UsuarioDTO';
 import { mensajeDeError } from '../../../utils/errores';
 import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
+import { Confirmarservice } from '../../../services/confirmarservice';
 
 @Component({
   selector: 'app-clistusuarioscomponent',
-  imports: [Iconoaccioncomponent, RouterLink, DatePipe],
+  imports: [Iconoaccioncomponent, RouterLink],
   templateUrl: './clistusuarioscomponent.html',
-  styleUrl: '../../administracioncomponent/administracion.css',
+    styleUrls: ['../../administracioncomponent/administracion.css', './clistusuarioscomponent.css'],
 })
 export class Clistusuarioscomponent implements OnInit {
   us = inject(UsuariosService);
   private auth = inject(Loginservice);
+  private confirmacion = inject(Confirmarservice);
+    private router = inject(Router);
   mensaje = signal('');
   busqueda = signal('');
   rol = signal('');
@@ -28,6 +30,7 @@ export class Clistusuarioscomponent implements OnInit {
   administradores = computed(
     () => this.us.usuarios().filter((u) => this.normalizarRol(u.rol) === 'ADMIN').length,
   );
+
   usuariosVisibles = computed(() => {
     const busqueda = this.normalizar(this.busqueda());
     return this.us
@@ -57,45 +60,59 @@ export class Clistusuarioscomponent implements OnInit {
     this.estado.set(estado ?? (this.verInactivos() ? 'activas' : 'inactivas'));
     this.mensaje.set('');
   }
+  verDetalle(u: UsuarioDTO): void {
+    void this.router.navigate(['/usuarios/detalle', u.idUsuario]);
+  }
   desactivar(u: UsuarioDTO): void {
     if (this.procesandoId() !== null || this.us.cargando()) return;
     if (u.idUsuario === this.auth.getIdUsuario()) {
       this.mensaje.set('No puedes desactivar tu propia cuenta.');
       return;
     }
-    if (
-      !confirm(
-        `¿Desactivar a ${u.nombres} ${u.apellidos}? No podrá iniciar sesión, pero sus datos se conservan.`,
-      )
-    )
-      return;
-    this.procesandoId.set(u.idUsuario);
-    this.us.desactivar(u.idUsuario).subscribe({
-      next: () => {
-        this.procesandoId.set(null);
-        this.us.listar();
-        this.mensaje.set('Usuario desactivado correctamente.');
-      },
-      error: (e: HttpErrorResponse) => {
-        this.procesandoId.set(null);
-        this.mensaje.set(mensajeDeError(e, 'No se pudo desactivar al usuario.'));
-      },
-    });
+        this.confirmacion
+      .confirmar({
+        titulo: 'Desactivar usuario',
+        mensaje: `¿Desactivar a ${u.nombres} ${u.apellidos}? No podrá iniciar sesión, pero sus datos se conservan.`,
+        confirmar: 'Desactivar',
+      })
+      .subscribe((acepto) => {
+        if (!acepto) return;
+        this.procesandoId.set(u.idUsuario);
+        this.us.desactivar(u.idUsuario).subscribe({
+          next: () => {
+            this.procesandoId.set(null);
+            this.us.listar();
+            this.mensaje.set('Usuario desactivado correctamente.');
+          },
+          error: (e: HttpErrorResponse) => {
+            this.procesandoId.set(null);
+            this.mensaje.set(mensajeDeError(e, 'No se pudo desactivar al usuario.'));
+          },
+        });
+      });
   }
   reactivar(u: UsuarioDTO): void {
     if (this.procesandoId() !== null || this.us.cargando()) return;
-    if (!confirm(`¿Reactivar a ${u.nombres} ${u.apellidos}?`)) return;
-    this.procesandoId.set(u.idUsuario);
-    this.us.reactivar(u).subscribe({
-      next: () => {
-        this.procesandoId.set(null);
-        this.us.listar();
-        this.mensaje.set('Usuario reactivado correctamente.');
-      },
-      error: (e: HttpErrorResponse) => {
-        this.procesandoId.set(null);
-        this.mensaje.set(mensajeDeError(e, 'No se pudo reactivar al usuario.'));
-      },
-    });
+        this.confirmacion
+      .confirmar({
+        titulo: 'Reactivar usuario',
+        mensaje: `¿Reactivar a ${u.nombres} ${u.apellidos}?`,
+        confirmar: 'Reactivar',
+      })
+      .subscribe((acepto) => {
+        if (!acepto) return;
+        this.procesandoId.set(u.idUsuario);
+        this.us.reactivar(u).subscribe({
+          next: () => {
+            this.procesandoId.set(null);
+            this.us.listar();
+            this.mensaje.set('Usuario reactivado correctamente.');
+          },
+          error: (e: HttpErrorResponse) => {
+            this.procesandoId.set(null);
+            this.mensaje.set(mensajeDeError(e, 'No se pudo reactivar al usuario.'));
+          },
+        });
+      });
   }
 }

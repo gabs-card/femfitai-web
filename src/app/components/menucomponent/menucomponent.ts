@@ -11,16 +11,16 @@ import { Loginservice } from '../../services/loginservice';
 export class Menucomponent {
   constructor(
     private readonly loginService: Loginservice,
-    private readonly router: Router
-  ) { }
+    private readonly router: Router,
+  ) {}
 
   get esAdmin(): boolean {
-   return this.loginService.hasAnyRole(['ADMIN']);
+    return this.loginService.hasAnyRole(['ADMIN']);
   }
 
- get esUsuaria(): boolean {
-   return this.loginService.hasAnyRole(['USUARIA']);
- }
+  get esUsuaria(): boolean {
+    return this.loginService.hasAnyRole(['USUARIA']);
+  }
 
   cerrarSesion(): void {
     this.loginService.logout();

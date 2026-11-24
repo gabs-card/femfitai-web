@@ -13,7 +13,7 @@ export class Loginservice {
   private readonly apiURL = `${environment.apiUrl}/login`;
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
   login(credentials: LoginRequestDTO): Observable<LoginResponseDTO> {
     return this.http.post<LoginResponseDTO>(this.apiURL, credentials).pipe(
@@ -32,7 +32,7 @@ export class Loginservice {
             sessionStorage.removeItem('idUsuario');
           }
         }
-      })
+      }),
     );
   }
 
@@ -116,7 +116,7 @@ export class Loginservice {
 
       const base64 = payloadPart.replace(/-/g, '+').replace(/_/g, '/');
       const payload: unknown = JSON.parse(
-        atob(base64.padEnd(Math.ceil(base64.length / 4) * 4, '='))
+        atob(base64.padEnd(Math.ceil(base64.length / 4) * 4, '=')),
       );
 
       if (payload === null || typeof payload !== 'object' || !('exp' in payload)) {

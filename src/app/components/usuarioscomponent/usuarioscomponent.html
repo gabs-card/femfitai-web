@@ -11,26 +11,27 @@
   <form [formGroup]="form" (ngSubmit)="registrarUsuario()">
     <mat-form-field class="example-full-width">
       <mat-label>Nombres</mat-label>
-      <input matInput formControlName="nombres" autocomplete="given-name" />
+      <input matInput formControlName="nombres" maxlength="100" autocomplete="given-name" />
       <mat-error>Los nombres son obligatorios</mat-error>
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
       <mat-label>Apellidos</mat-label>
-      <input matInput formControlName="apellidos" autocomplete="family-name" />
+      <input matInput formControlName="apellidos" maxlength="100" autocomplete="family-name" />
       <mat-error>Los apellidos son obligatorios</mat-error>
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
       <mat-label>Correo electrónico</mat-label>
-      <input matInput type="email" formControlName="correo" autocomplete="username" />
+      <input matInput type="email" formControlName="correo" maxlength="100" autocomplete="username" />
       <mat-error>Ingresa un correo válido</mat-error>
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
       <mat-label>Contraseña</mat-label>
       <input matInput type="password" formControlName="passwordHash" autocomplete="new-password" />
-      <mat-error>Mínimo 8 caracteres</mat-error>
+      <mat-hint>{{ ayudaPassword }}</mat-hint>
+      <mat-error>{{ ayudaPassword }}</mat-error>
     </mat-form-field>
 
     @if (esAdministracion) {
@@ -48,9 +49,6 @@
           ><mat-option [value]="false">Inactiva</mat-option></mat-select
         ></mat-form-field
       >
-      <p class="ayuda-admin">
-        La contraseña debe incluir mayúsculas, minúsculas y números, con un mínimo de 8 caracteres.
-      </p>
     }
     <button matButton="filled" type="submit" [disabled]="guardando">
       {{ guardando ? 'Creando cuenta...' : 'Crear cuenta' }}
@@ -61,7 +59,7 @@
   </form>
 
   @if (mensaje) {
-    <p class="aviso" [class.aviso-ok]="mensaje.endsWith('correctamente.')" role="alert">
+    <p class="aviso" role="alert">
       {{ mensaje }}
     </p>
   }
