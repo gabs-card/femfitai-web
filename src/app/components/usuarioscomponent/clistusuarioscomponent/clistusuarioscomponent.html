@@ -77,21 +77,24 @@
           <thead>
             <tr>
               <th>Usuario</th>
-              <th>Correo</th>
               <th>Rol</th>
               <th>Estado</th>
-              <th>Registro</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             @for (u of usuariosVisibles(); track u.idUsuario) {
-              <tr>
+              <tr
+                class="fila-clic"
+                tabindex="0"
+                title="Ver detalle"
+                (click)="verDetalle(u)"
+                (keydown.enter)="verDetalle(u)"
+              >
                 <td>
                   <strong>{{ u.nombres }} {{ u.apellidos }}</strong
-                  ><br /><span class="nota">ID {{ u.idUsuario }}</span>
+                  ><br /><span class="nota">{{ u.correo }}</span>
                 </td>
-                <td>{{ u.correo }}</td>
                 <td>
                   <span class="etiqueta">{{ u.rol }}</span>
                 </td>
@@ -105,10 +108,7 @@
                     }}</span
                   >
                 </td>
-                <td>
-                  {{ u.fechaRegistro ? (u.fechaRegistro | date: 'dd/MM/yyyy') : 'Sin fecha' }}
-                </td>
-                <td>
+                <td (click)="$event.stopPropagation()" (keydown.enter)="$event.stopPropagation()">
                   <div class="acciones">
                     <a
                       class="accion-icono"

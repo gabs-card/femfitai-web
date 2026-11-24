@@ -1,7 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router} from '@angular/router';
 import { UsuariosService } from '../../../services/usuariosservices';
 import { Loginservice } from '../../../services/loginservice';
 import { UsuarioDTO } from '../../../models/UsuarioDTO';
@@ -11,14 +10,15 @@ import { Confirmarservice } from '../../../services/confirmarservice';
 
 @Component({
   selector: 'app-clistusuarioscomponent',
-  imports: [Iconoaccioncomponent, RouterLink, DatePipe],
+  imports: [Iconoaccioncomponent, RouterLink],
   templateUrl: './clistusuarioscomponent.html',
-  styleUrl: '../../administracioncomponent/administracion.css',
+    styleUrls: ['../../administracioncomponent/administracion.css', './clistusuarioscomponent.css'],
 })
 export class Clistusuarioscomponent implements OnInit {
   us = inject(UsuariosService);
   private auth = inject(Loginservice);
   private confirmacion = inject(Confirmarservice);
+    private router = inject(Router);
   mensaje = signal('');
   busqueda = signal('');
   rol = signal('');
@@ -59,6 +59,9 @@ export class Clistusuarioscomponent implements OnInit {
   alternarVista(estado?: string): void {
     this.estado.set(estado ?? (this.verInactivos() ? 'activas' : 'inactivas'));
     this.mensaje.set('');
+  }
+  verDetalle(u: UsuarioDTO): void {
+    void this.router.navigate(['/usuarios/detalle', u.idUsuario]);
   }
   desactivar(u: UsuarioDTO): void {
     if (this.procesandoId() !== null || this.us.cargando()) return;
