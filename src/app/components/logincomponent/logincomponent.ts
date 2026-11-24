@@ -60,7 +60,9 @@ export class Logincomponent implements OnInit {
         if (error.status === 401) {
           this.mensaje.set('Correo o contraseña incorrectos, o cuenta inactiva.');
         } else if (error.status === 0) {
-          this.mensaje.set('No se pudo conectar con FemFitAI. Verifica la conexión con el servidor.');
+          this.mensaje.set(
+            'No se pudo conectar con FemFitAI. Verifica la conexión con el servidor.',
+          );
         } else {
           this.mensaje.set('No se pudo iniciar sesión.');
         }

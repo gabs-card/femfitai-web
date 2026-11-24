@@ -108,12 +108,16 @@
                 <td>
                   {{ u.fechaRegistro ? (u.fechaRegistro | date: 'dd/MM/yyyy') : 'Sin fecha' }}
                 </td>
-                         <td>
+                <td>
                   <div class="acciones">
-                    <a class="accion-icono" title="Editar" [routerLink]="['/usuarios/editar', u.idUsuario]"
-                      [attr.aria-label]="'Editar a ' + u.nombres">
-  <app-iconoaccion tipo="editar" />
-</a>
+                    <a
+                      class="accion-icono"
+                      title="Editar"
+                      [routerLink]="['/usuarios/editar', u.idUsuario]"
+                      [attr.aria-label]="'Editar a ' + u.nombres"
+                    >
+                      <app-iconoaccion tipo="editar" />
+                    </a>
                     @if (u.estado === false) {
                       <button
                         class="boton"
