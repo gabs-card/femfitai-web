@@ -14,7 +14,7 @@
       <p class="aviso" role="alert">{{ errorCarga }}</p>
       <a matButton="filled" routerLink="/usuarios/listar">Volver a la lista</a>
     } @else if (usuario) {
-      <p>Cuenta: {{ usuario.correo }} · Rol: {{ usuario.rol }}</p>
+      <p>Cuenta: {{ usuario.correo }} · Rol: {{ usuario.rol === 'USUARIA' || usuario.rol === 'ROLE_USUARIA' ? 'Cliente' : usuario.rol }}</p>
       <p>Marca "Editar" en los campos que quieras cambiar; los demás quedan como están.</p>
 
       <form [formGroup]="form" (ngSubmit)="guardar()">

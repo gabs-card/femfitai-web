@@ -25,7 +25,7 @@
       <dl class="datos">
         <div><dt>ID</dt><dd>{{ u.idUsuario }}</dd></div>
         <div><dt>Correo</dt><dd>{{ u.correo }}</dd></div>
-        <div><dt>Rol</dt><dd><span class="etiqueta">{{ u.rol }}</span></dd></div>
+        <div><dt>Rol</dt><dd><span class="etiqueta">{{ u.rol === 'USUARIA' || u.rol === 'ROLE_USUARIA' ? 'Cliente' : u.rol }}</span></dd></div>
         <div>
           <dt>Estado</dt>
           <dd>
@@ -56,11 +56,11 @@
             </div>
           </dl>
         } @else {
-          <p class="estado">Esta usuaria aún no completó su perfil de entrenamiento.</p>
+          <p class="estado">Este cliente aún no completó su perfil de entrenamiento.</p>
         }
       </section>
 
-      <section class="resumen" aria-label="Actividad de la usuaria">
+      <section class="resumen" aria-label="Actividad del cliente">
         <article class="tarjeta kpi"><p>Rutinas</p><strong>{{ u.totalRutinas }}</strong><small>Planes creados</small></article>
         <article class="tarjeta kpi"><p>Sesiones</p><strong>{{ u.totalSesiones }}</strong><small>Entrenamientos registrados</small></article>
         <article class="tarjeta kpi"><p>Progreso</p><strong>{{ u.totalProgreso }}</strong><small>Mediciones guardadas</small></article>
