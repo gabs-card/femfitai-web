@@ -1,0 +1,7 @@
+.imagen-editor { display: grid; grid-template-columns: minmax(180px, 300px) minmax(0, 1fr); align-items: center; gap: 24px; margin: 24px 0; }
+.imagen-editor-vista { min-width: 0; }
+.imagen-editor h3 { margin: 0 0 8px; font-size: 18px; }
+.creditos-imagen { margin-bottom: 28px; border-bottom: 1px solid #eee5eb; padding-bottom: 18px; }
+summary { cursor: pointer; color: #91345e; font-size: 13px; padding: 8px 0; }
+.creditos-imagen .formulario { margin-top: 16px; }
+@media (max-width: 720px) { .imagen-editor { grid-template-columns: 1fr; gap: 18px; } .imagen-editor-vista { max-width: 420px; width: 100%; } }

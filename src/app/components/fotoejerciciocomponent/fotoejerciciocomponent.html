@@ -1,0 +1,46 @@
+<figure>
+  <div class="visual-ejercicio">
+    @if (fuente && !imagenFallida) {
+      <img [src]="fuente" [alt]="nombre ? 'Imagen de ' + nombre : 'Imagen del ejercicio'"
+        loading="lazy" decoding="async" referrerpolicy="no-referrer" (error)="imagenFallida = true" />
+    } @else {
+      <div class="sin-foto" role="img" [attr.aria-label]="imagenFallida ? 'Imagen no disponible' : 'Sin imagen del ejercicio'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="15" rx="3" />
+          <circle cx="8" cy="10" r="1.5" /><path d="m4 18 5-5 3 3 4-5 5 6" />
+        </svg>
+        <span>{{ imagenFallida ? 'No se pudo cargar la imagen' : 'Imagen pendiente' }}</span>
+      </div>
+    }
+  </div>
+  @if (fuente && !imagenFallida) {
+    <button class="ampliar" type="button" (click)="abrir()" [attr.aria-label]="'Ver imagen de ' + nombre">
+      Ver imagen <span aria-hidden="true">↗</span>
+    </button>
+    <figcaption>
+      @if (autor) { <span>{{ autor }}</span><span aria-hidden="true"> · </span> }
+      @if (licencia) {
+        @if (enlaceLicencia) {
+          <a [href]="enlaceLicencia" target="_blank" rel="noopener noreferrer">{{ licencia }}</a>
+        } @else { <span>{{ licencia }}</span> }
+        <span aria-hidden="true"> · </span>
+      }
+      <a [href]="fuente" target="_blank" rel="noopener noreferrer">Ver imagen original</a>
+    </figcaption>
+  }
+</figure>
+
+<dialog #dialogoImagen [attr.aria-label]="nombre ? 'Imagen de ' + nombre : 'Imagen del ejercicio'">
+  <header><h2>{{ nombre || 'Imagen del ejercicio' }}</h2>
+    <button type="button" class="cerrar" (click)="cerrar()" aria-label="Cerrar imagen">✕</button>
+  </header>
+  @if (detalle?.nativeElement.open && fuente && !imagenFallida) {
+    <img class="imagen-ampliada" [src]="fuente" [alt]="'Imagen de ' + nombre" referrerpolicy="no-referrer"
+      (error)="imagenFallida = true; cerrar()" />
+    <p class="creditos">{{ autor || 'Autor no indicado' }}@if (licencia) { · {{ licencia }} }</p>
+    <div class="enlaces">
+      <a [href]="fuente" target="_blank" rel="noopener noreferrer">Imagen original ↗</a>
+      @if (enlaceLicencia) { <a [href]="enlaceLicencia" target="_blank" rel="noopener noreferrer">Ver licencia ↗</a> }
+    </div>
+  }
+</dialog>

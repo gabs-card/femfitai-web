@@ -1,13 +1,17 @@
-<main class="pagina-admin" [attr.aria-busy]="cargando || eliminandoId !== null">
+<main class="pagina-admin" [attr.aria-busy]="cargando || sincronizando || eliminandoId !== null">
   <header class="cabecera">
     <div>
       <p class="ceja">CONTENIDO PARA ENTRENAR</p>
       <h1>Catálogo de ejercicios</h1>
       <p>Organiza, crea y mantén el contenido de FemFitAI.</p>
     </div>
-    <a class="boton principal" routerLink="/administracion/ejercicios/insertar"
-      >+ Nuevo ejercicio</a
-    >
+    <div class="acciones">
+      <button class="boton" type="button" (click)="sincronizar()"
+        [disabled]="cargando || sincronizando || eliminandoId !== null" [attr.aria-busy]="sincronizando">
+        {{ sincronizando ? 'Sincronizando…' : 'Sincronizar con wger' }}
+      </button>
+      <a class="boton principal" routerLink="/administracion/ejercicios/insertar">+ Nuevo ejercicio</a>
+    </div>
   </header>
   <form class="filtros" [formGroup]="filtros" aria-label="Buscar ejercicios">
     <label
@@ -24,6 +28,9 @@
       </select></label
     >
   </form>
+  @if (sincronizando) {
+    <p class="estado" role="status">Consultando wger. La importación puede tardar; las imágenes existentes se conservan.</p>
+  }
   @if (cargando) {
     <p class="estado" role="status">Cargando ejercicios...</p>
   }
@@ -38,27 +45,31 @@
   }
   <section class="tres-columnas" aria-label="Ejercicios del catálogo">
     @for (ejercicio of ejercicios; track ejercicio.idEjercicio) {
-      <article class="tarjeta">
-        <div class="visual-ejercicio" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-            <path d="m6 6 12 12M3 8l5-5m8 18 5-5M2 5l3-3m14 20 3-3M6 11l5-5m2 12 5-5" />
-          </svg>
-        </div>
-                <span>{{ ejercicio.grupoMuscular || 'Grupo no indicado' }}</span>
-          <div class="acciones">
-            <div class="acciones-icono">
-              <a class="accion-icono" title="Editar" [routerLink]="['/administracion/ejercicios/editar', ejercicio.idEjercicio]"
-              [attr.aria-label]="'Editar ' + ejercicio.nombre">
-  <app-iconoaccion tipo="editar" />
-</a>
-              <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminar(ejercicio)"
-              [disabled]="cargando || eliminandoId !== null"
-              [attr.aria-label]="'Eliminar ' + ejercicio.nombre" [attr.aria-busy]="eliminandoId === ejercicio.idEjercicio">
-  <app-iconoaccion tipo="eliminar" />
-</button>
-            </div>
+      <article class="tarjeta tarjeta-ejercicio">
+        <app-fotoejerciciocomponent [imagenUrl]="ejercicio.imagenUrl" [nombre]="ejercicio.nombre"
+          [autor]="ejercicio.imagenAutor" [licencia]="ejercicio.imagenLicencia"
+          [licenciaUrl]="ejercicio.imagenLicenciaUrl" />
+        <div class="contenido-ejercicio">
+          <div class="categorias">
+            <span class="etiqueta">{{ ejercicio.grupoMuscular || 'Grupo no indicado' }}</span>
+            @if (ejercicio.tipo) { <span class="tipo">{{ ejercicio.tipo }}</span> }
           </div>
-       
+          <h2>{{ ejercicio.nombre }}</h2>
+          <p class="descripcion">{{ descripcion(ejercicio) }}</p>
+        </div>
+        <div class="acciones">
+          <div class="acciones-icono">
+            <a class="accion-icono" title="Editar" [routerLink]="['/administracion/ejercicios/editar', ejercicio.idEjercicio]"
+              [attr.aria-label]="'Editar ' + ejercicio.nombre">
+              <app-iconoaccion tipo="editar" />
+            </a>
+            <button class="accion-icono accion-eliminar" title="Eliminar" type="button" (click)="eliminar(ejercicio)"
+              [disabled]="cargando || sincronizando || eliminandoId !== null"
+              [attr.aria-label]="'Eliminar ' + ejercicio.nombre" [attr.aria-busy]="eliminandoId === ejercicio.idEjercicio">
+              <app-iconoaccion tipo="eliminar" />
+            </button>
+          </div>
+        </div>
       </article>
     }
   </section>
@@ -73,14 +84,14 @@
           class="boton"
           type="button"
           (click)="cambiarPagina(-1)"
-          [disabled]="pagina === 0 || cargando || eliminandoId !== null"
+          [disabled]="pagina === 0 || cargando || sincronizando || eliminandoId !== null"
         >
           Anterior</button
         ><button
           class="boton"
           type="button"
           (click)="cambiarPagina(1)"
-          [disabled]="pagina + 1 >= totalPaginas || cargando || eliminandoId !== null"
+          [disabled]="pagina + 1 >= totalPaginas || cargando || sincronizando || eliminandoId !== null"
         >
           Siguiente
         </button>

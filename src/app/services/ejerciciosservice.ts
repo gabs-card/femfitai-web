@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { EjerciciosUsuarioDTO } from '../models/ConsultasDTO';
 import { EjercicioDTO } from '../models/EjercicioDTO';
 import { Page } from '../models/Page';
+import { SincronizacionEjerciciosDTO } from '../models/SincronizacionEjerciciosDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,10 @@ import { Page } from '../models/Page';
 export class Ejerciciosservice {
   private apiURL = `${environment.apiUrl}/ejercicios`;
   private http = inject(HttpClient);
+
+  sincronizarWger(): Observable<SincronizacionEjerciciosDTO> {
+    return this.http.post<SincronizacionEjerciciosDTO>(`${this.apiURL}/wger/sincronizar`, {});
+  }
 
   listarEjercicios(): Observable<EjercicioDTO[]> {
     return this.http.get<EjercicioDTO[]>(this.apiURL);
