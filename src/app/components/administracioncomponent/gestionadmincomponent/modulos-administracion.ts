@@ -73,7 +73,7 @@ export const MODULOS_ADMINISTRACION: ModuloAdministracion[] = [
     clave: 'ciclos',
     nombre: 'Ciclos',
     singular: 'ciclo',
-    descripcion: 'Fechas, historial y cierre de ciclos de las usuarias.',
+    descripcion: 'Fechas, historial y cierre de ciclos de los clientes.',
     id: 'idCiclo',
     campos: [
       usuario,
@@ -85,7 +85,7 @@ export const MODULOS_ADMINISTRACION: ModuloAdministracion[] = [
       columna('fechaFinEstimada', 'Fin estimado'),
       columna('fechaReal', 'Fin real'),
     ],
-    nota: 'La fecha estimada se calcula a 28 días del inicio. Solo puede existir un ciclo abierto por usuaria. Un ciclo con diario no se elimina hasta retirar sus entradas.',
+    nota: 'La fecha estimada se calcula a 28 días del inicio. Solo puede existir un ciclo abierto por cliente. Un ciclo con diario no se elimina hasta retirar sus entradas.',
   },
   {
     clave: 'detalle-diario',
@@ -111,7 +111,7 @@ export const MODULOS_ADMINISTRACION: ModuloAdministracion[] = [
       columna('faseRegistrada', 'Fase'),
       columna('nivelEnergia', 'Energía'),
     ],
-    nota: 'Cada usuaria puede tener un único registro diario por fecha.',
+    nota: 'Cada cliente puede tener un único registro diario por fecha.',
   },
   {
     clave: 'rutinas',
@@ -258,7 +258,7 @@ export const MODULOS_ADMINISTRACION: ModuloAdministracion[] = [
     clave: 'recomendaciones',
     nombre: 'Recomendaciones',
     singular: 'recomendación',
-    descripcion: 'Consultar y mantener recomendaciones de las usuarias.',
+    descripcion: 'Consultar y mantener recomendaciones de los clientes.',
     id: 'idRecomendacion',
     campos: [
       usuario,
@@ -280,6 +280,6 @@ export const MODULOS_ADMINISTRACION: ModuloAdministracion[] = [
       columna('idRutina', 'Rutina'),
       columna('aceptada', 'Aceptada'),
     ],
-    nota: 'Este formulario permite mantenimiento manual; no ejecuta el generador de IA. Una rutina relacionada debe pertenecer a la misma usuaria.',
+    nota: 'Este formulario permite mantenimiento manual; no ejecuta el generador de IA. Una rutina relacionada debe pertenecer al mismo cliente.',
   },
 ];

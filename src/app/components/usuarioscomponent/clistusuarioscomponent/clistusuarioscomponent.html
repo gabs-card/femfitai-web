@@ -44,7 +44,7 @@
         >Rol<select #rolFiltro (change)="rol.set(rolFiltro.value)">
           <option value="">Todos los roles</option>
           <option>ADMIN</option>
-          <option>USUARIA</option>
+          <option value="USUARIA">Cliente</option>
         </select></label
       ><label
         >Estado<select #estadoFiltro (change)="alternarVista(estadoFiltro.value)">
@@ -96,7 +96,7 @@
                   ><br /><span class="nota">{{ u.correo }}</span>
                 </td>
                 <td>
-                  <span class="etiqueta">{{ u.rol }}</span>
+                  <span class="etiqueta">{{ u.rol === 'USUARIA' || u.rol === 'ROLE_USUARIA' ? 'Cliente' : u.rol }}</span>
                 </td>
                 <td>
                   <span

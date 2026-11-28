@@ -111,7 +111,7 @@
           @for (u of recientes(); track u.idUsuario) {
           <tr>
             <td>{{ u.nombres }} {{ u.apellidos }}</td>
-            <td>{{ u.rol }}</td>
+            <td>{{ u.rol === 'USUARIA' || u.rol === 'ROLE_USUARIA' ? 'Cliente' : u.rol }}</td>
             <td>
               {{ u.estado === true ? 'Activa' : u.estado === false ? 'Inactiva' : 'Sin estado' }}
             </td>
@@ -153,6 +153,6 @@
   } } @if (!resumen) { <app-reportescomponent [administracion]="true"></app-reportescomponent> }
   <p class="aviso-suave">
     ADMIN administra cuentas, catálogo y registros mediante el Centro de gestión. Las pantallas
-    personales de USUARIA conservan su acceso y validaciones de propiedad.
+    personales de los clientes conservan su acceso y validaciones de propiedad.
   </p>
 </main>

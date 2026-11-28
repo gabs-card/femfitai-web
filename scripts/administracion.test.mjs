@@ -132,7 +132,7 @@ function registro(administracion, adminAutenticado = true) {
     ],
     [Auth, { hasAnyRole: () => adminAutenticado }],
     [Detector, { detectChanges: () => {} }],
-    [Builder, {}],
+    [Builder, { nonNullable: { group: () => ({}) } }],
   ]);
   const decorador = () => () => {};
   const { Usuarioscomponent } = cargar(
@@ -150,7 +150,8 @@ function registro(administracion, adminAutenticado = true) {
       '@angular/material/form-field': { MatFormFieldModule: class {} },
       '@angular/material/button': { MatButton: class {} },
       '@angular/material/select': { MatSelectModule: class {} },
-      '@angular/forms': { FormBuilder: Builder, ReactiveFormsModule: class {}, Validators: {} },
+      '@angular/forms': { FormBuilder: Builder, ReactiveFormsModule: class {}, Validators: { pattern: () => null } },
+      '../../utils/password': cargar('src/app/utils/password.ts'),
       '../../services/usuariosservices': { UsuariosService: Usuarios },
       '../../services/loginservice': { Loginservice: Auth },
     },
@@ -159,6 +160,7 @@ function registro(administracion, adminAutenticado = true) {
   component.administracion = administracion;
   component.form = {
     invalid: false,
+    getRawValue() { return this.value; },
     value: {
       nombres: 'Nombre QA',
       apellidos: 'Prueba',
