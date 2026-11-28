@@ -18,6 +18,37 @@
       <h2>Datos del ejercicio</h2>
       <p class="nota">Los campos con * son obligatorios.</p>
       <form [formGroup]="formulario" (ngSubmit)="guardar()">
+        <section class="imagen-editor" aria-label="Imagen del ejercicio">
+          <div class="imagen-editor-vista">
+            <app-fotoejerciciocomponent [imagenUrl]="formulario.controls.imagenUrl.value"
+              [nombre]="formulario.controls.nombre.value" [autor]="formulario.controls.imagenAutor.value"
+              [licencia]="formulario.controls.imagenLicencia.value" [licenciaUrl]="formulario.controls.imagenLicenciaUrl.value" />
+          </div>
+          <div>
+            <h3>Una imagen del movimiento</h3>
+            <p class="nota">Añade una fotografía o ilustración de este ejercicio que tengas permiso para utilizar. La sincronización de wger completa las imágenes ausentes.</p>
+            <label class="campo">URL de la imagen
+              <input type="url" formControlName="imagenUrl" maxlength="2048" placeholder="https://..." />
+              @if (formulario.controls.imagenUrl.touched && formulario.controls.imagenUrl.invalid) {
+                <small role="alert">Utiliza una URL HTTPS válida, sin credenciales, de hasta 2048 caracteres.</small>
+              }
+              <small>Debe ser un enlace directo a una imagen. Deja este campo vacío para retirar la imagen.</small>
+            </label>
+          </div>
+        </section>
+        <details class="creditos-imagen">
+          <summary>Créditos y licencia de la imagen</summary>
+          <div class="formulario">
+            <label class="campo">Autor o fuente<input formControlName="imagenAutor" maxlength="255" /></label>
+            <label class="campo">Licencia<input formControlName="imagenLicencia" maxlength="255" /></label>
+            <label class="campo completo">Enlace de la licencia
+              <input type="url" formControlName="imagenLicenciaUrl" maxlength="2048" placeholder="https://..." />
+              @if (formulario.controls.imagenLicenciaUrl.touched && formulario.controls.imagenLicenciaUrl.invalid) {
+                <small role="alert">Utiliza una URL HTTPS válida de hasta 2048 caracteres.</small>
+              }
+            </label>
+          </div>
+        </details>
         <div class="formulario">
           <label class="campo completo"
             >Nombre *<input formControlName="nombre" maxlength="100" required />

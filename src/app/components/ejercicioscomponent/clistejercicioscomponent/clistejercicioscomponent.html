@@ -4,6 +4,10 @@
       <h2 id="titulo-catalogo">Catálogo de ejercicios</h2>
       <p class="ff-sub">Catálogo de ejercicios disponibles.</p>
     </div>
+    <div class="selector-vista" role="group" aria-label="Vista del catálogo">
+      <button matButton type="button" [attr.aria-pressed]="vista === 'tarjetas'" (click)="vista = 'tarjetas'">Tarjetas</button>
+      <button matButton type="button" [attr.aria-pressed]="vista === 'lista'" (click)="vista = 'lista'">Lista</button>
+    </div>
   </header>
 
   <div>
@@ -31,6 +35,22 @@
     }
 
     @if (dataSource.length > 0) {
+      @if (vista === 'tarjetas') {
+        <div class="tarjetas-ejercicios">
+          @for (ejercicio of dataSource; track ejercicio.idEjercicio) {
+            <article class="tarjeta-ejercicio">
+              <app-fotoejerciciocomponent [imagenUrl]="ejercicio.imagenUrl" [nombre]="ejercicio.nombre"
+                [autor]="ejercicio.imagenAutor" [licencia]="ejercicio.imagenLicencia"
+                [licenciaUrl]="ejercicio.imagenLicenciaUrl" />
+              <div class="categorias"><span class="tipo-ejercicio">{{ ejercicio.grupoMuscular || 'Grupo no indicado' }}</span>
+                @if (ejercicio.tipo) { <span>{{ ejercicio.tipo }}</span> }
+              </div>
+              <h3>{{ ejercicio.nombre }}</h3>
+              <p>{{ descripcionCorta(ejercicio.descripcion) }}</p>
+            </article>
+          }
+        </div>
+      } @else {
       <div class="tabla-contenedor" role="region" aria-label="Catálogo, desplaza para ver todas las columnas" tabindex="0">
       <table mat-table [dataSource]="dataSource" aria-label="Ejercicios disponibles">
         <ng-container matColumnDef="C1">
@@ -54,6 +74,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
       </div>
+      }
 
       <nav class="paginacion" aria-label="Páginas del catálogo">
         <span role="status">Página {{ pagina + 1 }} de {{ totalPaginas }}</span>

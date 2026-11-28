@@ -20,10 +20,11 @@ import { TIPOS_EJERCICIO } from '../../../models/catalogos';
 import { mensajeDeError } from '../../../utils/errores';
 import { decodificarHtml } from '../../../utils/texto';
 import { Iconoaccioncomponent } from '../../iconoaccioncomponent/iconoaccioncomponent';
+import { Fotoejerciciocomponent } from '../../fotoejerciciocomponent/fotoejerciciocomponent';
 
 @Component({
   selector: 'app-clistadminejercicioscomponent',
-  imports: [Iconoaccioncomponent, RouterLink, ReactiveFormsModule],
+  imports: [Fotoejerciciocomponent, Iconoaccioncomponent, RouterLink, ReactiveFormsModule],
   templateUrl: './clistadminejercicioscomponent.html',
   styleUrls: ['../administracion.css', './clistadminejercicioscomponent.css'],
 })
@@ -40,6 +41,7 @@ export class Clistadminejercicioscomponent implements OnInit {
   pagina = 0;
   totalPaginas = 1;
   cargando = false;
+  sincronizando = false;
   eliminandoId: number | null = null;
   mensaje = '';
   errorCarga = '';
@@ -84,20 +86,48 @@ export class Clistadminejercicioscomponent implements OnInit {
   }
   cambiarPagina(salto: number): void {
     const destino = this.pagina + salto;
-    if (this.cargando || this.eliminandoId !== null || destino < 0 || destino >= this.totalPaginas)
+    if (this.cargando || this.sincronizando || this.eliminandoId !== null || destino < 0 || destino >= this.totalPaginas)
       return;
     this.pagina = destino;
     this.recargar.next();
   }
   volverACargar(): void {
-    if (!this.cargando) this.recargar.next();
+    if (!this.cargando && !this.sincronizando) this.recargar.next();
+  }
+  sincronizar(): void {
+    if (this.cargando || this.sincronizando || this.eliminandoId !== null || !this.auth.hasAnyRole(['ADMIN'])) return;
+    if (!confirm('¿Sincronizar el catálogo con wger? Se importarán ejercicios nuevos, se actualizarán sus textos y se completarán las imágenes ausentes. Las imágenes existentes se conservan.')) return;
+    this.sincronizando = true;
+    this.mensaje = '';
+    this.filtros.disable({ emitEvent: false });
+    this.es.sincronizarWger().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (resultado) => {
+        const imagenes = resultado.imagenesImportadas;
+        const detalleImagenes = imagenes === undefined
+          ? 'El backend no confirmó la importación de imágenes; comprueba que esté actualizado.'
+          : `${imagenes} imágenes incorporadas.`;
+        this.mensaje = `${resultado.completo ? 'Sincronización completada' : 'Sincronización parcial'}: ${resultado.insertados} nuevos, ${resultado.actualizados} actualizados y ${resultado.omitidos} sin cambios u omitidos. ${detalleImagenes}${resultado.mensaje ? ' ' + resultado.mensaje : ''}`;
+        this.pagina = 0;
+        this.finalizarSincronizacion();
+      },
+      error: (err) => {
+        this.mensaje = mensajeDeError(err, 'No se pudo confirmar la sincronización. Revisa el catálogo antes de volver a intentarlo.');
+        this.finalizarSincronizacion();
+      },
+    });
+  }
+  private finalizarSincronizacion(): void {
+    this.sincronizando = false;
+    this.filtros.enable({ emitEvent: false });
+    this.recargar.next();
+    this.cdr.detectChanges();
   }
   descripcion(ejercicio: EjercicioDTO): string {
     const texto = decodificarHtml(ejercicio.descripcion).replace(/<[^>]*>/g, '');
     return texto.length > 160 ? texto.slice(0, 160) + '…' : texto || 'Sin descripción.';
   }
   eliminar(ejercicio: EjercicioDTO): void {
-    if (this.cargando || this.eliminandoId !== null || !this.auth.hasAnyRole(['ADMIN'])) return;
+    if (this.cargando || this.sincronizando || this.eliminandoId !== null || !this.auth.hasAnyRole(['ADMIN'])) return;
     if (
       !confirm(
         `¿Eliminar el ejercicio "${ejercicio.nombre}"? No podrá eliminarse si tiene registros relacionados.`,

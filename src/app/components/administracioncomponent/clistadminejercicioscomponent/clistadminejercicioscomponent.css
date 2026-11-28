@@ -1,25 +1,8 @@
-.visual-ejercicio {
-  display: grid;
-  place-items: center;
-  height: 105px;
-  margin-bottom: 18px;
-  border-radius: 12px;
-  background: linear-gradient(130deg, #fff4f8, #f5eaf0);
-  color: #bc7695;
-}
-.visual-ejercicio svg {
-  width: 60px;
-  height: 60px;
-}
-h2 {
-  font-size: 21px;
-  margin-top: 14px;
-  overflow-wrap: anywhere;
-}
-.nota {
-  overflow-wrap: anywhere;
-}
-.pie {
-  border-top: 1px solid #eee5eb;
-  padding-top: 16px;
-}
+.tarjeta-ejercicio { display: flex; flex-direction: column; gap: 18px; }
+.contenido-ejercicio { flex: 1; min-width: 0; }
+.categorias { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.tipo { color: #716573; font-size: 11px; }
+h2 { font-size: 21px; margin: 12px 0 8px; overflow-wrap: anywhere; }
+.descripcion { color: #716573; font-size: 12px; line-height: 1.7; margin: 0; overflow-wrap: anywhere; }
+.tarjeta-ejercicio > .acciones { padding-top: 12px; border-top: 1px solid #f1ebef; }
+.pie { border-top: 1px solid #eee5eb; padding-top: 16px; }

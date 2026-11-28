@@ -4,4 +4,8 @@ export class EjercicioDTO {
     grupoMuscular: string = '';
     tipo: string = '';
     descripcion: string = '';
+    imagenUrl?: string | null;
+    imagenAutor?: string | null;
+    imagenLicencia?: string | null;
+    imagenLicenciaUrl?: string | null;
 }

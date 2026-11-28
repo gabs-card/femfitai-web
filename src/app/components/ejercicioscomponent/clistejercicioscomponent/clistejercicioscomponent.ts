@@ -10,14 +10,16 @@ import { TIPOS_EJERCICIO } from '../../../models/catalogos';
 import { Ejerciciosservice } from '../../../services/ejerciciosservice';
 import { mensajeDeError } from '../../../utils/errores';
 import { decodificarHtml } from '../../../utils/texto';
+import { Fotoejerciciocomponent } from '../../fotoejerciciocomponent/fotoejerciciocomponent';
 
 @Component({
   selector: 'app-clistejercicioscomponent',
-  imports: [MatTableModule, MatButtonModule, MatInputModule, MatSelectModule, ReactiveFormsModule],
+  imports: [Fotoejerciciocomponent, MatTableModule, MatButtonModule, MatInputModule, MatSelectModule, ReactiveFormsModule],
   templateUrl: './clistejercicioscomponent.html',
   styleUrl: './clistejercicioscomponent.css',
 })
 export class Clistejercicioscomponent implements OnInit {
+  vista: 'tarjetas' | 'lista' = 'tarjetas';
   displayedColumns: string[] = ['C1', 'C2', 'C3', 'C4'];
   dataSource: EjercicioDTO[] = [];
   tipos = TIPOS_EJERCICIO;
@@ -44,7 +46,7 @@ export class Clistejercicioscomponent implements OnInit {
     this.cargando = true;
     this.mensaje = '';
     const f = this.filtros.value;
-    this.es.buscarEjercicios(f.tipo ?? '', (f.query ?? '').trim(), this.pagina, 10).subscribe({
+    this.es.buscarEjercicios(f.tipo ?? '', (f.query ?? '').trim(), this.pagina, 9).subscribe({
       next: (data) => {
         this.dataSource = data.content;
         this.totalPaginas = Math.max(data.totalPages ?? data.page?.totalPages ?? 1, 1);

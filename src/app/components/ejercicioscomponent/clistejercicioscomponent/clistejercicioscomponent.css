@@ -1,4 +1,4 @@
-﻿:host { display: block; --mat-table-background-color: #fff; --mat-table-header-headline-color: #63535e; --mat-table-row-item-label-text-color: #342b34; --mat-button-text-label-text-color: #a82f64; --mat-form-field-outlined-focus-outline-color: #c2457a; --mat-form-field-outlined-focus-label-text-color: #a82f64; --mat-form-field-filled-focus-active-indicator-color: #c2457a; --mat-form-field-filled-focus-label-text-color: #a82f64; --mat-select-focused-arrow-color: #a82f64; }
+:host { display: block; --mat-table-background-color: #fff; --mat-table-header-headline-color: #63535e; --mat-table-row-item-label-text-color: #342b34; --mat-button-text-label-text-color: #a82f64; --mat-form-field-outlined-focus-outline-color: #c2457a; --mat-form-field-outlined-focus-label-text-color: #a82f64; --mat-form-field-filled-focus-active-indicator-color: #c2457a; --mat-form-field-filled-focus-label-text-color: #a82f64; --mat-select-focused-arrow-color: #a82f64; }
 .catalogo { min-width: 0; padding: 24px; border: 1px solid #eee5eb; border-radius: 20px; background: #fff; box-shadow: 0 8px 28px #39192e09; }
 .ff-top { margin-bottom: 24px; }
 h2 { margin: 0; color: #2a1c25; font: 500 26px/1.2 Georgia, serif; }
@@ -26,3 +26,14 @@ button:focus-visible, .tabla-contenedor:focus-visible { outline: 3px solid #a82f
 h3 { margin: 8px 0; color: #2a1c25; font: 500 23px Georgia, serif; }
 .estado-vacio p { margin: 8px 0; }
 @media (max-width: 650px) { .catalogo { padding: 18px; } .filtros { grid-template-columns: 1fr; gap: 8px; padding: 16px 16px 0; } }
+
+.ff-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.selector-vista { display: flex; gap: 4px; border: 1px solid #eee5eb; border-radius: 10px; padding: 3px; }
+.selector-vista button[aria-pressed=true] { background: #fce8ef; color: #91345e; }
+.tarjetas-ejercicios { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.tarjeta-ejercicio { min-width: 0; padding: 16px; border: 1px solid #eee5eb; border-radius: 18px; }
+.tarjeta-ejercicio h3 { font: 600 17px/1.4 'Hanken Grotesk', Arial, sans-serif; margin: 12px 0 8px; overflow-wrap: anywhere; }
+.tarjeta-ejercicio p { color: #716573; font-size: 12px; line-height: 1.7; margin: 0; overflow-wrap: anywhere; }
+.categorias { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 16px; font-size: 11px; color: #716573; }
+@media (max-width: 1100px) { .tarjetas-ejercicios { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) { .tarjetas-ejercicios { grid-template-columns: 1fr; } }

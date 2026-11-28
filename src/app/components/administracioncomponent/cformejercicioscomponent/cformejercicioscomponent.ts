@@ -1,17 +1,22 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Ejerciciosservice } from '../../../services/ejerciciosservice';
 import { Loginservice } from '../../../services/loginservice';
 import { TIPOS_EJERCICIO, GRUPOS_MUSCULARES } from '../../../models/catalogos';
 import { mensajeDeCarga, mensajeDeError } from '../../../utils/errores';
 import { decodificarHtml } from '../../../utils/texto';
+import { urlImagenSegura } from '../../../utils/imagenes';
+import { Fotoejerciciocomponent } from '../../fotoejerciciocomponent/fotoejerciciocomponent';
+
+const validarUrl: ValidatorFn = (control) =>
+  !control.value?.trim() || urlImagenSegura(control.value) ? null : { urlHttps: true };
 
 @Component({
   selector: 'app-cformejercicioscomponent',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [Fotoejerciciocomponent, ReactiveFormsModule, RouterLink],
   templateUrl: './cformejercicioscomponent.html',
-  styleUrl: '../administracion.css',
+  styleUrls: ['../administracion.css', './cformejercicioscomponent.css'],
 })
 export class Cformejercicioscomponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -32,6 +37,10 @@ export class Cformejercicioscomponent implements OnInit {
     grupoMuscular: ['', Validators.maxLength(100)],
     tipo: ['', Validators.maxLength(50)],
     descripcion: [''],
+    imagenUrl: ['', [Validators.maxLength(2048), validarUrl]],
+    imagenAutor: ['', Validators.maxLength(255)],
+    imagenLicencia: ['', Validators.maxLength(255)],
+    imagenLicenciaUrl: ['', [Validators.maxLength(2048), validarUrl]],
   });
   ngOnInit(): void {
     if (!this.route.snapshot.paramMap.has('id')) return;
@@ -51,6 +60,10 @@ export class Cformejercicioscomponent implements OnInit {
           grupoMuscular: ejercicio.grupoMuscular ?? '',
           tipo: ejercicio.tipo ?? '',
           descripcion: decodificarHtml(ejercicio.descripcion),
+          imagenUrl: ejercicio.imagenUrl ?? '',
+          imagenAutor: ejercicio.imagenAutor ?? '',
+          imagenLicencia: ejercicio.imagenLicencia ?? '',
+          imagenLicenciaUrl: ejercicio.imagenLicenciaUrl ?? '',
         });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -77,21 +90,34 @@ export class Cformejercicioscomponent implements OnInit {
       nombre: valores.nombre.trim(),
       grupoMuscular: valores.grupoMuscular.trim(),
       tipo: valores.tipo.trim(),
+      imagenUrl: valores.imagenUrl.trim(),
+      imagenAutor: valores.imagenAutor.trim(),
+      imagenLicencia: valores.imagenLicencia.trim(),
+      imagenLicenciaUrl: valores.imagenLicenciaUrl.trim(),
     };
     this.guardando = true;
     this.mensaje = '';
+    const nuevo = this.id === null;
     const solicitud =
-      this.id === null ? this.es.insertEjercicio(dto) : this.es.updateEjercicio(this.id, dto);
+      nuevo ? this.es.insertEjercicio(dto) : this.es.updateEjercicio(this.id!, dto);
     solicitud.subscribe({
-      next: () =>
+      next: (ejercicio) => {
+        this.guardando = false;
+        this.id = ejercicio.idEjercicio;
+        if ((ejercicio.imagenUrl ?? '') !== dto.imagenUrl) {
+          this.mensaje = 'El ejercicio se guardó, pero no se confirmó el cambio de imagen. Actualiza el catálogo y revisa su imagen.';
+          this.cdr.detectChanges();
+          return;
+        }
         this.router.navigate(['/administracion/ejercicios'], {
           state: {
             mensaje:
-              this.id === null
+              nuevo
                 ? 'Ejercicio creado correctamente.'
                 : 'Ejercicio actualizado correctamente.',
           },
-        }),
+        });
+      },
       error: (err) => {
         this.guardando = false;
         this.mensaje = mensajeDeError(err, 'No se pudo guardar el ejercicio.');
